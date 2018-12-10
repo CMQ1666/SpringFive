@@ -1,6 +1,7 @@
 package com.aaa.sb.service;
 
-import com.aaa.sb.dao.UserMapper;
+
+import com.aaa.sb.dao.UserDao;
 import com.aaa.sb.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,22 +9,22 @@ import org.springframework.stereotype.Service;
 /**
  * className:UserServiceImpl
  * discription:
- * author:cmq
- * createTime:2018-12-06 21:21
+ * author:Dbailing
+ * createTime:2018-12-06 22:00
  */
 @Service
-public class UserServiceImpl implements UserService{
-    @Autowired
-    private UserMapper userMapper;
-    @Override
-    public User findByName(String name) {
+public class UserServiceImpl implements  UserService {
+   @Autowired
+    private UserDao userDao;
 
-        return userMapper.findByName(name);
-    }
 
     @Override
     public User findById(Integer id) {
+        return userDao.findById(id);
+    }
 
-        return userMapper.findById(id);
+    @Override
+    public User findByName(String name) {
+        return userDao.findByName(name);
     }
 }

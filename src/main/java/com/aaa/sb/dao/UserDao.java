@@ -1,16 +1,16 @@
-package com.aaa.sb.service;
-
+package com.aaa.sb.dao;
 
 import com.aaa.sb.entity.User;
 
 /**
- * className:UserService
+ * className:UserDao
  * discription:
  * author:Dbailing
- * createTime:2018-12-06 22:00
+ * createTime:2018-12-08 17:06
  */
 
-public interface UserService {
+public interface UserDao {
+
     public User findByName(String name);
     public User findById(Integer id);
 }

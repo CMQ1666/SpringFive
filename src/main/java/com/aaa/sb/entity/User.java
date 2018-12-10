@@ -3,13 +3,14 @@ package com.aaa.sb.entity;
 /**
  * className:User
  * discription:
- * author:cmq
- * createTime:2018-12-06 21:07
+ * author:Dbailing
+ * createTime:2018-12-06 21:47
  */
+
 public class User {
     private Integer id;
-    private String name;
-    private String password;
+    private  String name;
+    private  String password;
     private String perms;
 
     public String getPerms() {
@@ -19,6 +20,8 @@ public class User {
     public void setPerms(String perms) {
         this.perms = perms;
     }
+
+
 
     public Integer getId() {
         return id;

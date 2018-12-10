@@ -13,29 +13,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * className:UserRealm
- * discription:自定义realm
- * author:cmq
- * createTime:2018-12-06 15:24
+ * discription:
+ * author:Dbailing
+ * createTime:2018-12-06 14:47
  */
+
 public class UserRealm extends AuthorizingRealm {
     /**
      * 执行授权逻辑
-     * @param principalCollection
+     * @param
      * @return
      */
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
         System.out.println("执行授权逻辑");
-        //给资源进行授权
+
+       //给资源进行授权
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加资源的授权字符串
         //info.addStringPermission("user:add");
-        //从数据库查询当前登陆用户授权字符串
-        Subject subject = SecurityUtils.getSubject();
-        User user =(User)subject.getPrincipal();
-        User dbUser= userService.findById(user.getId());
-        info.addStringPermission(dbUser.getPerms());
 
+        //到数据库查询当前登录用户的授权字符串
+        //获取当前登录用户
+        Subject subject = SecurityUtils.getSubject();
+        //Principal就是认证中的user
+        User user= (User)subject.getPrincipal();
+        User dbUser = userService.findById(user.getId());
+        info.addStringPermission(dbUser.getPerms());
         return info;
     }
     @Autowired
@@ -43,24 +47,28 @@ public class UserRealm extends AuthorizingRealm {
 
     /**
      * 执行认证逻辑
-     * @param arg0
+     * @param
      * @return
      * @throws AuthenticationException
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken arg0) throws AuthenticationException {
         System.out.println("执行认证逻辑");
+        //假设数据库用户名和密码
+        /*String name="eee";
+        String password="123";*/
 
-
-        //编写shiro判断逻辑，判断用户名和密码
+        //编写shiro判断逻辑 判断用户名和密码
         //1.判断用户名
-        UsernamePasswordToken token = (UsernamePasswordToken)arg0;
+        UsernamePasswordToken token=(UsernamePasswordToken)arg0;
         User user = userService.findByName(token.getUsername());
-        if (user==null){
+        if(user==null){
             //用户名不存在
-            return null;//shiro底层会抛出UnknowAccoutnException
+            return null;//shiro底层会抛出 UnknownAccountException
+
         }
-        //2.判断密码
-        return new SimpleAuthenticationInfo(user,user.getPassword(),"");
+        //2.判断密码 第二个密码是数据库的密码
+        return  new SimpleAuthenticationInfo(user,user.getPassword(),"");
+
     }
 }
