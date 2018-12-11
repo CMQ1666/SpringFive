@@ -1,23 +1,22 @@
 package com.aaa.sb.dao;
 
-import com.aaa.sb.entity.TreeNode;
+import com.aaa.sb.entity.Node;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * className:PowerDao
  * discription:
- * author:Dbailing
- * createTime:2018-12-08 19:02
+ * author:zz
+ * createTime:2018-12-11 09:22
  */
-
 public interface PowerDao {
-    @Select("select * from power")
+
     /**
-     * 获取权限数据
+     * 权限列表查询
      * @return
      */
-    List<TreeNode> getList();
+    @Select("select id, label as label, iconcls as iconClass, url, parentid pid from power")
+    List<Node> getList();
 }

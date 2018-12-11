@@ -5,9 +5,9 @@
 <mapper namespace="com.aaa.sb.dao.UserDao">
     <!-- 部门查询 -->
     <select id="findByName" resultType="User">
-        select id,name,password from users where name=#{value}
+        select id,name,password from tb_user where name=#{value}
     </select>
     <select id="findById" resultType="User">
-        select id,name,password,perms from users where id=#{value}
+        select id,name,password,perms from tb_user where id=#{value}
     </select>
 </mapper>

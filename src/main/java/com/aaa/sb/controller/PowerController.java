@@ -3,32 +3,39 @@ package com.aaa.sb.controller;
 import com.aaa.sb.service.PowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * className:PowerController
  * discription:
- * author:Dbailing
- * createTime:2018-12-08 19:15
+ * author:zz
+ * createTime:2018-12-11 10:24
  */
 @Controller
 @RequestMapping("/power")
 public class PowerController {
-   @Autowired
-   private PowerService  powerService;
 
+    //依赖注入
+    @Autowired
+    private PowerService powerService;
 
     /**
-     * 权限数json数据
+     * 跳转权限树页面
+     * @return
+     */
+    @RequestMapping("toTree")
+    public String toTree(){
+        return "power/tree";
+    }
+
+    /**
+     * 权限树数据
      * @return
      */
     @ResponseBody
     @RequestMapping("/tree")
-    public Object powerTree(){
-        return powerService.getListt();
+    public Object tree(){
+        return powerService.getList();
     }
-    }
-
+}

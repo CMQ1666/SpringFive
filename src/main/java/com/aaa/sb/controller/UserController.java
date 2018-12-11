@@ -70,8 +70,7 @@ public class UserController {
         //3.执行登录方法
         try {
             subject.login(token);//登录成功
-            return "redirect:/index";
-
+            return "redirect:/user/index";
         } catch (UnknownAccountException e) {
             // e.printStackTrace();
             //登录失败：用户名不存在
@@ -86,10 +85,6 @@ public class UserController {
     }
     @RequestMapping("/noAuth")
     public  String noAuth(){
-
         return "noAuth";
     }
-
-
-
 }

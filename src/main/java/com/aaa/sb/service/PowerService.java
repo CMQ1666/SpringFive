@@ -1,18 +1,20 @@
 package com.aaa.sb.service;
 
-import com.aaa.sb.entity.TreeNode;
+import com.aaa.sb.entity.Node;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * className:PowerService
  * discription:
- * author:Dbailing
- * createTime:2018-12-08 19:09
+ * author:zz
+ * createTime:2018-12-11 09:35
  */
-
 public interface PowerService {
-     List<TreeNode> getList();
-     List<TreeNode> getListt();
+
+    /**
+     * 列表查询方法
+     * @return
+     */
+    List<Node> getList();
 }
