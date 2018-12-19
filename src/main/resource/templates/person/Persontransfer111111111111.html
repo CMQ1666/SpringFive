@@ -299,7 +299,6 @@
                 _self.loading = true;
                 var url = "/person/submitVerify";
                 var url1 = "/person/submits";
-                alert(JSON.stringify(this.editForm));
                 if(_self.editForm.SELNAME!=0&&_self.editForm.RESSON!=null&&_self.editForm.RESSON!=""){
                     axios.post(url,{id:_self.editForm.PID}).then(function (response) {
                         //alert("测试response.data.id的值是多少"+response.data);
