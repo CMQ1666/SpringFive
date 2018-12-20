@@ -14,9 +14,11 @@ import java.util.Map;
 
 public interface SealService {
     /**
-     * 封存 启封 销户 分页
+     * 封存、启封、销户 分页
      * @param map
      * @return
      */
-    List<PersonsAccountNumberState> SealedPage(Map map);
+    List<Map> SealedPage(Map map);
+
+
 }

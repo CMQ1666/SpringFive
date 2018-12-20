@@ -19,11 +19,7 @@ public class PersonServiceImpl implements PersonService{
     @Autowired
     private PersonDao personDao;
 
-    public List<Map> getList(Map map) {
-        return personDao.getList(map);
-    }
-
-
+    @Override
     public List<Map> submitVerify(Map map) {
         return personDao.submitVerify(map);
     }

@@ -18,7 +18,7 @@ public interface SealDao {
      * @param map
      * @return
      */
-    @Select("<script>select a.GRZH,a.ubitnrop,a.indinrop,a.pid,b.pid,a.basenummber,a.dalance,a.lastnaydate,a.peraccstate,b.pname from tb_paccountutil a,tb_person_info b where a.pid=b.pid" +
-            "<where><if test=\"pname!=null and pname!=''\"> and pname like '%'||#{pname}||'%'</if></where></script>")
+    @Select("<script>select a.grzh,a.ubitnrop,a.indinrop,a.pid,a.basenummber,a.dalance,a.lastnaydate,a.peraccstate,b.pname from tb_paccountutil a,tb_person_info b where a.pid=b.pid\n" +
+            "<where><if test=\"pname!=null and pname!=''\"> and pname like '%'||#{PNAME}||'%'</if></where></script>")
     List<Map> SealedPage(Map map);
 }
