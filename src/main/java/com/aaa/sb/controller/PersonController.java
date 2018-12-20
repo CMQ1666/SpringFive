@@ -50,7 +50,6 @@ public class PersonController {
     @ResponseBody
     @RequestMapping("/page")
     public Object page(@RequestBody Map map){
-
         //第一个参数是当前第几页页码 第二个参数是显示数量
         PageHelper.startPage(Integer.valueOf(map.get("pageNo")+""),Integer.valueOf(map.get("pageSize")+""));
         //用pageinfo对结果进行包装

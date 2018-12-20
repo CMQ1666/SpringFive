@@ -3,6 +3,7 @@ package com.aaa.sb.service;
 import com.aaa.sb.entity.Node;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * className:PowerService
@@ -17,4 +18,5 @@ public interface PowerService {
      * @return
      */
     List<Node> getList();
+
 }
