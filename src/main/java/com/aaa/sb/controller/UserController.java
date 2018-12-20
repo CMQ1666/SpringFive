@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class  UserController {
 
     @RequestMapping("/update")
     public  String update(){
