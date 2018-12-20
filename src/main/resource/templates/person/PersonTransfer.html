@@ -9,230 +9,336 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <style>
+        #butt{
+            background-color: orange;
+        }
+    </style>
 </head>
 <body>
-<div id="app">
-    <h2>{{ message }}</h2>
-</div>
-
-<!--<div id="app">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="转出单位名称">
-            <el-input v-model="formInline.user" placeholder=" "></el-input>
-        </el-form-item>
-        <el-form-item label="转出受托银行名称">
-            <el-input v-model="formInline.user" placeholder=" "></el-input>
-        </el-form-item>
-        <el-form-item label="转入单位名称">
-            <el-select v-model="formInline.region" placeholder="活动区域">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item><br/>
-        <el-form-item label="转出受托银行名称">
-               <el-input v-model="formInline.user" placeholder=" "></el-input>
-        </el-form-item>
-            <el-form-item label="会计凭证日期">
-                <el-input v-model="formInline.user" placeholder=" "></el-input>
-            </el-form-item>
-            <el-form-item label="转移原因">
-                <el-input v-model="formInline.user" placeholder=" "></el-input>
-            </el-form-item><br/>
-
-            <el-button type="primary" @click="onSubmit">提交审核</el-button>
-        </el-form-item>
-    </el-form>
-</div>-->
+<!--列表-->
 <div id="tableView">
-    <!--列表顶部搜索和工具条-->
-    <el-row>
-        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-            <el-form-item label="用户名">
-                <el-input v-model="searchForm.name" placeholder="用户名"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
-            </el-form-item>
-        </el-form>
-    </el-row>
-    <!--列表-->
-    <el-row>
+    <el-container>
 
-        <el-table
-                :data="tableData"
-                v-loading.body="loading"
-                border
-                @selection-change="selectionChange"
-                style="width: 100%">
-            <el-table-column
-                    type="selection"
-                    width="55">
-            </el-table-column>
-            <el-table-column
-                    prop="PNAME"
-                    label="姓名"
-                    width="55">
-            </el-table-column>
-            <el-table-column
-                    prop="IDNUMBER"
-                    label="证件号"
-                    width="150">
-            </el-table-column>
+        <el-header width="800px" height="200px">
+            <div id="app">
+                <h2>{{ message }}</h2>
+            </div>
+            <el-row style="align-content: center">
+                <el-form :model="editForm" label-width="180px" :inline="true" class="demo-form-inline" ref="editForm">
+                    <el-form-item >
+                        <el-input v-model="editForm.PID" :readonly="true" type="hidden"  ></el-input>
+                    </el-form-item>
+                    <el-form-item label="转出单位名称">
+                        <el-input v-model="editForm.UNAME" :readonly="true" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="转出受托银行名称">
+                        <el-input v-model="editForm.UABANKNAME" :readonly="true" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="转入单位名称">
+                        <template>
+                            <el-select v-model="editForm.SELNAME" @change="show_sub" placeholder="请选择">
+                                <el-option label="请选择" :value="0"></el-option>
+                                <el-option
+                                        v-for="item in options"
+                                        :key="item.UNID"
+                                        :label="item.UNAME"
+                                        :value="item.UNID">
+                                </el-option>
+                                </span>
+                            </el-select>
+                        </template>
+                    </el-form-item>
+                    <el-form-item label="转出受托银行名称">
+                        <el-input v-model="editForm.STYH"  :readonly="true" ></el-input>
+                    </el-form-item><br>
+                    <el-form-item label="会计凭证日期">
+                        <el-input v-model="editForm.DATE" :readonly="true"  ></el-input>
+                    </el-form-item>
+                    <el-form-item label="转移原因">
+                        <el-input type="textarea" v-model="editForm.RESSON"></el-input>
+                    </el-form-item>
+                    <el-form-item >
+                        <el-input v-model="editForm.UNID" :readonly="true" type="hidden"  ></el-input>
+                    </el-form-item>
+                    <el-button id="butt" type="primary" @click.native="editSubmit" >提交审核</el-button>
+                </el-form>
 
-            <el-table-column
-                    prop="DALANCE"
-                    label="个人账号余额"
-                    width="120">
-            </el-table-column>
+            </el-row>
+        </el-header>
 
-            <el-table-column
-                    prop="PERACCSTATE"
-                    label="个人账号状态"
-                    width="120">
-            </el-table-column>
-        </el-table>
+        <el-container>
+          <!-- 全部人员列表      用el-aside让其在左边显示***********************************************************-->
+            <el-aside width="1000px">
+                <div id="app1">
+                    <h2>{{ message }}</h2>
+                </div>
+                <el-row>
+                    <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+                        <!--vue双向显示所以会给表搜索表单中默认的空值-->
+                        <el-form-item label="用户名">
+                            <el-input v-model="searchForm.name" placeholder="用户名"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-row>
+                <el-row>
+                    <el-table :data="tableData" v-loading.body="loading" border  @row-click="openDetails"  style="width: 450px">
+                        <el-table-column prop="PNAME" label="姓名" width="70"></el-table-column>
+                        <el-table-column prop="IDNUMBER" label="证件号" width="150"></el-table-column>
+                        <el-table-column prop="DALANCE" label="个人账号余额" width="110"></el-table-column>
+                        <el-table-column prop="PERACCSTATE" label="个人账号状态" width="110"></el-table-column>
+                    </el-table>
+                    <el-col :span="9" >
+                        <el-pagination style="float: left" @size-change="pageSizeChange" @current-change="currentPageChange" :current-page="currentPage"
+                                       :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+                        </el-pagination>
+                    </el-col>
+                </el-row>
+            </el-aside>
+        <!-- 待转移人员列表用  el-mian让其在右边显示*************************************************************-->
+            <el-main>
+                <div id="app2">
+                    <h2>{{ message }}</h2>
+                </div>
+                <el-row>
+                    <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+                        <!--vue双向显示所以会给表搜索表单中默认的空值-->
+                        <el-form-item label="用户名">
+                            <el-input v-model="searchForm1.name" placeholder="用户名"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" icon="search" @click="searchClick1">查询</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-row>
+                <el-row>
+                    <el-table :data="tableDataD" v-loading.body="loading"  border  style="width: 450px">
+                        <el-table-column prop="PNAME" label="姓名" width="70"></el-table-column>
+                        <el-table-column prop="IDNUMBER" label="证件号" width="150"></el-table-column>
+                        <el-table-column prop="BALANCE" label="个人账号余额" width="110"></el-table-column>
+                        <el-table-column prop="STATE" label="个人账号状态" width="110"></el-table-column>
+                    </el-table>
 
-    </el-row>
-    <!--列表底部工具条和分页符-->
-    <el-row style="margin-top: 20px" type="flex" justify="end">
-        <el-col :span="18" >
-            <el-pagination
-                    style="float: right"
-                    @size-change="pageSizeChange"
-                    @current-change="currentPageChange"
-                    :current-page="currentPage"
-                    :page-sizes="[5,10, 20, 30, 50]"
-                    :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="total">
-            </el-pagination>
-        </el-col>
-    </el-row>
-
+                    <el-col :span="9" >
+                        <el-pagination style="float: left" @size-change="pageSizeChange" @current-change="currentPageChange" :current-page="currentPage"
+                                       :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total2">
+                        </el-pagination>
+                    </el-col>
+                </el-row>
+            </el-main>
+        </el-container>
+    </el-container>
 </div>
-   <script type="text/javascript">
-      /* var Main = {
-           data() {
-               return {
-                   formInline: {
-                       user: '',
-                       region: ''
-                   }
-               }
-           },
-           methods: {
-               onSubmit() {
-                   console.log('submit!');
-               }
-           }
-       }
-       var Ctor = Vue.extend(Main)
-       new Ctor().$mount('#app')*/
-      var app = new Vue({
-          el: '#app',
-          data: {
-              message: '全部人员列表'
-          }
-      });
-
-      var tableView = new Vue({
-          el: '#tableView',
-          data: {
-              //列表数据
-              tableData: [],
-              //显示加载中样式
-              loading:false,
-              //搜索表单
-              searchForm: {
-                  name: ''
-              },
-              //当前页
-              currentPage:1,
-              //分页大小,在这里修改分页数量
-              pageSize:5,
-              //总记录数
-              total:800
-              },
-          created:function(){
-              //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
-              var self = this;
-              axios.post('/person/page',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
-                  console.log(response.data);
-                  //alert(response.data.total);
-                  self.total=response.data.total;
-                  self.tableData = response.data.pageData;
-                  alert(JSON.stringify(response.data.pageData));
-
-              })
-          },
-          methods:{
-              //刷新
-              toFlush:function(){
-                  this.searchForm= {
-                      name: ''
-                  }
-                  this.loadingData();
-              },
-              //表格重新加载数据
-              loadingData:function() {
-                  var _self = this;
-                  _self.loading = true;
-                  var self = this;
-                  var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'pname':this.searchForm.name};
-                  //   alert(JSON.stringify(searchForm));
-                  axios.post('/person/page',searchForm).then(function(response){
-                      _self.total=response.data.total;
-                      _self.tableData = response.data.pageData;
-                  })
-                  console.log(_self.currentPage);
-                  setTimeout(function(){
-                      console.info("加载数据成功");
-                      _self.loading = false;
-                  },300);
-              },
-              //分页大小修改事件
-              pageSizeChange:function(val) {
-                  console.log('每页 ' + val +' 条');
-                  this.pageSize = val;
-                  var _self = this;
-                  _self.loadingData();//重新加载数据
-              },
-              //当前页修改事件
-              currentPageChange:function(val) {
-                  this.currentPage = val;
-                  console.log('当前页: ' + val);
-                  var _self = this;
-                  _self.loadingData();//重新加载数据
-              },
-              //保存点击事件
-              editSubmit:function(){
-                  var _self = this;
-                  _self.loading = true;
-                  var formData =this.editForm;
-                  //alert(formData);
-                  var goUrl=this.goUrl;
-                  //alert(goUrl);
-                  //alert(JSON.stringify(formData));
-                  axios.post(goUrl,formData).then(function(response){
-                      // console.log(response.data);
-                      // alert(222);
-                      // self.total=response.data.total;
-                      if(response.data>0){
-                          _self.editFormVisible = false;
-                      }else{
-                          _self.$message({
-                              message:'操作失败',
-                              type: 'error'
-                          });
-                      }
-                      _self.loadingData();//重新加载数据
-                  })
-                  console.info(this.editForm);
-              }
-          }
-
-      })
-   </script>
 </body>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '人员转移信息列表'
+        }
+    });
+    var app1 = new Vue({
+        el: '#app1',
+        data: {
+            message: '全部人员列表'
+        }
+    });
+    var app2 = new Vue({
+        el: '#app2',
+        data: {
+            message: '待转移人员列表'
+        }
+    });
+  //对整个页面进行操作
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            //部门select
+            options:[],
+            tableData: [],//全部人员列表表格数据
+            tableDataD: [],//待转移人员列表表格数据
+            //显示加载中样式
+            loading:false,
+            //当前页
+            currentPage:1,
+            //分页大小
+            pageSize:5,
+            //总记录数
+            total:800,
+            //全部人员列表表格 搜索
+            searchForm: {
+                name: ''
+            },
+            //待转移人员列表表格 搜索
+            searchForm1: {
+                name: ''
+            },
+            editForm: {
+                PID:'',
+                UNAME:'',
+                UABANKNAME:'',
+                SELNAME:'',
+                STYH:'',
+                RESSON:'',
+                DATE:new Date().toLocaleString()+'',
+                UNID :''
+            }
+        },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            //pagehelp实现的分页方法,全部人员分页列表
+            var self = this;
+            axios.post('/person/page',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
+                console.log(response.data);
+                //alert(response.data.total);
+                self.total=response.data.total;
+                self.tableData = response.data.pageData;
+                //alert(JSON.stringify(response.data.pageData));
+
+            });
+            //待转移人员列表
+            axios.post('/person/PersonTransfer',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
+                console.log(response.data);
+                //alert(response.data.total);
+                self.total2=response.data.total;
+                self.tableDataD= response.data.pageData;
+                //alert(JSON.stringify(response.data.pageData));
+
+            });
+        },
+        methods:{
+            //表格重新加载数据
+            loadingData:function() {
+                var _self = this;
+               //弹出框里的姓名 alert(this.searchForm.name)
+                _self.loading = true;
+                var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'pname':this.searchForm.name};
+                //   alert(JSON.stringify(searchForm));
+                axios.post('/person/page',searchForm).then(function(response){
+                    _self.total=response.data.total;
+                    _self.tableData = response.data.pageData;
+                });
+                //下拉框里的转入单位
+                axios.post('/person/select').then(function(response){
+                    //alert(JSON.stringify(response.data))
+                    _self.options = response.data;
+                    //alert(JSON.stringify(response.data.pageData));
+                });
+                var searchForm1={'pageNo':this.currentPage,'pageSize':this.pageSize,'pname':this.searchForm1.name}
+                axios.post('/person/PersonTransfer',searchForm1).then(function(response){
+                    _self.total=response.data.total;
+                    _self.tableDataD = response.data.pageData;
+                })
+                console.log(_self.currentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+            },
+            //分页大小修改事件
+            pageSizeChange:function(val) {
+                console.log('每页 ' + val +' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange:function(val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //刷新
+            toFlush:function(){
+                this.searchForm= {
+                    name: ''
+                },
+                this.searchForm1={
+                    name:''
+                },
+                this.loadingData();
+            },
+            //表格查询事件
+            searchClick:function() {
+                var self = this;
+                self.loadingData();//重新加载数据
+            },
+            //点击全部人员的一行，出现公司和银行
+            openDetails:function (row) {
+                //alert(row.tb_pName);
+                var _self = this;
+                var url = "/person/trans/"+row.PNAME;
+                axios.post(url).then(function (response) {
+                    //alert("有没有tp_id"+JSON.stringify(response.data[0]))//查看后台返回的数据
+                    _self.editForm.UNID =response.data.UNID
+                    _self.editForm.PID =response.data.PID    // Object.assign({}, response.data[0]);
+                    _self.editForm.UABANKNAME =response.data.UABANKNAME;
+                    _self.editForm.UNAME =response.data.UNAME;
+                });
+                _self.loadingData();//重新加载数据
+            },
+            show_sub:function (row) {
+                if (this.editForm.UNID==this.editForm.SELNAME){
+                    this.editForm.SELNAME=0;
+                }else {
+                    var _self = this;
+                    var url="/person/Trustee/"+row;
+                    axios.post(url).then(function (response){
+                        //弹出受托银行alert(response.data.STYH)
+                        _self.editForm.STYH=response.data.STYH;
+                    })
+                }
+            },
+            //提交审核按钮保存点击事件
+            editSubmit:function(){
+                var _self = this;
+                _self.loading = true;
+                var url = "/person/submitVerify";
+                var url1 = "/person/submits";
+                if(_self.editForm.SELNAME!=0&&_self.editForm.RESSON!=null&&_self.editForm.RESSON!=""){
+                    axios.post(url,{id:_self.editForm.PID}).then(function (response) {
+                        //alert("测试response.data.id的值是多少"+response.data);
+                        if (response.data==1){
+                            alert("请勿重复操作 !");
+                        }else {
+                            axios.post(url1,{pid:_self.editForm.PID,selName:_self.editForm.SELNAME,uname:_self.editForm.UNAME,zy:_self.editForm.RESSON}).then(function (response) {
+
+                                _self.loadingData();//重新加载数据
+                            });
+                            _self.loadingData();//重新加载数据
+                        }
+                        _self.editForm = {
+                            uname: '',
+                            uaBankName: '',
+                            selName: '',
+                            STYH: '',
+                            date:new Date().toLocaleString()+'',
+                            resson: '',
+                            tb_pid:''
+                        };
+                    });
+                    _self.loadingData();//重新加载数据
+                }else {
+                    alert("请填写完整信息");
+                    _self.loadingData();//重新加载数据
+                };
+                _self.loadingData();//重新加载数据
+            },
+            //表格查询事件
+            searchClick:function() {
+                var self = this;
+                self.loadingData();//重新加载数据
+            },
+            //表格查询事件
+            searchClick1:function() {
+                var self = this;
+                self.loadingData();//重新加载数据
+            }
+        }
+    })
+</script>
 </html>
