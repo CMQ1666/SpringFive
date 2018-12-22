@@ -301,19 +301,18 @@
                             alert("请勿重复操作 !");
                         }else {
                             axios.post(url1,{pid:_self.editForm.PID,selName:_self.editForm.SELNAME,uname:_self.editForm.UNAME,zy:_self.editForm.RESSON}).then(function (response) {
-
                                 _self.loadingData();//重新加载数据
                             });
                             _self.loadingData();//重新加载数据
                         }
                         _self.editForm = {
-                            uname: '',
-                            uaBankName: '',
-                            selName: '',
+                            UNAME: '',
+                            UABANKNAME: '',
+                            SELNAME: '',
                             STYH: '',
-                            date:new Date().toLocaleString()+'',
-                            resson: '',
-                            tb_pid:''
+                            DATE:new Date().toLocaleString()+'',
+                            RESSON: '',
+                            PID:''
                         };
                     });
                     _self.loadingData();//重新加载数据
