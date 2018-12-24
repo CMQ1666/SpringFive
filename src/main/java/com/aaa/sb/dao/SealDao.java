@@ -74,4 +74,11 @@ public interface SealDao {
             "unseal_number,unseal_account,reason,operator,create_time,audit_state,audit_name from tb_unseal_audit " +
             "<where><if test=\"pname!=null and pname!=''\"> and pname like '%'||#{pname}||'%'</if></where></script>")
     List<Map>  sealAudit(Map map);
+    /**
+     * 明细列表分页
+     */
+    @Select("<script>select a.GRZH,a.unitmonpaysum, a.ydrawamt,a.permonpaysum, a.paop,c.uname,b.pname,a.opendate from tb_paccountutil a, tb_person_info b, tb_unit c " +
+            "where a.pid = b.pid and a.unid = c.unid " +
+            "<where><if test=\"pname!=null and pname!=''\"> and pname like concat('%',#{pname},'%')</if></where></script>")
+    List<Map> getPage(Map map);
 }

@@ -21,7 +21,7 @@ public interface PersonDao {
      * @return
      */
     @Select("<script> select a.pname,a.idnumber,b.dalance,b.peraccState from tb_person_info a,tb_paccountutil b where a.pid=b.pid\n" +
-            "<where><if test=\"pname!=null and pname!=''\"> and pname like '%'||#{pname}||'%'</if></where></script>")
+            "<if test=\"pname!=null and pname!=''\"> and pname like '%'||#{pname}||'%'</if></script>")
     List<Map> getList(Map map);
     /**
      * 点击转移出现转出账户单位和受托银行

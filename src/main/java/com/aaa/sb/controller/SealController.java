@@ -56,11 +56,17 @@ public class SealController {
     @RequestMapping("/toPage")
     public String toPage(){ return "/person/PersonList" ;}
     /**
-     * 跳转人员转移列表页面
+     * 跳转人员封存启封审核页面
      * @return
      */
     @RequestMapping("/toAudit")
     public String toAudit(){ return "/person/Seal-audit" ;}
+    /**
+     * 跳转明细查询页面
+     * @return
+     */
+    @RequestMapping("/toDetail")
+    public String toDeatil(){ return "/person/detail" ;}
     /**
      * 封存 启封 销户  操作弹出层查询信息
      * @param map
@@ -124,6 +130,25 @@ public class SealController {
         return  resultMap;
     }
 
+    /**
+     *明细查询分页页面
+     */
+    @ResponseBody
+    @RequestMapping("/detail")
+    public Object page(@RequestBody Map map){
+        //第一个参数是当前第几页页码 第二个参数是显示数量
+        PageHelper.startPage(Integer.valueOf(map.get("pageNo")+""),Integer.valueOf(map.get("pageSize")+""));
+        //用pageinfo对结果进行包装
+        PageInfo<Map> pageInfo =new PageInfo<Map>(sealService.getPage(map));
+        System.out.println(map.get("pname"));
+        Map resultMap = new HashMap();
+        //获取当前页数据
+        resultMap.put("pageData",pageInfo.getList());
+        //获取分页总数量
+        resultMap.put("total",pageInfo.getTotal()) ;
+        return  resultMap;
+
+    }
 
 
 }

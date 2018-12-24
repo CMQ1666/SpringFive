@@ -62,5 +62,9 @@ public interface SealService {
      * @return
      */
     List<Map>  sealAudit(Map map);
+    /**
+     * 明细列表分页
+     */
+    List<Map> getPage(Map map);
 
 }

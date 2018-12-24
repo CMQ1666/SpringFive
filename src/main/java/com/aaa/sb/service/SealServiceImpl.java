@@ -31,6 +31,11 @@ public class SealServiceImpl implements SealService {
     }
 
     @Override
+    public List<Map> getPage(Map map) {
+        return sealDao.getPage(map);
+    }
+
+    @Override
     public Map unsealAudit(Map map, HttpSession session) {
         String name = session.getAttribute("name")+"";   //获取操作人员
 

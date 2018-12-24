@@ -34,7 +34,7 @@ public class PersonController {
      * @return
      */
     @RequestMapping("/toPage")
-    public String trans(){ return "/person/test" ;}
+    public String trans(){ return "/person/PersonTransfer" ;}
 
     /**
      *人员转移审核页面
