@@ -14,7 +14,7 @@ public interface LoanFinallyService {
      * 贷款初审数据
      * @return
      */
-    List<Map> getList();
+    List<Map> getList(Map map);
 
     /**
      * 信息审查
@@ -29,4 +29,16 @@ public interface LoanFinallyService {
      * @return
      */
     List<Map> rethList(Map map);
+
+    /**
+     * 终审通过
+     * @return
+     */
+    int thirdUpdate(Map map);
+
+    /**
+     * 终审驳回
+     * @return
+     */
+    int fourUpdate(Map map);
 }

@@ -18,9 +18,10 @@ public class LoanFirstServiceImpl implements LoanFirstService{
     @Autowired
     private LoanFirstDao loanFirstDao;
 
+
     @Override
-    public List<Map> getList() {
-        return loanFirstDao.getList();
+    public List<Map> getList(Map map) {
+        return loanFirstDao.getList(map);
     }
 
     @Override
@@ -31,5 +32,15 @@ public class LoanFirstServiceImpl implements LoanFirstService{
     @Override
     public List<Map> rethList(Map map) {
         return loanFirstDao.rethList(map);
+    }
+
+    @Override
+    public int firstUpdate(Map map) {
+        return loanFirstDao.firstUpdate(map);
+    }
+
+    @Override
+    public int twoUpdate(Map map) {
+        return loanFirstDao.twoUpdate(map);
     }
 }

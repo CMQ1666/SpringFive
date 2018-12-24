@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class LoanFinallyController {
         //第一个参数是当前第几页页码 第二个参数是显示数量
         PageHelper.startPage(Integer.valueOf(map.get("pageNo")+""),Integer.valueOf(map.get("pageSize")+""));
         //用pageinfo对结果进行包装
-        PageInfo<Map> pageInfo =new PageInfo<Map>(loanFinallyService.getList());
+        PageInfo<Map> pageInfo =new PageInfo<Map>(loanFinallyService.getList(map));
         Map resultMap = new HashMap();
         //获取当前页数据
         resultMap.put("pageData",pageInfo.getList());
@@ -87,5 +88,25 @@ public class LoanFinallyController {
     @ResponseBody
     public Object loanFinallythird(@RequestBody Map map){
         return loanFinallyService.rethList(map);
+    }
+
+    /**
+     * 终审通过
+     * @return
+     */
+    @RequestMapping("/updatethird")
+    public Object thirdUpdate(@RequestParam Map map){
+        loanFinallyService.thirdUpdate(map);
+        return "inspect/loanfinally";
+    }
+
+    /**
+     * 终审驳回
+     * @return
+     */
+    @RequestMapping("/updatefour")
+    public Object fourUpdate(@RequestParam Map map){
+        loanFinallyService.fourUpdate(map);
+        return "inspect/loanfirst";
     }
 }

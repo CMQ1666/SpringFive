@@ -7,9 +7,9 @@
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/elementui.css">
     <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="../js/elementui.js"></script>
 </head>
 <body>
 <div id="app">
@@ -228,8 +228,8 @@
         <el-button v-if="active==0" onclick="location='/loanfirst/toLoan'">退回</el-button>
         <el-button  @click="prev"  v-if="active==1||active==2||active==3">上一步</el-button>
         <el-button  @click="next"  v-if="active==0||active==1||active==2">下一步</el-button>
-        <el-button type="primary" @click.native="editSubmit" :loading="editLoading" v-if="active==3">提交</el-button>
-        <el-button type="warning" @click.native="" :loading="editLoading" v-if="active==3">驳回</el-button>
+        <el-button type="primary" @click.native="updateClick" :loading="editLoading" v-if="active==3">提交</el-button>
+        <el-button type="warning" @click.native="twoUpdateClick" :loading="editLoading" v-if="active==3">驳回</el-button>
     </div>
 </div>
 
@@ -350,6 +350,30 @@
                 this.active--;
                 if (this.active< 1) this.active = 0;
             },
+            updateClick:function(){
+                var _self = this;
+                this.$confirm('确认通过吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var url="/loanfirst/updatethird";
+                    location.href="/loanfirst/updatethird?PID="+[[${PID}]];
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            twoUpdateClick:function(){
+                var _self = this;
+                this.$confirm('确认驳回吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var url="/loanfinally/updatefour";
+                    location.href="/loanfinally/updatefour?PID="+[[${PID}]];
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            }
         }
     })
 </script>

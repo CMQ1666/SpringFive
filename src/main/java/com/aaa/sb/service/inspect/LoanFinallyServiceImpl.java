@@ -18,8 +18,8 @@ public class LoanFinallyServiceImpl implements LoanFinallyService{
     @Autowired
     private LoanFinallyDao loanFinallyDao;
     @Override
-    public List<Map> getList() {
-        return loanFinallyDao.getList();
+    public List<Map> getList(Map map) {
+        return loanFinallyDao.getList(map);
     }
 
     @Override
@@ -30,5 +30,15 @@ public class LoanFinallyServiceImpl implements LoanFinallyService{
     @Override
     public List<Map> rethList(Map map) {
         return loanFinallyDao.rethList(map);
+    }
+
+    @Override
+    public int thirdUpdate(Map map) {
+        return loanFinallyDao.thirdUpdate(map);
+    }
+
+    @Override
+    public int fourUpdate(Map map) {
+        return loanFinallyDao.fourUpdate(map);
     }
 }

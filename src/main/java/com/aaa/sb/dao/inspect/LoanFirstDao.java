@@ -1,6 +1,7 @@
 package com.aaa.sb.dao.inspect;
 
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,9 @@ public interface LoanFirstDao {
      * @return
      */
     @Select("<script> select a.PID,a.PNAME,b.LOAN_MONEY,b.LOAN_PERIODS,b.LOAN_RATE,b.LOAN_BANK,b.LOAN_REPAY,b.CTIME,b.STATUS \n" +
-            "from tb_person_info a,tb_loanappval b where a.PID=b.PID\n" +
-            "<where><if test=\"pname!=null and pname!=''\"> and pname like '%'||#{pname}||'%'</if></where></script>")
-    List<Map> getList();
+            "from tb_person_info a,tb_loanappval b   \n"  +
+            "<where> a.PID=b.PID and STATUS=1 <if test=\"PNAME!=null and PNAME!=''\"> and a.PNAME like '%'||#{PNAME}||'%'</if></where></script>")
+    List<Map> getList(Map map);
 
     /**
      * 信息审查
@@ -38,6 +39,21 @@ public interface LoanFirstDao {
      * @param map
      * @return
      */
-    @Select(value = "select * from tb_person_info where pname=#{TOGETHERZH}")
+    @Select(value = "select a.PID,b.* from tb_paccountutil a,tb_person_info b " +
+            "where a.GRZH=#{TOGETHERZH} and a.PID=b.PID")
     List<Map> rethList(Map map);
+
+    /**
+     * 初审通过
+     * @return
+     */
+    @Update(value = "update tb_loanappval set STATUS=2 where PID=#{PID}")
+    int firstUpdate(Map map);
+
+    /**
+     * 初审驳回
+     * @return
+     */
+    @Update(value = "update tb_loanappval set STATUS=0 where PID=#{PID}")
+    int twoUpdate(Map map);
 }

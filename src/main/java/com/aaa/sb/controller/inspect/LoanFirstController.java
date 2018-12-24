@@ -60,7 +60,7 @@ public class LoanFirstController {
         //第一个参数是当前第几页页码 第二个参数是显示数量
         PageHelper.startPage(Integer.valueOf(map.get("pageNo")+""),Integer.valueOf(map.get("pageSize")+""));
         //用pageinfo对结果进行包装
-        PageInfo<Map> pageInfo =new PageInfo<Map>(loanFirstService.getList());
+        PageInfo<Map> pageInfo =new PageInfo<Map>(loanFirstService.getList(map));
         Map resultMap = new HashMap();
         //获取当前页数据
         resultMap.put("pageData",pageInfo.getList());
@@ -90,5 +90,25 @@ public class LoanFirstController {
     @ResponseBody
     public Object loanthird(@RequestBody Map map){
         return loanFirstService.rethList(map);
+    }
+
+    /**
+     * 初审通过
+     * @return
+     */
+    @RequestMapping("/update")
+    public Object firstUpdate(@RequestParam Map map){
+        loanFirstService.firstUpdate(map);
+        return "inspect/loanfirst";
+    }
+
+    /**
+     * 初审失败
+     * @return
+     */
+    @RequestMapping("/updatet")
+    public Object twoUpdate(@RequestParam Map map){
+        loanFirstService.twoUpdate(map);
+        return "inspect/loanfirst";
     }
 }

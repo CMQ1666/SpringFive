@@ -14,7 +14,7 @@ public interface LoanFirstService {
      * 贷款初审数据
      * @return
      */
-    List<Map> getList();
+    List<Map> getList(Map map);
 
     /**
      * 信息审查
@@ -29,4 +29,16 @@ public interface LoanFirstService {
      * @return
      */
     List<Map> rethList(Map map);
+
+    /**
+     * 初审通过
+     * @return
+     */
+    int firstUpdate(Map map);
+
+    /**
+     * 初审驳回
+     * @return
+     */
+    int twoUpdate(Map map);
 }

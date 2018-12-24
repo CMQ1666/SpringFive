@@ -6,9 +6,9 @@
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/elementui.css">
     <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="../js/elementui.js"></script>
 </head>
 <body>
 <div id="app">
@@ -20,7 +20,7 @@
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
             <el-form-item label="用户名">
-                <el-input v-model="searchForm.name" placeholder="用户名"></el-input>
+                <el-input v-model="searchForm.PNAME" placeholder="用户名"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
@@ -132,7 +132,7 @@
             //搜索表单
             editFormVisible: false,
             searchForm: {
-                name: ''
+                PNAME: ''
             },
             //当前页
             currentPage:1,
@@ -157,16 +157,32 @@
             //刷新
             toFlush:function(){
                 this.searchForm= {
-                    name: ''
+                    PNAME: ''
                 }
                 this.loadingData();
+            },
+            //表格查询事件
+            searchClick:function() {
+                var _self = this;
+                _self.loadingData();
+                /*var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'pname':this.searchForm.name};
+                //   alert(JSON.stringify(searchForm));
+                axios.post('/loanfirst/first',searchForm).then(function(response){
+                    _self.total=response.data.total;
+                    _self.tableData = response.data.pageData;
+                })
+                console.log(_self.currentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);*/
             },
             //表格重新加载数据
             loadingData:function() {
                 var _self = this;
                 _self.loading = true;
                 var self = this;
-                var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'pname':this.searchForm.name};
+                var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'PNAME':this.searchForm.PNAME};
                 //   alert(JSON.stringify(searchForm));
                 axios.post('/loanfirst/first',searchForm).then(function(response){
                     _self.total=response.data.total;
@@ -229,22 +245,6 @@
                     _self.loadingData();//重新加载数据
                 })
                 console.info(this.editForm);
-            },
-            //表格查询事件
-            searchClick:function() {
-                _self.loading = true;
-                var self = this;
-                var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'pname':this.searchForm.name};
-                //   alert(JSON.stringify(searchForm));
-                axios.post('/loanfirst/first',searchForm).then(function(response){
-                    _self.total=response.data.total;
-                    _self.tableData = response.data.pageData;
-                })
-                console.log(_self.currentPage);
-                setTimeout(function(){
-                    console.info("加载数据成功");
-                    _self.loading = false;
-                },300);
             },
         }
     })
