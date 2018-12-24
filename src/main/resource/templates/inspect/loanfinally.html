@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>贷款终审</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
+    <!-- 引入组件库 -->
+    <script src="../js/elementui.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+
+<div id="tableView">
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form-item label="用户名">
+                <el-input v-model="searchForm.PNAME" placeholder="用户名"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <!--列表-->
+    <el-row>
+
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                style="width: 100%">
+
+            <el-table-column
+                    prop="PID"
+                    label="编号"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="PNAME"
+                    label="借款人姓名"
+                    width="150">
+            </el-table-column>
+
+            <el-table-column
+                    prop="LOAN_MONEY"
+                    label="贷款金额"
+                    width="120">
+            </el-table-column>
+
+            <el-table-column
+                    prop="LOAN_PERIODS"
+                    label="贷款期数"
+                    width="120">
+            </el-table-column>
+
+            <el-table-column
+                    prop="LOAN_RATE"
+                    label="贷款利率"
+                    width="120">
+            </el-table-column>
+
+            <el-table-column
+                    prop="LOAN_BANK"
+                    label="受委托银行"
+                    width="120">
+            </el-table-column>
+
+            <el-table-column
+                    prop="LOAN_REPAY"
+                    label="还款方式"
+                    width="120">
+            </el-table-column>
+
+            <el-table-column
+                    prop="CTIME"
+                    label="创建时间"
+                    width="120">
+            </el-table-column>
+
+            <el-table-column
+                    prop="STATUS"
+                    label="审核状态"
+                    width="120">
+            </el-table-column>
+
+            <el-table-column
+                    label="操作">
+                <template scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="transferClick(scope.row)">详细</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+    </el-row>
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+        <el-col :span="18" >
+            <el-pagination
+                    style="float: right"
+                    @size-change="pageSizeChange"
+                    @current-change="currentPageChange"
+                    :current-page="currentPage"
+                    :page-sizes="[5,10, 20, 30, 50]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+</div>
+<script type="text/javascript">
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '贷款终审'
+        }
+    });
+
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            //列表数据
+            tableData: [],
+            //显示加载中样式
+            loading:false,
+            //搜索表单
+            editFormVisible: false,
+            searchForm: {
+                PNAME: ''
+            },
+            //当前页
+            currentPage:1,
+            //分页大小,在这里修改分页数量
+            pageSize:5,
+            //总记录数
+            total:800
+        },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            axios.post('/loanfinally/finally',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
+                console.log(response.data);
+                //alert(response.data.total);
+                self.total=response.data.total;
+                self.tableData = response.data.pageData;
+                //alert(JSON.stringify(response.data.pageData));
+
+            })
+        },
+        methods:{
+            //刷新
+            toFlush:function(){
+                this.searchForm= {
+                    PNAME: ''
+                }
+                this.loadingData();
+            },
+            //表格重新加载数据
+            loadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                var self = this;
+                var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'PNAME':this.searchForm.PNAME};
+                //   alert(JSON.stringify(searchForm));
+                axios.post('/loanfinally/finally',searchForm).then(function(response){
+                    _self.total=response.data.total;
+                    _self.tableData = response.data.pageData;
+                })
+                console.log(_self.currentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+            },
+            //分页大小修改事件
+            pageSizeChange:function(val) {
+                console.log('每页 ' + val +' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange:function(val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //携带id跳转到审核信息页面
+            transferClick:function(row) {
+                var _self = this;
+                this.$confirm('确认进入审核页面吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var url="/loanfinally/finallyLittle";
+                    location.href="/loanfinally/finallyLittle?PID="+row.PID
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //保存点击事件
+            editSubmit:function(){
+                var _self = this;
+                _self.loading = true;
+                var formData =this.editForm;
+                //alert(formData);
+                var goUrl=this.goUrl;
+                //alert(goUrl);
+                //alert(JSON.stringify(formData));
+                axios.post(goUrl,formData).then(function(response){
+                    // console.log(response.data);
+                    // alert(222);
+                    // self.total=response.data.total;
+                    if(response.data>0){
+                        _self.editFormVisible = false;
+                    }else{
+                        _self.$message({
+                            message:'操作失败',
+                            type: 'error'
+                        });
+                    }
+                    _self.loadingData();//重新加载数据
+                })
+                console.info(this.editForm);
+            },
+            //表格查询事件
+            searchClick:function() {
+                var _self = this;
+                _self.loadingData();
+            },
+        }
+    })
+</script>
+</body>
+</html>
