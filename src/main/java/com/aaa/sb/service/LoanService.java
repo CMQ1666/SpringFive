@@ -26,4 +26,12 @@ public interface LoanService {
 
     int addLoan( List<Map> map);
 
+    /**
+     * 将贷款信息添加至还款表
+     * @param map
+     * @return
+     */
+    int addRepay(List<Map> map);
+
+
 }

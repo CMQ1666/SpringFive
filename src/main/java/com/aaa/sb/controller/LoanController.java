@@ -63,8 +63,9 @@ public class LoanController {
     @ResponseBody
     @RequestMapping("/add")
     public Object add(@RequestBody List<Map> map){
-        int i =loanService.addLoan(map);
-        return i;
+        loanService.addLoan(map);
+       loanService.addRepay(map);
+        return 1;
 
 
     }

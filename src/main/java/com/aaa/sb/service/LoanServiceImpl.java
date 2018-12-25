@@ -33,6 +33,19 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    public int addRepay(List<Map> map) {
+        int i= 0;
+        Map map2=new HashMap();
+        for (Map map1:map){
+            map2.putAll(map1);
+        }
+        //  System.out.println(map2+"**************");
+        i = loanDao.addRepay(map2);
+        return i ;
+
+    }
+
+    @Override
     public Map getList(String GRZH) {
         return loanDao.getList(GRZH);
     }

@@ -5,9 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +17,7 @@ import java.util.Map;
  * createTime:2018-12-15 16:18
  */
 @Controller
-@RequestMapping("repay")
+@RequestMapping("/repay")
 public class RepayController {
     @Autowired
     private RepayService repayService;
@@ -33,6 +31,13 @@ public class RepayController {
         return  "/repay/repay";
     }
 
+    /* int archiveRepay=repayService.archiveRepay();*/
+    @ResponseBody
+    @RequestMapping("/list/{GRZH}")
+    public Object getLoanUser(@PathVariable("GRZH") String GRZH){
+        System.out.println(GRZH);
+        return repayService.getListByName(GRZH);
+    }
     /**
      * 列表分页
      * @param map
@@ -54,4 +59,33 @@ public class RepayController {
         return  resultMap;
 
     }
+
+
+
+    @ResponseBody
+    @RequestMapping("/repayMoney")
+    public Object repayMoney(@RequestBody Map map){
+        //repayService.insertRecord(map);
+       System.out.println("收到的参数==**********************************"+map);
+            return repayService.archiveRepay(map);
+    }
+    @ResponseBody
+    @RequestMapping("/record/{GRZH}")
+    public Object getRecord(@PathVariable("GRZH") String GRZH){
+
+        return repayService.getRecordByName(GRZH);
+    }
+
+    /**
+     * 插入个人还款记录
+     * @param map
+     * @return
+     */
+    /*@ResponseBody
+    @RequestMapping("/insertRecord")
+    public Object insertRecord(Map map){
+        return repayService.insertRecord(map);
+
+    }*/
+
 }

@@ -31,14 +31,7 @@ public interface LoanDao {
      *
      * @return
      */
-    /*@Insert("insert into tb_loannappval(loan_id,pid,GRZH,SALARY,bank_money,loan_money,loan_periods,loan_rate,loan_bank,loan_repay,"+
-            "loan_repayer,loan_repaydate,REPAY_BANK,REPAY_ACCOUNTNAME,REPAY_ACCOUNT,STATUS,CTIME,HOUSE_TYPE,HOUSE_LOCATION," +
-            "house_area,BUY_ID,buy_name,bank_account,house_total,house_first," +
-            "house_price,pawn_type,pawn_name,pawn_idnumber,pawn_address,pawn_status,pawn_money) " +
-            "values(LOANAPPVAL .nextval,#{TB_PID},#{GRZH},#{SALARY},#{BANK_MONEY},#{LOAN_MONEY}," +
-            "#{LOAN_PERIODS},#{LOAN_RATE},#{LOAN_BANK},#{LOAN_REPAY},#{LOAN_REPAYER},#{LOAN_REPAYDATE},#{REPAY_BANK},#{REPAY_ACCOUNTNAME},#{REPAY_ACCOUNT},1," +
-            "#{CTIME},#{HOUSE_TYPE},#{HOUSE_LOCATION},#{HOUSE_AREA},#{BUY_ID},#{BUY_NAME},#{BNAK_ACCOUNT},#{HOUSE_TOTAL},#{HOUSE_FIRST}," +
-            "#{HOUSE_PRICE},#{PAWN_TYPE},#{PAWN_NAME},#{PAWN_IDNUMBER},#{PAWN_ADDRESS},#{PAWN_STATUS},#{PAWN_MONEY})")*/
+
     @Insert("insert into tb_loanappval(loan_id,pid,grzh,togetherzh,SALARY,bank_money,loan_money,loan_periods,loan_rate,loan_bank,loan_repay,"+
             "loan_repayer,loan_repaydate,REPAY_BANK,REPAY_ACCOUNTNAME,REPAY_ACCOUNT,status,house_type,house_location," +
             "house_area,buy_id,buy_name,bank_account,house_total,house_firstpay," +
@@ -49,6 +42,19 @@ public interface LoanDao {
             "#{housePrice},#{DYType},#{DYName},#{DYIdNum},#{DYAddress},#{DYStatus},#{DYMoney})")
 
     int addLoan(Map map);
+
+    /**
+     * 将贷款信息添加至还款表中
+     * @param map
+     * @return
+     */
+
+    @Insert("insert into tb_repay (REPAY_ID,GRZH,PNAME,LOAN_MONEY,LOAN_PERIODS,LOAN_RATE," +
+            "REPAY_BANK,REPAY_ACCOUNT,REPAYED_PERIODS,REPAYED_ALL_MONEY) values(SEQ_REPAY_ID.nextval,#{GRZH},#{PNAME},#{loanAmount},#{loanPeriods},#{loanRate}," +
+            "#{openBank},#{paymentAccount},0,0)")
+
+    int addRepay(Map map);
+
 
 
 

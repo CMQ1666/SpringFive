@@ -39,7 +39,7 @@
                 <el-col :span="5">
                     <div class="grid-content bg-purple">
                         <el-form-item label="*姓名">
-                            <el-input v-model="form1.PNAME" style="width: 200px;" :disabled="true"></el-input>
+                            <el-input v-model="form1.PNAME" style="width: 200px;" ></el-input>
                         </el-form-item>
                     </div>
                 </el-col>
@@ -295,7 +295,7 @@
                 </div></el-col>
                 <el-col :span="5"><div class="grid-content bg-purple">
                     <el-form-item label="姓名">
-                        <el-input v-model="form2.PNAME" style="width: 200px;"  :disabled="true"></el-input>
+                        <el-input v-model="form2.PNAME1" style="width: 200px;"  :disabled="true"></el-input>
                     </el-form-item>
                 </div></el-col>
                 <el-col :span="5">
@@ -550,7 +550,7 @@
                 ]},
             form2:{
                 GRZH1:'',
-                PNAME:'',
+                PNAME1:'',
                 PSEX:'',
                 PHONE:'',
                 UOPIPHONE:'',
@@ -718,12 +718,7 @@
                     self.form1.paymentDay = "放款日起";
                 }
             },
-                /*axios.get(url).then(function (response) {
-                    alert(JSON.stringify(response.data));
-                    self.form1=response.data;
-                    self.form1.paymentDay="放款日起";
-                })
-            },*/
+            
             blurs2:function () {
                 var self=this;
                 var url="/loan/user/"+this.form2.GRZH1;
@@ -731,7 +726,7 @@
                     axios.get(url).then(function (response) {
                         //alert(JSON.stringify(response.data));
                         self.form2.GRZH1=response.data.GRZH;
-                        self.form2.PNAME=response.data.PNAME;
+                        self.form2.PNAME1=response.data.PNAME;
                         self.form2.PHONE=response.data.PHONE;
                         self.form2.UNIT_ID=response.data.UNIT_ID;
                         self.form2.UNAME=response.data.UNAME;
@@ -794,16 +789,7 @@
             }
         }
     })
-   /* var form1=new Vue({
-        el:"#form1",
-        data:{
-            rules: {
-                GRZH: [
-                    { required: true, message: '请输入个人账号', trigger: 'blur' },
-                    { min: 2, max: 2, message: '请输入正确的个人账号', trigger: 'blur' }
-                ]},
-        }
-    })*/
+
 </script>
 </body>
 </html>
