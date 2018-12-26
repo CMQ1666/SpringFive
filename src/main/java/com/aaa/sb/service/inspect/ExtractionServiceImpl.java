@@ -50,6 +50,16 @@ public class ExtractionServiceImpl implements ExtractionService{
     }
 
     @Override
+    public int updateUnitPeople(Map map) {
+        return extractionDao.updateUnitPeople(map);
+    }
+
+    @Override
+    public int updateUaOweMonery(Map map) {
+        return extractionDao.updateUaOweMonery(map);
+    }
+
+    @Override
     public int udpShXh(Map map) {
         return extractionDao.udpShXh(map);
     }

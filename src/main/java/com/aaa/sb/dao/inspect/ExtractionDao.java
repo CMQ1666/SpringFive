@@ -61,6 +61,23 @@ public interface ExtractionDao {
     int udpDelete(Map map);
 
     /**
+     * 修改单位缴存人数
+     * @return
+     */
+    @Update("update tb_unitaccount set UDEPOSITEDPNUM = UDEPOSITEDPNUM-1 \n" +
+            "where UNID=(select UNID from tb_paccountutil where GRZH = #{PRE_ACCOUNT})")
+    int  updateUnitPeople(Map map);
+
+    /**
+     * 修改单位应缴纳金额
+     * @return
+     */
+    @Update("update TB_UNITACCOUNT set UAOWEMONERY = UAOWEMONERY-(select UNITMONPAYSUM from tb_paccountutil where GRZH =#{pre_account})\n" +
+            "where UNID =(select UNID from tb_paccountutil where GRZH = #{pre_account})")
+    int updateUaOweMonery(Map map);
+
+
+    /**
      * 销户成功
      * @param map
      * @return

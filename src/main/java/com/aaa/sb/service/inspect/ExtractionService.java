@@ -53,6 +53,18 @@ public interface ExtractionService {
     int udpDelete(Map map);
 
     /**
+     * 修改单位缴存人数
+     * @return
+     */
+    int  updateUnitPeople(Map map);
+
+    /**
+     * 修改单位应缴纳金额
+     * @return
+     */
+    int updateUaOweMonery(Map map);
+
+    /**
      * 销户成功
      * @param map
      * @return

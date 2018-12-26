@@ -86,7 +86,9 @@ public class ExtractionController {
     public int updDelete(@RequestBody Map map){
         int i = extractionService.udpDelete(map);
         int j = extractionService.udpShXh(map);
-        int z=i+j;
+        int k= extractionService.updateUnitPeople(map);
+        int l= extractionService.updateUaOweMonery(map);
+        int z=i+j+k+l;
         return z;
     }
 }
