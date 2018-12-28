@@ -24,4 +24,10 @@ public interface PersonTranferAuditService {
      * @return
      */
     int updNo(Map map);
+
+    /**
+     * 审核通过
+     * @return
+     */
+    int updPass(Map map);
 }

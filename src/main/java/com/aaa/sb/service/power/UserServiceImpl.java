@@ -1,7 +1,7 @@
-package com.aaa.sb.service;
+package com.aaa.sb.service.power;
 
 
-import com.aaa.sb.dao.UserDao;
+import com.aaa.sb.dao.power.UserDao;
 import com.aaa.sb.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

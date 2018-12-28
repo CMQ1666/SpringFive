@@ -1,7 +1,7 @@
 package com.aaa.sb.shiro;
 
 import com.aaa.sb.entity.User;
-import com.aaa.sb.service.UserService;
+import com.aaa.sb.service.power.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -32,7 +32,6 @@ public class UserRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加资源的授权字符串
         //info.addStringPermission("user:add");
-
         //到数据库查询当前登录用户的授权字符串
         //获取当前登录用户
         Subject subject = SecurityUtils.getSubject();
@@ -62,7 +61,6 @@ public class UserRealm extends AuthorizingRealm {
         if(user==null){
             //用户名不存在
             return null;//shiro底层会抛出 UnknownAccountException
-
         }
         //2.判断密码 第二个密码是数据库的密码
         return  new SimpleAuthenticationInfo(user,user.getPassword(),"");

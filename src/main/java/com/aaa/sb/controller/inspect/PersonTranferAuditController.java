@@ -63,4 +63,15 @@ public class PersonTranferAuditController {
     public Object updNo(@RequestBody Map map){
         return personTranferAuditService.updNo(map);
     }
+
+    /**
+     * 通过审核
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/pass")
+    public Object updPass(@RequestBody Map map){
+        return personTranferAuditService.updPass(map);
+    }
 }

@@ -1,4 +1,4 @@
-package com.aaa.sb.service;
+package com.aaa.sb.service.power;
 
 
 import com.aaa.sb.entity.User;
@@ -11,6 +11,8 @@ import com.aaa.sb.entity.User;
  */
 
 public interface UserService {
+
     public User findByName(String name);
+
     public User findById(Integer id);
 }

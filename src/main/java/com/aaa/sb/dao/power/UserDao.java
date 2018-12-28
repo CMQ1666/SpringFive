@@ -1,4 +1,4 @@
-package com.aaa.sb.dao;
+package com.aaa.sb.dao.power;
 
 import com.aaa.sb.entity.User;
 

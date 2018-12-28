@@ -25,7 +25,6 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager securityManager){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-
         //设置安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         /*
@@ -40,7 +39,6 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSuccessUrl("/index");
         // 未授权界面;
         // shiroFilterFactoryBean.setUnauthorizedUrl("/");
-
         //保证顺序用这个LinkedHashMap
         //我认为拦截的是方法
         //filterMap.put("/user/update","authc");
@@ -49,18 +47,22 @@ public class ShiroConfig {
 
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         Map<String,String> filterMap = new LinkedHashMap<String, String>();
-        //拦截所有请求
-        filterMap.put("/user/index","authc");
-
         //不拦截该资源(放行)
         filterMap.put("/user/login","anon");
+        filterMap.put("/css/**","anon");
+        filterMap.put("/img/**","anon");
+        filterMap.put("/js/**","anon");
+
+        //拦截所有请求
+        filterMap.put("/*/*","authc");
+        //filterMap.put("/user/index","authc");
+
+
 
         //授权过滤器
         //注意：当前授权拦截后，shiro会自动跳转到未授权的页面
         //filterMap.put("/add","perms[user:add]");
         //filterMap.put("/update","perms[user:update]");
-
-
 
         //修改调整跳转的页面
         shiroFilterFactoryBean.setLoginUrl("/user/toLogin");

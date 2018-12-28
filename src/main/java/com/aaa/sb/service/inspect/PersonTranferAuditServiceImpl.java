@@ -26,4 +26,15 @@ public class PersonTranferAuditServiceImpl implements PersonTranferAuditService{
     public int updNo(Map map) {
         return personTranferAuditDao.updNo(map);
     }
+
+    @Override
+    public int updPass(Map map) {
+        int i = personTranferAuditDao.updPassOne(map);
+        int o = personTranferAuditDao.updPassTwo(map);
+        int p = personTranferAuditDao.updPassThree(map);
+        int j = personTranferAuditDao.updPassFour(map);
+        int k = personTranferAuditDao.updPassFive(map);
+        int z = i+o+p+j+k;
+        return z;
+    }
 }

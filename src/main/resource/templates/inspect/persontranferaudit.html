@@ -59,7 +59,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: '人员审核列表'
+            message: '人员转移审核列表'
         }
     });
 
@@ -151,7 +151,7 @@
                 this.$confirm('确认通过吗?', '提示', {
                     type: 'warning'
                 }).then(function(){
-                    axios.post("//",row).then(function(response){
+                    axios.post("/tranAudit/pass",row).then(function(response){
                         if(response.data>0){
                             _self.$message({
                                 message: '通过成功',
