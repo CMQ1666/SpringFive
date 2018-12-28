@@ -1,12 +1,13 @@
-package com.aaa.sb.service;
+package com.aaa.sb.service.power;
 
-import com.aaa.sb.dao.PowerDao;
+import com.aaa.sb.dao.power.PowerDao;
 import com.aaa.sb.entity.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * className:PowerServiceImpl
@@ -36,6 +37,28 @@ public class PowerServiceImpl implements  PowerService {
             }
         }
         return tempList;
+    }
+
+
+
+    @Override
+    public int treeAdd(Map map) {
+        return powerDao.treeAdd(map);
+    }
+
+    @Override
+    public int treeUpdate(Map map) {
+        return powerDao.treeUpdate(map);
+    }
+
+    @Override
+    public int treeDetele(Map map) {
+        return powerDao.treeDetele(map);
+    }
+
+    @Override
+    public  List<Map> getListById(Map map) {
+        return powerDao.getListById(map);
     }
 
     /**

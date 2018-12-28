@@ -223,7 +223,7 @@
                     总计：
                 </el-col>
             </el-row>
-        </el-row>
+            </el-row>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
@@ -260,7 +260,13 @@
             //分页大小,在这里修改分页数量
             pageSize:5,
             //总记录数
-            total:800
+            total:800,
+            editForm:{
+
+            },
+            editFormRules:{
+
+            }
         },
         created:function(){
             //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
@@ -271,7 +277,6 @@
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
                 //alert(JSON.stringify(response.data.pageData));
-
             })
         },
         methods:{

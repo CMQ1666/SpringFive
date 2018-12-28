@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提取审核</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
+    <!-- 引入组件库 -->
+    <script src="../js/elementui.js"></script>
+    <style>
+        .el-aside {
+            background-color: #E9EEF3;
+            color: #333;
+            text-align: center;
+            line-height: 200px;
+        }
+
+        .el-main {
+            background-color: #E9EEF3;
+            color: #333;
+            text-align: center;
+            line-height: 160px;
+        }
+
+        body > .el-container {
+            margin-bottom: 40px;
+        }
+
+        .el-container:nth-child(5) .el-aside,
+        .el-container:nth-child(6) .el-aside {
+            line-height: 260px;
+        }
+
+        .el-container:nth-child(7) .el-aside {
+            line-height: 320px;
+        }
+    </style>
+
+</head>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+
+<div id="tableView">
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form-item label="用户名">
+                <el-input v-model="searchForm.PNAME" placeholder="用户名"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <el-row>
+        <template>
+            审核选择:
+            <el-radio v-model="radio" @change="transfer()" label="销户提取">销户提取</el-radio>
+            <el-radio v-model="radio" @change="transfer()" label="部分提取">部分提取</el-radio>
+        </template>
+    </el-row>
+    <!--列表-->
+    <el-row>
+
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                style="width: 100%">
+                border
+            <el-table-column
+                    align="center"
+                    prop="EXTRACT_APPLICATION_ID"
+                    label="编号"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    align="center"
+                    prop="COMP_NAME"
+                    label="单位名称"
+                    width="150">
+            </el-table-column>
+
+            <el-table-column
+                    align="center"
+                    prop="APPL_NAME"
+                    label="职工姓名"
+                    width="80">
+            </el-table-column>
+
+            <el-table-column
+                    align="center"
+                    prop="APPL_BANK_ACCOUNT"
+                    label="职工账户"
+                    width="150">
+            </el-table-column>
+
+            <el-table-column
+                    align="center"
+                    prop="EXTRACT_MONEY"
+                    label="申请提取金额"
+                    width="150">
+            </el-table-column>
+
+            <el-table-column
+                    align="center"
+                    prop="APPLICATION_WAY"
+                    label="提取方式"
+                    width="120">
+            </el-table-column>
+
+            <el-table-column
+                    align="center"
+                    prop="APPLICATION_TYPE"
+                    label="提取类型"
+                    width="80">
+            </el-table-column>
+
+            <el-table-column
+                    align="center"
+                    prop="EXTRACT_REASON"
+                    label="提取原因"
+                    width="220">
+            </el-table-column>
+
+            <el-table-column
+                    align="center"
+                    prop="APPL_TIME"
+                    label="申请时间"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="APPL_STATE"
+                    label="审批状态"
+                    align="center"
+                    width="80">
+                <template scope="scope">
+                    {{ scope.row.APPL_STATE === 1 ?  '未审核': '' }}
+                    {{ scope.row.APPL_STATE === 2 ?  '通过': '' }}
+                    {{ scope.row.APPL_STATE === 3 ?  '驳回': '' }}
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                    label="操作">
+                <template scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="transferClick(scope.row)">详细</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+    </el-row>
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+        <el-col :span="18" >
+            <el-pagination
+                    style="float: right"
+                    @size-change="pageSizeChange"
+                    @current-change="currentPageChange"
+                    :current-page="currentPage"
+                    :page-sizes="[5,10, 20, 30, 50]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+
+       <el-dialog title="提取审核" :visible.sync="editFormVisible" width="1000px" :close-on-click-modal="false" >
+        <el-form :model="editForm" status-icon  label-width="110px" :rules="editFormRules" ref="editForm">
+            <el-container>
+                <el-aside width="300px" style="padding-top: 40px">
+                    <el-form-item label="提取编号" prop="EXTRACT_APPLICATION_ID">
+                        <el-input v-model="editForm.EXTRACT_APPLICATION_ID" :disabled="true" auto-complete="off" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="个人账号" prop="PRE_ACCOUNT">
+                        <el-input v-model="editForm.PRE_ACCOUNT" :disabled="true" auto-complete="off" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="姓名" prop="APPL_NAME">
+                        <el-input v-model="editForm.APPL_NAME" :disabled="true" auto-complete="off" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="证件类型" prop="IDCARD">
+                        <el-input v-model="editForm.IDCARD" :disabled="true" auto-complete="off" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="证件号码" prop="APPL_IDNUM">
+                        <el-input v-model="editForm.APPL_IDNUM" :disabled="true" auto-complete="off" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="单位名称" prop="COMP_NAME">
+                        <el-input v-model="editForm.COMP_NAME" :disabled="true" auto-complete="off" ></el-input>
+                    </el-form-item>
+                </el-aside>
+                <el-main width="700px">
+                    <el-container>
+                        <el-aside width="300px" style="padding-top: 20px">
+                            <el-form-item label="申请提取金额" prop="EXTRACT_MONEY">
+                                <el-input v-model="editForm.EXTRACT_MONEY" :disabled="true" auto-complete="off" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="收款账号" prop="APPL_BANK_ACCOUNT">
+                                <el-input v-model="editForm.APPL_BANK_ACCOUNT" :disabled="true" auto-complete="off" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="提取方式" prop="APPLICATION_WAY">
+                                <el-input v-model="editForm.APPLICATION_WAY" :disabled="true" auto-complete="off" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="提取类型" prop="APPLICATION_TYPE">
+                                <el-input v-model="editForm.APPLICATION_TYPE" :disabled="true" auto-complete="off" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="提取原因" prop="EXTRACT_REASON">
+                                <el-input v-model="editForm.EXTRACT_REASON" :disabled="true" auto-complete="off" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="申请时间" prop="APPL_TIME">
+                                <el-input v-model="editForm.APPL_TIME" :disabled="true" auto-complete="off" ></el-input>
+                            </el-form-item>
+                        </el-aside>
+                        <el-main width="300px">
+                            <el-form-item label="收款户名" prop="APPL_BANK_NAME">
+                                <el-input v-model="editForm.APPL_BANK_NAME" :disabled="true" auto-complete="off" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="委托人姓名" prop="BAILOR_NAME">
+                                <el-input v-model="editForm.BAILOR_NAME" :disabled="true" auto-complete="off" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="委托人身份证号" prop="BILOR_IDNUM">
+                                <el-input v-model="editForm.BILOR_IDNUM" :disabled="true" auto-complete="off" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="审批状态" prop="APPL_STATE">
+                                <el-input v-model="editForm.APPL_STATE" :disabled="true" auto-complete="off" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="准许提取金额" prop="EXTRACT_MONEY">
+                                <el-input v-model="editForm.EXTRACT_MONEY"  auto-complete="off" ></el-input>
+                            </el-form-item>
+                        </el-main>
+                    </el-container>
+                </el-main>
+            </el-container>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="danger" @click.native="XHSubmit('editForm')" icon="el-icon-circle-close" :loading="editLoading" v-if="aa==0">确认销户</el-button>
+            <el-button type="primary" @click.native="loseSubmit('editForm')" :loading="editLoading" >驳回</el-button>
+            <el-button type="primary" @click.native="passSubmit('editForm')" :loading="editLoading" v-if="aa==1">通过</el-button>
+            <el-button @click.native="editFormVisible = false" >关闭</el-button>
+        </div>
+    </el-dialog>
+
+
+</div>
+<script type="text/javascript">
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '提取审核'
+        }
+    });
+
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            //列表数据
+            aa:0,
+            tableData: [],
+            //显示加载中样式
+            loading:false,
+            //搜索表单
+            searchForm: {
+                PNAME: ''
+            },
+            editFormVisible: false,
+            editLoading: false,
+            goUrl:'',
+            //当前页
+            currentPage:1,
+            //分页大小,在这里修改分页数量
+            pageSize:5,
+            //总记录数
+            total:800,
+            radio: '',
+            editForm:{
+
+            },
+            editFormRules:{
+
+            }
+        },
+        /*created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            axios.post('/extraction/exList',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
+                //alert(JSON.stringify(response.data.pageData));
+                console.log(response.data);
+                //alert(response.data.total);
+                self.total=response.data.total;
+                self.tableData = response.data.pageData;
+            })
+        },*/
+        methods: {
+            //刷新
+            toFlush: function () {
+                this.searchForm = {
+                    PNAME: ''
+                }
+                this.loadingData();
+            },
+            //表格查询事件
+            searchClick: function () {
+                var _self = this;
+                _self.loadingData();
+            },
+            //表格重新加载数据
+            loadingData: function () {
+                var _self = this;
+                _self.loading = true;
+                var searchForm = {
+                    'pageNo': this.currentPage,
+                    'pageSize': this.pageSize,
+                    'PNAME': this.searchForm.PNAME
+                };
+                //   alert(JSON.stringify(searchForm));
+                axios.post('/extraction/exList', searchForm).then(function (response) {
+                    _self.total = response.data.total;
+                    _self.tableData = response.data.pageData;
+                })
+                console.log(_self.currentPage);
+                setTimeout(function () {
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                }, 300);
+            },
+            //分页大小修改事件
+            pageSizeChange: function (val) {
+                console.log('每页 ' + val + ' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange: function (val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //携带id跳转到审核信息页面
+            transferClick: function (row) {
+                var self=this;
+                if (row.APPLICATION_TYPE == '销户提取') {
+                    self.aa = 0;
+                } else {
+                    self.aa = 1;
+                }
+                self.goUrl = "extraction/exCount?PRE_ACCOUNT"+row.PRE_ACCOUNT;
+                self.editFormVisible = true;
+                self.editForm = Object.assign({}, row);
+            },
+            //保存点击事件
+            editSubmit: function () {
+                var _self = this;
+                _self.loading = true;
+                var formData = this.editForm;
+                //alert(formData);
+                var goUrl = this.goUrl;
+                axios.post(goUrl, formData).then(function (response) {
+                    // console.log(response.data);
+                    // alert(222);
+                    // self.total=response.data.total;
+                    if (response.data > 0) {
+                        _self.editFormVisible = false;
+                    } else {
+                        _self.$message({
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                    _self.loadingData();//重新加载数据
+                })
+                console.info(this.editForm);
+            },
+            transfer: function () {
+                var _self = this;
+                axios.post('/extraction/exList', {
+                    'pageNo': this.currentPage,
+                    'pageSize': this.pageSize,
+                    'radio': this.radio
+                }).then(function (response) {
+                    //alert(JSON.stringify(response.data.pageData));
+                    console.log(response.data);
+                    //alert(response.data.total);
+                    _self.total = response.data.total;
+                    _self.tableData = response.data.pageData;
+                })
+            },
+            //确认销户
+            XHSubmit:function () {
+                var _self = this;
+                _self.loading = true;
+                var formData =_self.editForm;
+                axios.post("/extraction/exDelete",formData).then(function(response){
+                    if(response.data>0){
+                        _self.$message({
+                            message: '销户成功',
+                            type: 'success'
+                        });
+                        _self.editFormVisible = false;
+                        _self.loadingData();//重新加载数据
+                        _self.rest();
+                    }else{
+                        _self.$message({
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                    _self.loadingData();//重新加载数据
+                })
+            },
+            //驳回
+            loseSubmit:function () {
+                var _self = this;
+                _self.loading = true;
+                var formData =_self.editForm;
+                axios.post("/extraction/exUpdLose",formData).then(function(response){
+                    if(response.data>0){
+                        _self.$message({
+                            message: '驳回成功',
+                           type: 'success'
+                        });
+                        _self.editFormVisible = false;
+                        _self.loadingData();//重新加载数据
+                        _self.rest();
+                    }else{
+                        _self.$message({
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                    _self.loadingData();//重新加载数据
+                })
+            },
+            //通过
+            passSubmit:function () {
+                        var _self = this;
+                        _self.loading = true;
+                        var formData =_self.editForm;
+                        axios.post("/extraction/exUpdPass",formData).then(function(response){
+                            if(response.data>0){
+                                _self.$message({
+                                    message: '通过成功',
+                                    type: 'success'
+                                });
+                                _self.editFormVisible = false;
+                                _self.loadingData();//重新加载数据
+                                _self.rest();
+                            }else{
+                                _self.$message({
+                                    message: '操作失败',
+                                    type: 'error'
+                                });
+                            }
+                            _self.loadingData();//重新加载数据
+                        })
+                    }
+        }
+    })
+</script>
+</body>
+</html>

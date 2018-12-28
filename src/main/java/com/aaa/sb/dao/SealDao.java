@@ -71,7 +71,7 @@ public interface SealDao {
      * @return
      */
     @Select("<script>select unseal_id,unseal_name,unseal_unit,unseal_sex,unit_post,unseal_phone," +
-            "unseal_number,unseal_account,reason,operator,create_time,audit_state,audit_name from tb_unseal_audit " +
+            "unseal_number,unseal_account,reason,operator,state,audit_state,audit_name from tb_unseal_audit " +
             "<where><if test=\"pname!=null and pname!=''\"> and pname like '%'||#{pname}||'%'</if></where></script>")
     List<Map>  sealAudit(Map map);
     /**

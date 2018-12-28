@@ -1,4 +1,4 @@
-package com.aaa.sb.controller;
+package com.aaa.sb.controller.power;
 
 
 import org.apache.shiro.SecurityUtils;
@@ -9,7 +9,6 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * className:UserController
@@ -63,10 +62,8 @@ public class  UserController {
         //1.获得subject
         System.out.println("name"+name);
         Subject subject = SecurityUtils.getSubject();
-
         //2.封装用户数据
         UsernamePasswordToken token = new UsernamePasswordToken(name,password);
-
         //3.执行登录方法
         try {
             subject.login(token);//登录成功
