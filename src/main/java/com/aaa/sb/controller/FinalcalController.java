@@ -29,7 +29,7 @@ public class FinalcalController {
     public String list(){ return "/financial/HJQKFX" ;}
 
     /**
-     *人员转移审核页面
+     *跳转到财务统计图页面
      * @return
      */
     @RequestMapping("/page")

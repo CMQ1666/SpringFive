@@ -24,7 +24,7 @@ public interface FinalDao {
      * 统计每月还款信息
      * @return
      */
-   @Select("select sum(repay_month_money) as money ,substr(to_char(repayed_date, 'yyyy-mm-dd'),0,7) as yuefen FROM tb_repay_record  GROUP BY substr(to_char(repayed_date, 'yyyy-mm-dd'),0,7)")
+   @Select("select sum(repay_money) as money ,substr(to_char(repayed_date, 'yyyy-mm-dd'),0,7) as yuefen FROM tb_repay_record  GROUP BY substr(to_char(repayed_date, 'yyyy-mm-dd'),0,7)")
     List<Map> huanKuanXinxi();
     /**
      * 统计每月汇缴金额
