@@ -39,7 +39,7 @@
             </el-pagination>
         </el-col>
     </el-row>
-    <!------------------------------------------人员转移审批-------------------------------------------------------------------------->
+    <!------------------------------------------人员转移审批------------------------------------------------------------------------>
     <el-dialog title="人员转移审批" :visible.sync="ReditFormVisible" :close-on-click-modal="false">
         <el-row>
             <el-table :data="RtableData" v-loading.body="loading" border style="width: 100%">
@@ -61,7 +61,7 @@
             </el-col>
         </el-row>
     </el-dialog>
-    <!----------------------------------------点击查看，出现封存、启封、销户审批-------------------------------------------------------------->
+    <!----------------------------------------点击查看，出现封存、启封、销户审批------------------------------------------------------>
     <el-dialog title="封存、启封、销户审批" :visible.sync="FeditFormVisible" :close-on-click-modal="false">
         <el-row>
             <el-table :data="FtableData" v-loading.body="loading" border style="width: 100%">
@@ -83,7 +83,7 @@
                 </el-table-column>
                 <el-table-column prop="AUDIT_NAME" label="审核状态" width="300">
                     <template scope="scope">
-                        {{ scope.row.AUDIT_NAME == 0 ?  '驳回': '' }}
+                        {{ scope.row.AUDIT_NAME == 0 ?  '驳回': ''  }}
                         {{ scope.row.AUDIT_NAME == 1 ?  '待审核': '' }}
                         {{ scope.row.AUDIT_NAME == 2 ?  '审核通过': '' }}
                     </template>
@@ -98,7 +98,33 @@
             </el-col>
         </el-row>
     </el-dialog>
-
+    <!------------------------------------公积金提取审批----------------------------------------------------------------------------->
+    <el-dialog title="封存、启封、销户审批" :visible.sync="GeditFormVisible" :close-on-click-modal="false">
+        <el-row>
+            <el-table :data="GtableData" v-loading.body="loading" border style="width: 100%">
+                <el-table-column prop="PRE_ACCOUNT" label="提取人账号" width="150"></el-table-column>
+                <el-table-column prop="APPL_NAME" label="提取人姓名" width="150"></el-table-column>
+                <el-table-column prop="COMP_NAME" label="提取人单位" width="150"></el-table-column>
+                <el-table-column prop="APPLICATION_TYPE" label="提取类型" width="150"></el-table-column>
+                <el-table-column prop="APPLICATION_WAY" label="提取方式" width="150"></el-table-column>
+                <el-table-column prop="EXTRACT_REASON" label="提取原因" width="250"></el-table-column>
+                <el-table-column prop="EXTRACT_MONEY" label="提取金额" width="100"></el-table-column>
+                <el-table-column prop="APPL_TIME" label="申请时间" width="150"></el-table-column>
+                <el-table-column prop="APPL_STATE" label="审核状态" width="100">
+                    <template scope="scope">
+                        {{ scope.row.APPL_STATE == 1 ?  '通过': ''}}
+                        {{ scope.row.APPL_STATE == 2 ?  '驳回': '' }}
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-row>
+        <!--列表底部工具条和分页符-->
+        <el-row style="margin-top: 20px" type="flex" justify="end">
+            <el-col :span="18" >
+                <el-pagination style="float: right" @size-change="GpageSizeChange" @current-change="GcurrentPageChange" :current-page="GcurrentPage" :page-sizes="[10, 20, 30, 50]" :page-size="GpageSize" layout="total, sizes, prev, pager, next, jumper" :total="Gtotal"></el-pagination>
+            </el-col>
+        </el-row>
+    </el-dialog>
 </div>
 
 <script type="text/javascript">
@@ -116,8 +142,10 @@
             tableData: [],
             FtableData:[],
             RtableData:[],
+            GtableData:[],
             ReditFormVisible: false,
             FeditFormVisible: false,
+            GeditFormVisible: false,
             //显示加载中样式
             loading:false,
             //表单头部搜索
@@ -137,6 +165,13 @@
             FpageSize: 10,
             //总记录数
             Ftotal: 800,
+
+            //当前页---公积金提取
+            GcurrentPage: 1,
+            //分页大小
+            GpageSize: 10,
+            //总记录数
+            Gtotal: 800,
 
             //当前页---人员转移
             RcurrentPage: 1,
@@ -171,6 +206,11 @@
                 self.Rtotal=response.data.total;
                 self.RtableData = response.data.pageData;
             })
+            //公积金提取页面
+            axios.post('/exam/extract',{'pageNo':this.FcurrentPage,'pageSize':this.FpageSize}).then(function(response){
+                self.Gtotal=response.data.total;
+                self.GtableData = response.data.pageData;
+            })
         },
         methods:{
             //刷新
@@ -189,6 +229,10 @@
              var _self=this;
              _self.ReditFormVisible = true;
              },
+            GClick2:function(row) {
+                var _self=this;
+                _self.GeditFormVisible = true;
+            },
             //查看审批表格重新加载数据
             loadingData:function() {
                 var _self = this;
@@ -238,6 +282,22 @@
                 },300);
 
             },
+            GloadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                //封存，启封页面
+                var searchForm3={'pageNo':this.GcurrentPage,'pageSize':this.GpageSize};
+                axios.post('/exam/extract',searchForm3).then(function(response){
+                    _self.Gtotal=response.data.total;
+                    _self.GtableData= response.data.pageData;
+                })
+                console.log(_self.GcurrentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+
+            },
             //表格查询事件
             searchClick:function() {
                 var self = this;
@@ -274,19 +334,36 @@
             },
 
             //人员转移分页大小修改事件
-            FpageSizeChange: function (val) {
+            RpageSizeChange: function (val) {
                 console.log('每页 ' + val + ' 条');
                 this.FpageSize = val;
                 var _self = this;
                 _self.RloadingData();//重新加载数据
             },
             //人员转移当前页修改事件
-            FcurrentPageChange: function (val) {
+            RcurrentPageChange: function (val) {
                 this.FcurrentPage = val;
                 console.log('当前页: ' + val);
                 var _self = this;
                 _self.RloadingData();//重新加载数据
+            },
+
+            //公积金提取当前页修改事件
+            GpageSizeChange: function (val) {
+                console.log('每页 ' + val + ' 条');
+                this.FpageSize = val;
+                var _self = this;
+                _self.GloadingData();//重新加载数据
+            },
+            //公积金提取当前页修改事件
+            GcurrentPageChange: function (val) {
+                this.FcurrentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.GloadingData();//重新加载数据
             }
+
+
         }
     })
 </script>
