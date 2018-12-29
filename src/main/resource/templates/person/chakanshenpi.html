@@ -75,8 +75,19 @@
                 <el-table-column prop="REASON" label="封启原因" width="300"></el-table-column>
                 <el-table-column prop="OPERATOR" label="创建人" width="300"></el-table-column>
                 <el-table-column prop="CREATE_TIME" label="创建日期" width="300"></el-table-column>
-                <el-table-column prop="AUDIT_STATE" label="业务类型" width="300"></el-table-column>
-                <el-table-column prop="AUDIT_NAME" label="审核状态" width="300"></el-table-column>
+                <el-table-column prop="AUDIT_STATE" label="业务类型" width="300">
+                    <template scope="scope">
+                        {{ scope.row.STATE == 1 ?  '封存审核': '' }}
+                        {{ scope.row.STATE == 2 ?  '启封审核': '' }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="AUDIT_NAME" label="审核状态" width="300">
+                    <template scope="scope">
+                        {{ scope.row.AUDIT_NAME == 0 ?  '驳回': '' }}
+                        {{ scope.row.AUDIT_NAME == 1 ?  '待审核': '' }}
+                        {{ scope.row.AUDIT_NAME == 2 ?  '审核通过': '' }}
+                    </template>
+                </el-table-column>
                 <el-table-column prop="BOHUI" label="驳回理由" width="300"></el-table-column>
             </el-table>
         </el-row>
