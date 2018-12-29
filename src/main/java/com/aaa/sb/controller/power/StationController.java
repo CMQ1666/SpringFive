@@ -43,4 +43,37 @@ public class StationController {
         resultMap.put("total",pageInfo.getTotal()) ;
         return resultMap;
     }
+
+    /**
+     * 岗位添加
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/add")
+    public Object addStation(@RequestBody Map map){
+        return stationService.addStation(map);
+    }
+
+    /**
+     * 岗位更新
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/update")
+    public Object updateStation(@RequestBody Map map){
+        return stationService.updateStation(map);
+    }
+
+    /**
+     * 岗位删除
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/delete")
+    public Object deleteStation(@RequestBody Map map){
+        return stationService.deleteStation(map);
+    }
 }

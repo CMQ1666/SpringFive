@@ -20,24 +20,7 @@
     <!--列表顶部搜索和工具条-->
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-            <!--<el-form-item label="角色">
-                <el-input v-model="searchForm.ROLE" placeholder="role"></el-input>
-            </el-form-item>-->
-            <el-form-item label="角色">
-                <template>
-                    <el-select v-model="searchForm.ROLENAME" clearable placeholder="请选择">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.ROLEID"
-                                :label="item.ROLENAME"
-                                :value="item.ROLENAME">
-                        </el-option>
-                    </el-select>
-                </template>
-            </el-form-item>
-            <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
             <el-button type="success" icon="plus" @click="addClicks">新增</el-button>
-            <el-button type="success" icon="plus" @click="flushData">清空</el-button>
             </el-form-item>
         </el-form>
     </el-row>
@@ -48,10 +31,6 @@
                 v-loading.body="loading"
                 border
                 style="width: 100%">
-            <el-table-column
-                    type="selection"
-                    align="center">
-            </el-table-column>
             <el-table-column
                     prop="ID"
                     label="ID"
@@ -65,6 +44,16 @@
             <el-table-column
                     prop="PASSWORD"
                     label="密码"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="GW"
+                    label="岗位"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="PHONE"
+                    label="联系方式"
                     align="center">
             </el-table-column>
             <el-table-column
@@ -90,9 +79,6 @@
 
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
-        <el-col :span="6">
-            <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
-        </el-col>
         <el-col :span="18">
             <el-pagination
                     style="float: right"
@@ -110,17 +96,33 @@
     <!--编辑界面-->
     <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-            <!-- <el-form-item label="ID" prop="ID"  disabled="true">
-                 <el-input v-model="editForm.ID" auto-complete="off" readonly="readonly"></el-input>
-             </el-form-item>-->
-            <el-form-item label="" prop="NAME">
+             <el-form-item label="" prop="ID"  disabled="true">
+                 <el-input v-model="editForm.ID" type="hidden" auto-complete="off"></el-input>
+             </el-form-item>
+            <el-form-item label="账号" prop="NAME">
                 <el-input v-model="editForm.NAME" auto-complete="off" placeholder="请输入用户名称"></el-input>
             </el-form-item>
-            <el-form-item label="" prop="PASSWORD">
+            <el-form-item label="密码" prop="PASSWORD">
                 <el-input v-model="editForm.PASSWORD" auto-complete="off" placeholder="请输入密码"></el-input>
             </el-form-item>
-
-
+            <el-form-item label="岗位" prop="GW">
+                <el-input v-model="editForm.GW" auto-complete="off" placeholder="请输入密码"></el-input>
+            </el-form-item>
+            <el-form-item label="联系方式" prop="PHONE">
+                <el-input v-model="editForm.PHONE" auto-complete="off" placeholder="请输入密码"></el-input>
+            </el-form-item>
+            <el-form-item label="角色">
+                <template>
+                    <el-select v-model="editForm.ROLEID" clearable placeholder="请选择">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.ROLEID"
+                                :label="item.ROLENAME"
+                                :value="item.ROLEID">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
 
@@ -194,15 +196,11 @@
                 self.total = response.data.total;
                 self.tableData = response.data.pageData;
             });
+            axios.post('/role/getRoleList').then(function (response) {
+                self.options = response.data;
+            });
         },
         methods: {
-            //清空表格数据
-            flushData: function () {
-                //搜索表单
-                searchForm = {
-                    ROLENAME: ''
-                }
-            },
             //表格重新加载数据
             loadingData: function () {
                 var _self = this;
@@ -211,9 +209,8 @@
                 var searchForm = {
                     'pageNo': _self.currentPage,
                     'pageSize': _self.pageSize,
-                    'ROLENAME': _self.searchForm.ROLENAME
                 };
-                axios.post('/role/roleList', searchForm).then(function (response) {
+                axios.post('/station/list', searchForm).then(function (response) {
                     _self.total = response.data.total;
                     _self.tableData = response.data.pageData;
                 })
@@ -226,31 +223,34 @@
             },
             //表格编辑事件
             editClick: function (row) {
-                this.goUrl = "/role/updateRole";
+                this.goUrl = "/station/update";
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
             },
             //表格添加事件
             addClicks: function () {
-                //编辑界面数据
                 this.editForm = {
-                    //ID:'',
-                    ROLE: ''
+                    ID:'',
+                    NAME: '',
+                    PASSWORD:'',
+                    GW:'',
+                    PHONE:'',
+                    ROLEID:'',
                 },
-                    this.goUrl = "/role/insertRole";
+                this.goUrl = "/station/add";
                 this.editFormVisible = true;
             },
             //表格删除事件
             deleteClick: function (row) {
                 var _self = this;
-                this.$confirm('确认删除' + row.ROLEID + '吗?', '提示', {
+                this.$confirm('确认删除' + row.ID + '吗?', '提示', {
                     type: 'warning'
                 }).then(function () {
-                    var url = "/role/deleteRole";
-                    axios.post(url, {ROLEID: row.ROLEID}).then(function (response) {
+                    var url = "/station/delete";
+                    axios.post(url, {ID: row.ID}).then(function (response) {
                         if (response.data > 0) {
                             _self.$message({
-                                message: row.ROLEID + '删除成功',
+                                message: row.ID + '删除成功',
                                 type: 'success'
                             });
                             _self.loadingData();//重新加载数据
@@ -260,10 +260,6 @@
                     if (e != "cancel")
                         console.log("出现错误：" + e);
                 });
-            },
-            //表格查询事件
-            searchClick: function () {
-                this.loadingData();//重新加载数据
             },
             //分页大小修改事件
             pageSizeChange: function (val) {

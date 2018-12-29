@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>公积金系统</title>
     <link rel="stylesheet" href="../css/stylea.css">
@@ -18,11 +18,11 @@
 <body>
 <h1>公积金系统</h1>
 <div class="container w3">
-
     <h2>用户登录</h2>
-
+    <div>
+        <span style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></span>
+    </div>
     <form action="/user/login" method="post">
-
         <div class="username">
             <span class="username" style="height:19px">用户:</span>
             <input type="text" name="name" class="name" placeholder="" required="">

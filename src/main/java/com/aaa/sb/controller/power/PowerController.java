@@ -1,5 +1,6 @@
 package com.aaa.sb.controller.power;
 
+import com.aaa.sb.entity.Node;
 import com.aaa.sb.service.power.PowerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +53,35 @@ public class PowerController {
     public Object tree(){
         return powerService.getList();
     }
-
+    /**
+     * 根据角色权限树数据
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/roleTree")
+    public Object roleTree(HttpSession httpSession){
+       Map userInfo = (Map)httpSession.getAttribute("userInfo");
+        Integer roleid = Integer.valueOf(userInfo.get("ROLEID") + "");
+        List<Node> roleList = powerService.getRoleList(roleid);
+        return roleList;
+    }
+    /**
+     * 根据角色权限树数据
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/backTree")
+    public Object backTree(@RequestBody Map map){
+        int roleid = Integer.valueOf(map.get("roleId")+"");
+        List<Node> roleList = powerService.getRoleList(roleid);
+        List list = new ArrayList();
+        for (Node node : roleList) {
+            for (Node child : node.getChildren()) {
+                list.add(child.getId());
+            }
+        }
+        return list;
+    }
 
     /**
      * 权限树增加

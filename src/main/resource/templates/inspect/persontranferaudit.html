@@ -41,8 +41,8 @@
             <el-table-column prop="AUDIT_STATE" label="审核状态" width="150" align="center"></el-table-column>
             <el-table-column label="操作">
                 <template scope="scope">
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="pass(scope.row)">通过</el-button>
-                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="unPass(scope.row)">驳回</el-button>
+                    <el-button :plain="true" type="success" size="small"  @click="pass(scope.row)">通过</el-button>
+                    <el-button :plain="true" type="danger" size="small"  @click="unPass(scope.row)">驳回</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -82,19 +82,12 @@
             total:800,
             editLoading: false,
             goUrl:'',
-            editFormRules: {
-
-            }
         },
         created:function(){
             //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
             var self = this;
-            //  var start =(this.currentPage-1)*this.pageSize;
-            //  var end =this.currentPage*this.pageSize+1;
-            //alert("111");
             axios.post('/tranAudit/list',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
                 console.log(response.data);
-                //alert(response.data.total);
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
 
@@ -104,7 +97,7 @@
             //刷新
             toFlush:function(){
                 this.searchForm= {
-                    name: ''
+                    AUDITOR: ''
 
                 }
                 this.loadingData();
@@ -168,6 +161,7 @@
                         _self.loadingData();//重新加载数据
                     })
                 })
+                _self.loadingData();//重新加载数据
             },
             //驳回
             unPass:function (row) {
@@ -193,6 +187,7 @@
                         _self.loadingData();//重新加载数据
                     })
                 })
+                _self.loadingData();//重新加载数据
             },
         }
     })

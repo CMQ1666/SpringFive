@@ -57,4 +57,18 @@ public interface PowerDao {
      */
     @Select(value = "select ID,LABEL from power where PARENTID=#{PARENTID}")
     List<Map> getListById(Map map);
+
+    /**
+     * 根据角色查菜单树
+     * @param roleid
+     * @return
+     */
+    @Select("select p.id, p.label as label, p.iconcls as iconClass, p.url, p.parentid pid\n" +
+            "from power p\n" +
+            "join TB_ROLE_POWER r\n" +
+            "    on p.id = r.POWERID\n" +
+            "join TB_ROLE e\n" +
+            "    on e.ROLEID = r.ROLEID\n" +
+            "where e.ROLEID = #{param1} ")
+    List<Node> getRoleList(Integer roleid);
 }

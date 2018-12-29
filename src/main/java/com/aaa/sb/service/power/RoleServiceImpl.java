@@ -4,6 +4,7 @@ import com.aaa.sb.dao.power.RoleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +52,19 @@ public class RoleServiceImpl implements RoleService{
             i = roleDao.deleteManyRole(Integer.valueOf(ROLEID));
         }
         return i;
+    }
+
+    @Override
+    public int insertPowerTree(Map map) {
+        List list = (ArrayList)map.get("powerId");
+        int roleId = Integer.valueOf(map.get("roleId")+"");
+        int i1 = roleDao.deletePowerTree(roleId);
+        int j = 0;
+        for (int i = 0; i < list.size(); i++) {
+             int powerId = Integer.valueOf(list.get(i)+"");
+            j = roleDao.insertPowerTree(powerId, roleId);
+        }
+        return j;
     }
 
 

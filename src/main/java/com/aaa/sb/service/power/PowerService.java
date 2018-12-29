@@ -46,4 +46,11 @@ public interface PowerService {
      * @return
      */
     List<Map> getListById(Map map);
+
+    /**
+     * 通过rolid获取权限菜单树
+     * @param roleid
+     * @return
+     */
+    List<Node> getRoleList(Integer roleid);
 }
