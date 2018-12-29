@@ -360,21 +360,25 @@
             addClick: function (row) {
                 this.keys=[];
                 var _self = this;
-                var id = Object.assign({}, row).ID;
+                var id = Object.assign({}, row).ROLEID;
+                this.roleId = Object.assign({}, row).ROLEID;
                 axios.post('/power/backTree',{'roleId':id}).then(function (response) {
+                    alert(response.data)
                     _self.keys = response.data
                     _self.$refs.tree.setCheckedKeys(_self.keys);
                 })
                 //row.ID//角色id
-                this.roleId = row.ID;
                 this.shouquan = true;
                 _self.loadingData();//重新加载数据
             },
             //点击授权的保存
             shouquanSub: function () {
                 let al = this.$refs.tree.getCheckedKeys();//树节点的id-----[2,4,7]
-                var roleId = this.roleId;//角色id
-                axios.post('/power/onPower', {'powerId': al, 'roleId': roleId}).then(function (response) {
+                //alert(al);
+                var self = this;
+               ;//角色id
+                alert(this.roleId);
+                 axios.post('/role/insertPowerTree', {'powerId': al,'roleId': self.roleId}).then(function (response) {
                     if (response.data == 1) {
                         alert('授权成功！');
                     } else {

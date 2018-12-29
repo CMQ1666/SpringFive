@@ -16,4 +16,26 @@ public interface StationService {
      * @return
      */
     List<Map> getList(Map map);
+
+    /**
+     * 添加岗位
+     * @param map
+     * @return
+     */
+    int addStation(Map map);
+
+    /**
+     * 更新用户表
+     * @param map
+     * @return
+     */
+
+    int updateStation(Map map);
+
+    /**
+     * 删除用户表
+     * @param map
+     * @return
+     */
+    int deleteStation(Map map);
 }

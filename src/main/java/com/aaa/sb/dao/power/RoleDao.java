@@ -62,4 +62,20 @@ public interface RoleDao {
      */
     @Delete(value = "delete from tb_role where ROLEID=#{ROLEID}")
     int deleteManyRole(Integer ROLEID);
+
+    /**
+     * 删除该角色的菜单树
+     * @param roleId
+     * @return
+     */
+    @Delete("delete from tb_role_power where roleId = #{param1}")
+    int deletePowerTree(int roleId);
+
+    /**
+     * 插入权限菜单表
+     * @param
+     * @return
+     */
+    @Insert("insert into tb_role_power values (tb_role_power_id.nextval,#{param2},#{param1})")
+    int insertPowerTree(int powerId,int roleId);
 }

@@ -10,4 +10,8 @@
     <select id="findById" resultType="User">
         select id,name,password,perms from tb_user where id=#{value}
     </select>
+
+    <select id="findByAll" resultType="map">
+        select * from tb_user where name = #{param1}
+    </select>
 </mapper>

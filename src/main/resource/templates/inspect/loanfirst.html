@@ -33,59 +33,64 @@
         <el-table
                 :data="tableData"
                 v-loading.body="loading"
-                style="width: 100%">
-
+                style="width: 100%"
+                border>
             <el-table-column
                     prop="PID"
                     label="编号"
-                    width="55">
+                    align="center">
             </el-table-column>
             <el-table-column
                     prop="PNAME"
                     label="借款人姓名"
-                    width="150">
+                    align="center">
             </el-table-column>
 
             <el-table-column
                     prop="LOAN_MONEY"
                     label="贷款金额"
-                    width="120">
+                    align="center">
             </el-table-column>
 
             <el-table-column
                     prop="LOAN_PERIODS"
                     label="贷款期数"
-                    width="120">
+                    align="center">
             </el-table-column>
 
             <el-table-column
                     prop="LOAN_RATE"
                     label="贷款利率"
-                    width="120">
+                    align="center">
             </el-table-column>
 
             <el-table-column
                     prop="LOAN_BANK"
                     label="受委托银行"
-                    width="120">
+                    align="center">
             </el-table-column>
 
             <el-table-column
                     prop="LOAN_REPAY"
                     label="还款方式"
-                    width="120">
+                    align="center">
             </el-table-column>
 
             <el-table-column
                     prop="CTIME"
                     label="创建时间"
-                    width="120">
+                    align="center">
             </el-table-column>
 
             <el-table-column
                     prop="STATUS"
                     label="审核状态"
-                    width="120">
+                    align="center">
+                <template scope="scope">
+                    {{ scope.row.STATUS === 1 ?  '未审核': '' }}
+                    {{ scope.row.STATUS === 2 ?  '初审通过': '' }}
+                    {{ scope.row.STATUS === 0 ?  '驳回': '' }}
+                </template>
             </el-table-column>
 
             <el-table-column

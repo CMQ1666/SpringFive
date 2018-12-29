@@ -23,6 +23,15 @@ import java.util.Map;
 public class RoleController {
     @Autowired
     private RoleService roleService;
+    /**
+     * 插入权限菜单表
+     */
+    @ResponseBody
+    @RequestMapping("/insertPowerTree")
+    public Object insertPowerTree(@RequestBody Map map){
+        System.out.println(map+"...............");
+        return roleService.insertPowerTree(map);
+    }
 
     /**
      * 跳转到角色管理页面

@@ -61,6 +61,24 @@ public class PowerServiceImpl implements  PowerService {
         return powerDao.getListById(map);
     }
 
+    @Override
+    public List<Node> getRoleList(Integer roleid) {
+        List<Node> list = powerDao.getRoleList(roleid);
+        //拼装后的临时集合，用于返回数据
+        List<Node> tempList = new ArrayList<Node>();
+        if(list!=null&&list.size()>0){
+            for (Node node : list) {
+                //找出父节点为0的一级节点
+                if(node.getPid()==0){
+                    tempList.add(node);
+                    //调用递归方法，找当前节点的子节点
+                    bindChildren(node,list);
+                }
+            }
+        }
+        return tempList;
+    }
+
     /**
      * 递归绑定子节点
      * @param curNode

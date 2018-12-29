@@ -23,4 +23,19 @@ public class StationServiceImpl implements StationService{
     public List<Map> getList(Map map) {
         return stationDao.getList(map);
     }
+
+    @Override
+    public int addStation(Map map) {
+        return stationDao.addStation(map);
+    }
+
+    @Override
+    public int updateStation(Map map) {
+        return stationDao.updateStation(map);
+    }
+
+    @Override
+    public int deleteStation(Map map) {
+        return stationDao.deleteStation(map);
+    }
 }

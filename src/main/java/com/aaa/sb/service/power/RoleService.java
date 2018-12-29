@@ -48,4 +48,8 @@ public interface RoleService {
      * @return
      */
     int deleteManyRole(String ids);
+    /**
+     * 插入权限菜单表
+     */
+    int insertPowerTree(Map map);
 }

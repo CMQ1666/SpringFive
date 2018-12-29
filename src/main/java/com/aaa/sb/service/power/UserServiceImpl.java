@@ -6,6 +6,9 @@ import com.aaa.sb.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * className:UserServiceImpl
  * discription:
@@ -21,6 +24,11 @@ public class UserServiceImpl implements  UserService {
     @Override
     public User findById(Integer id) {
         return userDao.findById(id);
+    }
+
+    @Override
+    public List<Map> findByAll(String name) {
+        return userDao.findByAll(name);
     }
 
     @Override
