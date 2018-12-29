@@ -23,4 +23,24 @@ public class ExamineServiceImpl implements ExamineService {
     public List<Map> getList() {
         return examineDao.getList();
     }
+
+    @Override
+    public List<Map> transfer(Map map) {
+        return examineDao.transfer(map);
+    }
+
+    @Override
+    public List<Map> extract(Map map) {
+        return examineDao.extract(map);
+    }
+
+    @Override
+    public List<Map> loans(Map map) {
+        return examineDao.loans(map);
+    }
+
+    @Override
+    public List<Map> breaka(Map map) {
+        return examineDao.breaka(map);
+    }
 }
