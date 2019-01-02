@@ -33,6 +33,11 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    public int unique(String value) {
+        return loanDao.unique(value);
+    }
+
+    @Override
     public int addRepay(List<Map> map) {
         int i= 0;
         Map map2=new HashMap();

@@ -45,6 +45,7 @@ public class LoanController {
 
     }
 
+
     /**
      * 跳转审核页面
      * @return
@@ -67,6 +68,12 @@ public class LoanController {
        loanService.addRepay(map);
         return 1;
 
+
+    }
+    @ResponseBody
+    @RequestMapping("/unique/{value}")
+    public Object unique (@PathVariable ("value") String value){
+        return loanService.unique(value);
 
     }
 }
