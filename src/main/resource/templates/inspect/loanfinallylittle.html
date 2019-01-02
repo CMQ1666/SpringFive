@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>贷款初审</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
+    <!-- 引入组件库 -->
+    <script src="../js/elementui.js"></script>
+</head>
+<body>
+<div id="app">
+    <h3>{{message}}</h3>
+</div>
+<div id="tableView">
+    <el-steps :active="active" finish-status="success" id="active" space="100%" align-center="true">
+        <el-step title="借款人信息"></el-step>
+        <el-step title="共同借款人信息"></el-step>
+        <el-step title="房屋信息"></el-step>
+        <el-step title="最终核对"></el-step>
+    </el-steps>
+    <el-form :model="editForm" label-width="110px" :rules="editFormRules" ref="editForm" v-if="active==0">
+        <el-container>
+            <el-main>
+                <el-form-item label="姓名" prop="PNAME">
+                    <el-input v-model="editForm.PNAME" :disabled="true" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="个人账号"  >
+                    <el-input v-model="editForm.LOAN_PERIODS" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号">
+                    <el-input  v-model="editForm.PHONE" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="证件类型">
+                    <el-input  v-model="editForm.IDCARD" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="出生日期">
+                    <el-input  v-model="editForm.PDATE" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="从事工作">
+                    <el-input  v-model="editForm.PROFESSION" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="婚姻状态">
+                    <el-input  v-model="editForm.PMARRIAGE" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="公司名称">
+                    <el-input  v-model="editForm.UNAME" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="公积金经办人">
+                    <el-input  v-model="editForm.UOPERATOR" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="贷款金额">
+                    <el-input  v-model="editForm.LOAN_MONEY" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="公积金余款">
+                    <el-input  v-model="editForm.UAREMAIN" :disabled="true"></el-input>
+                </el-form-item>
+            </el-main>
+            <el-main>
+                <el-form-item label="性别">
+                    <el-input  v-model="editForm.PSEX" :disabled="true" ></el-input>
+                </el-form-item>
+                <el-form-item label="单位账号">
+                    <el-input  v-model="editForm.DWZH" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="电子邮箱">
+                    <el-input  v-model="editForm.PEMAIL" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="证件号">
+                    <el-input  v-model="editForm.IDNUMBER" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="使用状态">
+                    <el-input  v-model="editForm.STATE" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="学历">
+                    <el-input  v-model="editForm.EDUCATION" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="家庭住址">
+                    <el-input  v-model="editForm.PADDRESS" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="公司地址">
+                    <el-input  v-model="editForm.UADDRESS" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="电话">
+                    <el-input  v-model="editForm.UOPIPHONE" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="贷款期数">
+                    <el-input  v-model="editForm.LOAN_PERIODS" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="月收入">
+                    <el-input  v-model="editForm.SALARY" :disabled="true"></el-input>
+                </el-form-item>
+            </el-main>
+        </el-container>
+    </el-form>
+    <el-form :model="edForm" label-width="110px" :rules="edFormRules" ref="edForm" v-if="active==1">
+        <el-container>
+            <el-main>
+                <el-form-item label="姓名" prop="PNAME">
+                    <el-input v-model="edForm.PNAME" :disabled="true" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号">
+                    <el-input  v-model="edForm.PHONE" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="证件类型">
+                    <el-input  v-model="edForm.IDCARD" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="出生日期">
+                    <el-input  v-model="edForm.PDATE" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="从事工作">
+                    <el-input  v-model="edForm.PROFESSION" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="婚姻状态">
+                    <el-input  v-model="edForm.PMARRIAGE" :disabled="true"></el-input>
+                </el-form-item>
+            </el-main>
+            <el-main>
+                <el-form-item label="性别">
+                    <el-input  v-model="edForm.PSEX" :disabled="true" ></el-input>
+                </el-form-item>
+                <el-form-item label="电子邮箱">
+                    <el-input  v-model="edForm.PEMAIL" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="证件号">
+                    <el-input  v-model="edForm.IDNUMBER" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="使用状态">
+                    <el-input  v-model="edForm.STATE" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="学历">
+                    <el-input  v-model="edForm.EDUCATION" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="家庭住址">
+                    <el-input  v-model="edForm.PADDRESS" :disabled="true"></el-input>
+                </el-form-item>
+            </el-main>
+        </el-container>
+    </el-form>
+    <el-form :model="editForm" label-width="110px" :rules="editFormRules" ref="editForm" v-if="active==2">
+        <el-container>
+            <el-main>
+                <el-form-item label="房主姓名">
+                    <el-input  v-model="editForm.BUY_NAME" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="房屋面积">
+                    <el-input  v-model="editForm.HOUSE_AREA" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="首付">
+                    <el-input  v-model="editForm.HOUSE_FIRSTPAY" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="房屋地址">
+                    <el-input  v-model="editForm.HOUSE_LOCATION" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="房主银行卡号">
+                    <el-input  v-model="editForm.BANK_ACCOUNT" :disabled="true"></el-input>
+                </el-form-item>
+            </el-main>
+            <el-main>
+                <el-form-item label="房主身份证号">
+                    <el-input  v-model="editForm.BUY_ID" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="平米价格">
+                    <el-input  v-model="editForm.HOUSE_PRICE" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="总价">
+                    <el-input  v-model="editForm.HOUSE_TOTAL" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="房屋类型">
+                    <el-input  v-model="editForm.HOUSE_TYPE" :disabled="true"></el-input>
+                </el-form-item>
+            </el-main>
+        </el-container>
+    </el-form>
+    <el-form :model="editForm" label-width="110px" :rules="editFormRules" ref="editForm" v-if="active==3">
+        <el-container>
+            <el-header style="margin-top:10%;">
+                <h4>核对信息</h4>
+            </el-header>
+            <el-main>
+                <fieldset>
+                    <legend>贷款人</legend>
+                    <div>
+                        <el-form-item label="贷款人姓名">
+                            <el-input  v-model="editForm.PNAME" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="贷款人身份证号">
+                            <el-input  v-model="editForm.IDNUMBER" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="贷款人地址">
+                            <el-input  v-model="editForm.PADDRESS" :disabled="true"></el-input>
+                        </el-form-item>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>房屋信息</legend>
+                    <div>
+                        <el-form-item label="房主姓名">
+                            <el-input  v-model="editForm.BUY_NAME" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="房主身份证号">
+                            <el-input  v-model="editForm.BUY_ID" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="房屋地址">
+                            <el-input  v-model="editForm.HOUSE_LOCATION" :disabled="true"></el-input>
+                        </el-form-item>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>驳回选项</legend>
+                    <div>
+                        <el-input
+                                type="textarea"
+                                :rows="2"
+                                placeholder="请输入内容"
+                                v-model="textarea">
+                        </el-input>
+                    </div>
+                </fieldset>
+            </el-main>
+        </el-container>
+    </el-form>
+
+    <div slot="footer" class="dialog-footer" align="center">
+        <el-button v-if="active==0" onclick="location='/loanfirst/toLoan'">退回</el-button>
+        <el-button  @click="prev"  v-if="active==1||active==2||active==3">上一步</el-button>
+        <el-button  @click="next"  v-if="active==0||active==1||active==2">下一步</el-button>
+        <el-button type="primary" @click.native="updateClick" :loading="editLoading" v-if="active==3">提交</el-button>
+        <el-button type="warning" @click.native="twoUpdateClick" :loading="editLoading" v-if="active==3">驳回</el-button>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '贷款审核流程'
+        }
+    });
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            active:0,
+            divs:0,
+            textarea: '',
+            //列表数据
+            tableData: [],
+            //显示加载中样式
+            loading:false,
+            //搜索表单
+            searchForm: {
+                pname: '',
+            },
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage:1,
+            //分页大小
+            pageSize:10,
+            //总记录数
+            total:800,
+            //删除的弹出框
+            deleteVisible:false,
+            //编辑界面是否显示
+            editFormVisible: false,
+            editLoading: false,
+            goUrl:'',
+            editFormRules: {
+                pname: [
+                    { required: true, message: '请输入姓名' }
+                ]
+            },
+            edFormRules: {
+                pname: [
+                    { required: true, message: '请输入姓名'}
+                ]
+            },
+            //编辑界面数据
+            editForm: {
+                PNAME:'',
+                LOAN_PERIODS:'',
+                PHONE:'',
+                IDCARD:'',
+                PDATE:'',
+                PROFESSION:'',
+                PMARRIAGE:'',
+                UNAME:'',
+                UOPERATOR:'',
+                LOAN_MONEY:'',
+                UAREMAIN:'',
+                PSEX:'',
+                DWZH:'',
+                PEMAIL:'',
+                IDNUMBER:'',
+                STATE:'',
+                EDUCATION:'',
+                PADDRESS:'',
+                UADDRESS:'',
+                UOPIPHONE:'',
+                LOAN_PERIODS:'',
+                SALARY:'',
+                BUY_NAME:'',
+                HOUSE_AREA:'',
+                HOUSE_FIRSTPAY:'',
+                HOUSE_LOCATION:'',
+                BANK_ACCOUNT:'',
+                BUY_ID:'',
+                HOUSE_PRICE:'',
+                HOUSE_TOTAL:'',
+                HOUSE_TYPE:'',
+            },
+            edForm:{
+                PNAME:'',
+                PHONE:'',
+                IDCARD:'',
+                PDATE:'',
+                PROFESSION:'',
+                PMARRIAGE:'',
+                PSEX:'',
+                PEMAIL:'',
+                IDNUMBER:'',
+                STATE:'',
+                EDUCATION:'',
+                PADDRESS:''
+            },
+        },
+        created:function(){
+            //alert('[[${PID}]]');
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var _self = this;
+            axios.post('/loanfinally/finallytwo',{PID:[[${PID}]]}).then(function (response) {
+                //alert(JSON.stringify(response.data[0]))
+                _self.editForm = Object.assign({},response.data[0]);
+                axios.post('/loanfinally/finallythird',{TOGETHERZH:_self.editForm.TOGETHERZH}).then(function (responseA) {
+                    _self.edForm = Object.assign({},responseA.data[0]);
+                });
+            });
+
+        },
+        methods:{
+            //步骤条
+            next:function () {
+                if (this.active++ > 2) this.active = 0;
+            },
+            prev:function () {
+                this.active--;
+                if (this.active< 1) this.active = 0;
+            },
+            updateClick:function(){
+                var _self = this;
+                this.$confirm('确认通过吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var url="/loanfirst/updatethird";
+                    location.href="/loanfirst/updatethird?PID="+[[${PID}]];
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            twoUpdateClick:function(){
+                var _self = this;
+                this.$confirm('确认驳回吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var url="/loanfinally/updatefour";
+                    location.href="/loanfinally/updatefour?PID="+[[${PID}]];
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            }
+        }
+    })
+</script>
+</body>
+</html>

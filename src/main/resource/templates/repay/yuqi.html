@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>贷款信息</title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
+   <!-- <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+    <!-- 引入组件库 -->
+    <script src="../js/elementui.js"></script>
+    <!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+</head>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+
+<div id="tableView">
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form-item label="名称">
+                <el-input v-model="searchForm.PNAME" placeholder="名称"></el-input>
+            </el-form-item>
+            <el-form-item>
+            <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+
+        </el-form-item>
+        </el-form>
+    </el-row>
+    <!--贷款人员列表-->
+    <el-row>
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                border
+                @selection-change="selectionChange"
+                style="width: 1200px">
+
+            <el-table-column
+                    prop="GRZH"
+                    label="个人账号"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="PNAME"
+                    label="姓名"
+                    width="150">
+            </el-table-column>
+
+            <el-table-column
+                    prop="LOAN_MONEY"
+                    label="贷款总额"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="LOAN_PERIODS"
+                    label="贷款期数"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="REPAYED_ALL_MONEY"
+                    label="已还金额"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="REPAYED_PERIODS"
+                    label="已还期数"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="RESIDUE_MONEY"
+                    label="未还本金"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    label="操作">
+                <template slot-scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">还款</el-button>
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick1(scope.row)">还款记录</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-row>
+
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+
+        <el-col :span="18" >
+            <el-pagination
+                    style="float: right"
+                    @size-change="pageSizeChange"
+                    @current-change="currentPageChange"
+                    :current-page="currentPage"
+                    :page-sizes="[5,10, 20, 30, 50]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+
+    <!--还款界面-->
+    <el-dialog title="贷款详情" :visible.sync="editFormVisible" :close-on-click-modal="false" width="1200px">
+        <div  >  <!--<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">-->
+            <el-form ref="form1" :model="form1" label-width="100px" size="mini" style="width: 1300px">
+                <el-row :gutter="25">
+                    <el-col :span="5">
+                        <div class="grid-content bg-purple">
+                            <el-form-item label="*账户">
+                                <el-input v-model="form1.GRZH" style="width: 150px;" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                    </el-col>
+                    <el-col :span="5">
+                        <div class="grid-content bg-purple">
+                            <el-form-item label="*姓名">
+                                <el-input v-model="form1.PNAME" style="width: 150px;" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                    </el-col>
+                    <el-col :span="5">
+                        <div class="grid-content bg-purple">
+                            <el-form-item label="*月应还金额">
+                                <el-input    v-model="form1.REPAY_MONTH"  style="width: 150px;"   :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="25">
+
+                    <el-col :span="5">
+                        <div class="grid-content bg-purple">
+                            <el-form-item label="*未还贷款">
+                                <el-input v-model="form1.RESIDUE_ALL_MONEY" style="width: 150px;" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                    </el-col>
+                    <el-col :span="5">
+                        <div class="grid-content bg-purple">
+                            <el-form-item label="*执行利率">
+                                <el-input v-model="form1.LOAN_RATE" style="width: 150px;" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                    </el-col>
+                    <el-col :span="5">
+                        <div class="grid-content bg-purple">
+                            <el-form-item label="*剩余期数">
+                                <el-input v-model="form1.RESIDUE_PERIODS" style="width: 150px;" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="25">
+
+                    <el-col :span="5">
+                        <div class="grid-content bg-purple">
+                            <el-form-item label="*应还本金">
+                                <el-input v-model="form1.REPAY_MONEY"  style="width: 150px;" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                    </el-col>
+                    <el-col :span="5">
+                        <div class="grid-content bg-purple">
+                            <el-form-item label="*应还利息">
+                                <el-input  v-model="form1.REPAY_MONTH_INTERRSTS" style="width: 150px;" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                    </el-col>
+                    <el-col :span="5">
+                        <div class="grid-content bg-purple">
+                            <el-form-item label="*已还金额">
+                                <el-input v-model="form1.REPAYED_ALL_MONEY" style="width: 150px;" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                    </el-col>
+                </el-row>
+            </el-form>
+       </div>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">本期还款</el-button>
+            <el-button type="primary" @click.native="editFormVisible2" :loading="editLoading">提前还款</el-button>
+
+        </div>
+    </el-dialog>
+
+
+    <el-dialog title="还款记录" :visible.sync="editFormVisible1" :close-on-click-modal="false" width="810px">
+        <div  >
+                <el_row>
+
+                    <el-table
+                            :data="tableData1"
+                            v-loading.body="loading"
+                            border
+                            style="width: 1200px">
+
+
+                        <el-table-column
+                                prop="PNAME"
+                                label="姓名"
+                                width="130">
+                        </el-table-column>
+
+                        <el-table-column
+                                prop="REPAY_MONTH"
+                                label="月还款金额"
+                                width="120">
+                        </el-table-column>
+                        <el-table-column
+                                prop="REPAY_MONEY"
+                                label="月还本金"
+                                width="160">
+                        </el-table-column>
+                        <el-table-column
+                                prop="REPAY_MONTH_INTERRSTS"
+                                label="月还利息"
+                                width="160">
+                        </el-table-column>
+                        <el-table-column
+                                prop="REPAYED_DATE"
+                                label="还款时间"
+                                width="120">
+                        </el-table-column>
+                        <el-table-column
+                                prop="REPAYED_PERIODS"
+                                label="当前期数"
+                                width="100">
+                        </el-table-column>
+
+                    </el-table>
+                </el_row>
+        </div>
+    </el-dialog>
+</div>
+
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: ''
+        }
+    });
+    var vm =new Vue({
+        el:'#app',
+        data: {}
+        });
+
+
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            //列表数据
+            form1:{
+                GRZH:'',
+                PNAME:'',
+                PSEX:'',
+                PHONE:'',
+                REPAYED_PERIODS:'',
+                REPAYED_ALL_MONEY:'',
+                RESIDUE_PERIODS:'',
+                LOAN_MONEY:'',
+                LOAN_PERIODS:'',
+                PMARRIAGE:'',
+                PROFESSION:'',
+                EDUCATION:'',
+                PEMAIL:'',
+                PADDRESS:'',
+                REPAY_MONTH:'',
+                REPAY_INTERESTS:'',
+                UNIT_ID:'',
+                UOPIPHONE:'',
+                REPAY_MONEY:'123456'
+            },
+
+
+            form2:{
+                GRZH:'',
+                PNAME:'',
+                REPAY_MONTH_MONEY:'',
+                REPAYED_DATE:'',
+                RESIDUE_PERIODS:''},
+            tableData: [],
+            tableData1: [],
+            formData:[],
+            //显示加载中样式
+            loading:false,
+            //搜索表单
+            searchForm: {
+                id: '',
+                name: '',
+                job:'',
+                deptNo: ''
+            },
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage:1,
+            //分页大小
+            pageSize:5,
+            //总记录数
+            total:800,
+            //删除的弹出框
+            deleteVisible:false,
+            //编辑界面是否显示
+            editFormVisible: false,
+            editFormVisible1: false,
+            editLoading: false,
+            goUrl:'',
+            editFormRules: {
+                name: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                ]
+            },
+            //编辑界面数据
+            editForm: {
+                EMPNO: 0,
+                ENAME: '',
+                JOB: '',
+                SAL: 0,
+                HIREDATE: ''
+            },
+        },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            //var start =(this.currentPage-1)*this.pageSize;
+            //var end =this.currentPage*this.pageSize+1;
+            axios.post('/repay/page',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
+                // console.log(response.data);
+               //alert(response.data.total);
+                self.total=response.data.total;
+                self.tableData = response.data.pageData;
+               alert(JSON.stringify(response.data.pageData));
+               // self.multipleSelection=response.data.data;
+            })
+        },
+        methods: {
+            toFlush: function () {
+                this.searchForm = {
+                    PNAME: ''
+                }
+                this.loadingData();
+            },
+
+
+            //表格重新加载数据
+            loadingData: function () {
+                var _self = this;
+                _self.loading = true;
+                var self = this;
+                //var start =(this.currentPage-1)*this.pageSize;
+                //var end =this.currentPage*this.pageSize+1;
+                var searchForm = {
+                    'pageNo': this.currentPage - 1,
+                    'pageSize': this.pageSize,
+                    'PNAME': this.searchForm.PNAME,
+                };
+                alert(JSON.stringify(searchForm));
+                axios.post('/repay/page', searchForm).then(function (response) {
+                    // console.log(response.data);
+                    // alert(222);
+                    _self.total = response.data.total;
+                    _self.tableData = response.data.pageData;
+                    //_self.multipleSelection=response.data.data;
+                })
+                console.log(_self.currentPage);
+                setTimeout(function () {
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                }, 300);
+            },
+            //还款详情表
+            editClick: function (row) {
+                if(row.LOAN_PERIODS==row.REPAYED_PERIODS){
+                    this.$message({
+                        message: '已还款完毕',
+                        type: 'error'
+                    });
+                }else{
+                    // this.editFormVisible = true;
+                    //  this.editForm = Object.assign({}, row);
+                    var self = this;
+                    alert(row.GRZH)
+
+                    var url = "/repay/toyuqi/" + row.GRZH;
+                    axios.get(url).then(function (response) {
+                        alert(JSON.stringify(response.data));
+                        self.form1 = response.data;
+                        self.form1 = Object.assign({}, response.data[0])
+                    }),
+                        this.editFormVisible = true;
+                }
+            },
+
+            //表格查询事件
+            searchClick: function () {
+                var self = this;
+                self.loadingData();//重新加载数据
+            },
+            //表格勾选事件
+            selectionChange: function (val) {
+                for (var i = 0; i < val.length; i++) {
+                    var row = val[i];
+                }
+                this.multipleSelection = val;
+                console.info(val);
+            },
+
+            //分页大小修改事件
+            pageSizeChange: function (val) {
+                console.log('每页 ' + val + ' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange: function (val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据0
+            },
+            //还款记录表
+            /*editClick1:function(row) {
+                this.goUrl="repay/toRepay";
+                this.editFormVisible1 = true;
+                this.editForm = Object.assign({}, row);
+            },
+*/
+            editClick1: function (row) {
+                //  this.editForm = Object.assign({}, row);
+                var self = this;
+                // alert(row.GRZH)
+                var url = "/repay/record/" + row.GRZH;
+                axios.get(url).then(function (response) {
+                    alert(JSON.stringify(response.data));
+                    /* self.form2.GRZH = response.data.GRZH;
+                    self.form2.PNAME = response.data.PNAME;
+                    self.form2.REPAY_MONTH_MONEY = response.data.REPAY_MONTH_MONEY;
+                    self.form2.REPAY_DATE = response.data.REPAY_DATE;
+                    self.form2.RESIDUE_PERIODS = response.data.RESIDUE_PERIODS;*/
+
+                    self.tableData1 = response.data;
+                    //self.form2 = Object.assign({}, response.data[0])
+                }),
+                    this.editFormVisible1 = true;
+            },
+
+
+             //提前还款事件
+            editFormVisible2: function () {
+                alert(this.form1.REPAYED_PERIODS);
+                if(this.form1.REPAYED_PERIODS>=12){
+                    var _self = this;
+                    this.formData = this.form1;
+                    alert(JSON.stringify(this.formData));
+                    console.log("this.form的值==" + JSON.stringify(this.formData));
+                    var goUrl = "/repay/tiqian";
+                    this.$confirm('确认提前还款吗?', '提示', {
+                        type: 'warning'
+                    }).then(function(){
+                        axios.post(goUrl, _self.formData).then(function (response) {
+                            console.log(JSON.stringify(response.data));
+
+
+                            if (response.data !=''&&response.data!=null) {
+                                //location.href = "/loan/wait";
+                                _self.$message({
+                                    message: '提前还款成功',
+                                    type: 'success'
+                                });
+                                _self.editFormVisible = false;
+                                _self.loadingData();
+                            } else {
+                                _self.$message({
+                                    message: '提前还款失败',
+                                    type: 'error'
+                                });
+                            }
+                        })
+                    })
+                }else {
+                    this.$message({
+                        message: '未还够12期不能提前还款',
+                        type: 'error'
+                    });
+                }
+
+                //this.editFormVisible=false
+            },
+
+
+
+            //按期还款点击事件
+            editSubmit: function () {
+                var _self = this;
+                this.formData = this.form1;
+                //alert(JSON.stringify(this.formData));
+                console.log("this.form的值==" + JSON.stringify(this.formData));
+                var goUrl = "/repay/repayMoney";
+                axios.post(goUrl, _self.formData).then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                    if (response.data > 0) {
+                        //location.href = "/loan/wait";
+                        _self.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        _self.editFormVisible = false;
+                        _self.loadingData();
+                    } else {
+                        _self.$message({
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                })
+                //this.editFormVisible=false
+            }
+
+        }
+
+    })
+</script>
+
+</body>
+</html>

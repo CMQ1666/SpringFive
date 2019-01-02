@@ -1,12 +1,13 @@
-package com.aaa.sb.service;
+package com.aaa.sb.service.power;
 
-import com.aaa.sb.dao.PowerDao;
+import com.aaa.sb.dao.power.PowerDao;
 import com.aaa.sb.entity.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * className:PowerServiceImpl
@@ -33,6 +34,46 @@ public class PowerServiceImpl implements  PowerService {
                      //调用递归方法，找当前节点的子节点
                      bindChildren(node,list);
                  }
+            }
+        }
+        return tempList;
+    }
+
+
+
+    @Override
+    public int treeAdd(Map map) {
+        return powerDao.treeAdd(map);
+    }
+
+    @Override
+    public int treeUpdate(Map map) {
+        return powerDao.treeUpdate(map);
+    }
+
+    @Override
+    public int treeDetele(Map map) {
+        return powerDao.treeDetele(map);
+    }
+
+    @Override
+    public  List<Map> getListById(Map map) {
+        return powerDao.getListById(map);
+    }
+
+    @Override
+    public List<Node> getRoleList(Integer roleid) {
+        List<Node> list = powerDao.getRoleList(roleid);
+        //拼装后的临时集合，用于返回数据
+        List<Node> tempList = new ArrayList<Node>();
+        if(list!=null&&list.size()>0){
+            for (Node node : list) {
+                //找出父节点为0的一级节点
+                if(node.getPid()==0){
+                    tempList.add(node);
+                    //调用递归方法，找当前节点的子节点
+                    bindChildren(node,list);
+                }
             }
         }
         return tempList;

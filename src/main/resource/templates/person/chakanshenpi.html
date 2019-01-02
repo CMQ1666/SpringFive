@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看审批</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
+    <!-- 引入组件库 -->
+    <script src="../js/elementui.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+<div id="tableView">
+    <!--列表-->
+    <el-row>
+        <el-table :data="tableData" v-loading.body="loading" border style="width: 100%">
+            <el-table-column prop="ACCRADITATION_ID" label="编号" width="300"></el-table-column>
+            <el-table-column prop="ACCRADITATION_NAME" label="工作流程名称" width="300"></el-table-column>
+            <el-table-column prop="ACCRADITATION_DESCRIBE" label="工作流程描述" width="300"></el-table-column>
+            <el-table-column prop="ACCRADITATION_FLUX" label="工作流量" width="300"></el-table-column>
+            <el-table-column label="操作">
+                    <template scope="scope">
+                        <el-button  v-if="scope.row.ACCRADITATION_ID==1" :plain="true" type="success" size="small" icon="edit" @click="fcClick(scope.row)">查看</el-button>
+                        <el-button  v-if="scope.row.ACCRADITATION_ID==2" :plain="true" type="success" size="small" icon="edit" @click="qfClick(scope.row)">查看</el-button>
+                        <el-button  v-if="scope.row.ACCRADITATION_ID==3" :plain="true" type="success" size="small" icon="delete" @click="xhClick(scope.row)">查看</el-button>
+                        <el-button  v-if="scope.row.ACCRADITATION_ID==4" :plain="true" type="success" size="small" icon="delete" @click="GClick2(scope.row)">查看</el-button>
+                    </template>
+            </el-table-column>
+        </el-table>
+    </el-row>
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+        <el-col :span="18" >
+            <el-pagination style="float: right" @size-change="pageSizeChange" @current-change="currentPageChange" :current-page="currentPage" :page-sizes="[10, 20, 30, 50]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+    <!------------------------------------------人员转移审批------------------------------------------------------------------------>
+    <el-dialog title="人员转移审批" :visible.sync="ReditFormVisible" :close-on-click-modal="false">
+        <el-row>
+            <el-table :data="RtableData" v-loading.body="loading" border style="width: 100%">
+                <el-table-column prop="TRANSFER_ID" label="编号" width="300"></el-table-column>
+                <el-table-column prop="TRANSFER_OUT_UNIT" label="转出单位" width="300"></el-table-column>
+                <el-table-column prop="TRANSFER_INTO_UNIT" label="转入单位" width="300"></el-table-column>
+                <el-table-column prop="AUDITOR" label="转移申请人" width="300"></el-table-column>
+                <el-table-column prop="PERSON_ACCOUNT" label="个人账户" width="300"></el-table-column>
+                <el-table-column prop="TRANSFER_REASON" label="转移原因" width="300"></el-table-column>
+                <el-table-column prop="OPERATOR" label="操作人" width="300"></el-table-column>
+                <el-table-column prop="SUBMIT_TIME" label="转移提交时间" width="300"></el-table-column>
+                <el-table-column prop="AUDIT_STATE" label="转移审核状态" width="300"></el-table-column>
+            </el-table>
+        </el-row>
+        <!--列表底部工具条和分页符-->
+        <el-row style="margin-top: 20px" type="flex" justify="end">
+            <el-col :span="18" >
+                <el-pagination style="float: right" @size-change="RpageSizeChange" @current-change="RcurrentPageChange" :current-page="RcurrentPage" :page-sizes="[10, 20, 30, 50]" :page-size="RpageSize" layout="total, sizes, prev, pager, next, jumper" :total="Rtotal"></el-pagination>
+            </el-col>
+        </el-row>
+    </el-dialog>
+    <!----------------------------------------点击查看，出现封存、启封、销户审批------------------------------------------------------>
+    <el-dialog title="封存、启封、销户审批" :visible.sync="FeditFormVisible" :close-on-click-modal="false">
+        <el-row>
+            <el-table :data="FtableData" v-loading.body="loading" border style="width: 100%">
+                <el-table-column prop="UNSEAL_ID" label="编号" width="300"></el-table-column>
+                <el-table-column prop="UNSEAL_NAME" label="封启人姓名" width="300"></el-table-column>
+                <el-table-column prop="UNSEAL_UNIT" label="所在单位" width="300"></el-table-column>
+                <el-table-column prop="UNSEAL_SEX" label="性别" width="300"></el-table-column>
+                <el-table-column prop="UNIT_POST" label="工作职位" width="300"></el-table-column>
+                <el-table-column prop="UNSEAL_NUMBER" label="身份证号" width="300"></el-table-column>
+                <el-table-column prop="UNSEAL_ACCOUNT" label="个人封启账号" width="300"></el-table-column>
+                <el-table-column prop="REASON" label="封启原因" width="300"></el-table-column>
+                <el-table-column prop="OPERATOR" label="创建人" width="300"></el-table-column>
+                <el-table-column prop="CREATE_TIME" label="创建日期" width="300"></el-table-column>
+                <el-table-column prop="AUDIT_STATE" label="业务类型" width="300">
+                    <template scope="scope">
+                        {{ scope.row.STATE == 1 ?  '封存审核': '' }}
+                        {{ scope.row.STATE == 2 ?  '启封审核': '' }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="AUDIT_NAME" label="审核状态" width="300">
+                    <template scope="scope">
+                        {{ scope.row.AUDIT_NAME == 0 ?  '驳回': ''  }}
+                        {{ scope.row.AUDIT_NAME == 1 ?  '待审核': '' }}
+                        {{ scope.row.AUDIT_NAME == 2 ?  '审核通过': '' }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="BOHUI" label="驳回理由" width="300"></el-table-column>
+            </el-table>
+        </el-row>
+        <!--列表底部工具条和分页符-->
+        <el-row style="margin-top: 20px" type="flex" justify="end">
+            <el-col :span="18" >
+                <el-pagination style="float: right" @size-change="FpageSizeChange" @current-change="FcurrentPageChange" :current-page="FcurrentPage" :page-sizes="[10, 20, 30, 50]" :page-size="FpageSize" layout="total, sizes, prev, pager, next, jumper" :total="Ftotal"></el-pagination>
+            </el-col>
+        </el-row>
+    </el-dialog>
+    <!------------------------------------公积金提取审批----------------------------------------------------------------------------->
+    <el-dialog title="公积金提取审批" :visible.sync="GeditFormVisible" :close-on-click-modal="false">
+        <el-row>
+            <el-table :data="GtableData" v-loading.body="loading" border style="width: 100%">
+                <el-table-column prop="PRE_ACCOUNT" label="提取人账号" width="150"></el-table-column>
+                <el-table-column prop="APPL_NAME" label="提取人姓名" width="150"></el-table-column>
+                <el-table-column prop="COMP_NAME" label="提取人单位" width="150"></el-table-column>
+                <el-table-column prop="APPLICATION_TYPE" label="提取类型" width="150"></el-table-column>
+                <el-table-column prop="APPLICATION_WAY" label="提取方式" width="150"></el-table-column>
+                <el-table-column prop="EXTRACT_REASON" label="提取原因" width="250"></el-table-column>
+                <el-table-column prop="EXTRACT_MONEY" label="提取金额" width="100"></el-table-column>
+                <el-table-column prop="APPL_TIME" label="申请时间" width="150"></el-table-column>
+                <el-table-column prop="APPL_STATE" label="审核状态" width="100">
+                    <template scope="scope">
+                        {{ scope.row.APPL_STATE == 1 ?  '通过': ''}}
+                        {{ scope.row.APPL_STATE == 2 ?  '驳回': '' }}
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-row>
+        <!--列表底部工具条和分页符-->
+        <el-row style="margin-top: 20px" type="flex" justify="end">
+            <el-col :span="18" >
+                <el-pagination style="float: right" @size-change="GpageSizeChange" @current-change="GcurrentPageChange" :current-page="GcurrentPage" :page-sizes="[10, 20, 30, 50]" :page-size="GpageSize" layout="total, sizes, prev, pager, next, jumper" :total="Gtotal"></el-pagination>
+            </el-col>
+        </el-row>
+    </el-dialog>
+    <!------------------------------------个人贷款审批----------------------------------------------------------------------------->
+    <el-dialog title="个人贷款审批" :visible.sync="DeditFormVisible" :close-on-click-modal="false">
+        <el-row>
+            <el-table :data="DtableData" v-loading.body="loading" border style="width: 100%">
+                <el-table-column prop="GRZH" label="个人账号" width="150"></el-table-column>
+                <el-table-column prop="PAWN_NAME" label="姓名" width="150"></el-table-column>
+                <el-table-column prop="IDNUMBER" label="证件号码" width="150"></el-table-column>
+                <el-table-column prop="DAIKAN" label="业务类型" width="150"></el-table-column>
+                <el-table-column prop="CTIME" label="申请时间" width="150"></el-table-column>
+                <el-table-column prop="LOAN_MONEY" label="贷款金额" width="250"></el-table-column>
+                <el-table-column prop="LOAN_PERIODS" label="贷款期数" width="100"></el-table-column>
+                <el-table-column prop="LOAN_RATE" label="贷款利率" width="150"></el-table-column>
+                <el-table-column prop="LOAN_BANK" label="贷款银行" width="150"></el-table-column>
+                <el-table-column prop="STATUS" label="贷款状态" width="100">
+                    <template scope="scope">
+                        {{ scope.row.STATUS == 2?  '初审通过': ''}}
+                        {{ scope.row.STATUS == 0?  '初审驳回': '' }}
+                        {{ scope.row.STATUS == 3?  '终审通过': ''}}
+                        {{ scope.row.STATUS == 1?  '终审驳回': '' }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="REJECTREASON" label="驳回理由" width="150"></el-table-column>
+
+            </el-table>
+        </el-row>
+        <!--列表底部工具条和分页符-->
+        <el-row style="margin-top: 20px" type="flex" justify="end">
+            <el-col :span="18" >
+                <el-pagination style="float: right" @size-change="DpageSizeChange" @current-change="DcurrentPageChange" :current-page="DcurrentPage" :page-sizes="[10, 20, 30, 50]" :page-size="DpageSize" layout="total, sizes, prev, pager, next, jumper" :total="Dtotal"></el-pagination>
+            </el-col>
+        </el-row>
+    </el-dialog>
+
+</div>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '审批表'
+        }
+    });
+
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            //列表数据
+            tableData: [],
+            FtableData:[],
+            RtableData:[],
+            GtableData:[],
+            DtableData:[],
+
+            ReditFormVisible: false,
+            FeditFormVisible: false,
+            GeditFormVisible: false,
+            DeditFormVisible: false,
+            //显示加载中样式
+            loading:false,
+            //表单头部搜索
+            searchForm: {
+                name: ''
+            },
+            //当前页
+            currentPage:1,
+            //分页大小
+            pageSize:5,
+            //总记录数
+            total:800,
+
+            //当前页---封启销户
+            FcurrentPage: 1,
+            //分页大小
+            FpageSize: 10,
+            //总记录数
+            Ftotal: 800,
+
+            //当前页---公积金提取
+            GcurrentPage: 1,
+            //分页大小
+            GpageSize: 10,
+            //总记录数
+            Gtotal: 800,
+
+            //当前页---人员转移
+            RcurrentPage: 1,
+            //分页大小
+            RpageSize: 10,
+            //总记录数
+            Rtotal: 800,
+
+            //当前页---个人贷款
+            DcurrentPage: 1,
+            //分页大小
+            DpageSize: 10,
+            //总记录数
+            Dtotal: 800,
+
+            editLoading: false,
+            goUrl:'',
+            editFormRules: {
+                name: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                ]
+            }
+        },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            //查看审批页面
+            var self = this;
+            axios.post('/exam/page',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
+                self.total=response.data.total;
+                self.tableData = response.data.pageData;
+            }),
+            //封存，启封页面
+             axios.post('/exam/breaka',{'pageNo':this.FcurrentPage,'pageSize':this.FpageSize}).then(function(response){
+                 self.Ftotal=response.data.total;
+                 self.FtableData = response.data.pageData;
+             })
+            //人员转移页面
+            axios.post('/exam/trans',{'pageNo':this.FcurrentPage,'pageSize':this.FpageSize}).then(function(response){
+                self.Rtotal=response.data.total;
+                self.RtableData = response.data.pageData;
+            })
+            //公积金提取页面
+            axios.post('/exam/extract',{'pageNo':this.FcurrentPage,'pageSize':this.FpageSize}).then(function(response){
+                self.Gtotal=response.data.total;
+                self.GtableData = response.data.pageData;
+            }),
+            //个人贷款页面
+            axios.post('/exam/loans',{'pageNo':this.DcurrentPage,'pageSize':this.DpageSize}).then(function(response){
+                self.Dtotal=response.data.total;
+                self.DtableData = response.data.pageData;
+            })
+        },
+        methods:{
+            //刷新
+            toFlush:function(){
+                this.searchForm= {
+                    name: ''
+                }
+                this.loadingData();
+            },
+            //点击查看弹出封存启封页面
+            qfClick:function(row) {
+                var _self=this;
+                _self.FeditFormVisible = true;
+            },
+            fcClick:function(row) {
+             var _self=this;
+             _self.ReditFormVisible = true;
+             },
+            GClick2:function(row) {
+                var _self=this;
+                _self.GeditFormVisible = true;
+            },
+            xhClick:function(row) {
+                var _self=this;
+                _self.DeditFormVisible = true;
+            },
+            //查看审批表格重新加载数据
+            loadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize};
+                axios.post('/exam/page',searchForm).then(function(response){
+                    _self.total=response.data.total;
+                    _self.tableData = response.data.pageData;
+                }),
+                console.log(_self.currentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+            },
+            //表格重新加载数据
+            FloadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                //封存，启封页面
+                var searchForm1={'pageNo':this.FcurrentPage,'pageSize':this.FpageSize};
+                axios.post('/exam/breaka',searchForm1).then(function(response){
+                    _self.Ftotal=response.data.total;
+                    _self.FtableData= response.data.pageData;
+                })
+                console.log(_self.FcurrentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+
+            },
+            //表格重新加载数据
+            RloadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                //封存，启封页面
+                var searchForm2={'pageNo':this.FcurrentPage,'pageSize':this.FpageSize};
+                axios.post('/exam/trans',searchForm2).then(function(response){
+                    _self.Rtotal=response.data.total;
+                    _self.RtableData= response.data.pageData;
+                })
+                console.log(_self.RcurrentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+
+            },
+            GloadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                //封存，启封页面
+                var searchForm3={'pageNo':this.GcurrentPage,'pageSize':this.GpageSize};
+                axios.post('/exam/extract',searchForm3).then(function(response){
+                    _self.Gtotal=response.data.total;
+                    _self.GtableData= response.data.pageData;
+                })
+                console.log(_self.GcurrentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+
+            },
+            DloadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                //封存，启封页面
+                var searchForm4={'pageNo':this.DcurrentPage,'pageSize':this.DpageSize};
+                axios.post('/exam/loans',searchForm4).then(function(response){
+                    _self.Dtotal=response.data.total;
+                    _self.DtableData= response.data.pageData;
+                })
+                console.log(_self.DcurrentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+
+            },
+            //表格查询事件
+            searchClick:function() {
+                var self = this;
+                self.loadingData();//重新加载数据
+            },
+            //分页大小修改事件
+            pageSizeChange:function(val) {
+                console.log('每页 ' + val +' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange:function(val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+
+            //封，启，销户分页大小修改事件
+            FpageSizeChange: function (val) {
+                console.log('每页 ' + val + ' 条');
+                this.FpageSize = val;
+                var _self = this;
+                _self.FloadingData();//重新加载数据
+            },
+            //封，启，销户当前页修改事件
+            FcurrentPageChange: function (val) {
+                this.FcurrentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.FloadingData();//重新加载数据
+            },
+
+            //人员转移分页大小修改事件
+            RpageSizeChange: function (val) {
+                console.log('每页 ' + val + ' 条');
+                this.FpageSize = val;
+                var _self = this;
+                _self.RloadingData();//重新加载数据
+            },
+            //人员转移当前页修改事件
+            RcurrentPageChange: function (val) {
+                this.FcurrentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.RloadingData();//重新加载数据
+            },
+
+            //公积金提取当前页修改事件
+            GpageSizeChange: function (val) {
+                console.log('每页 ' + val + ' 条');
+                this.FpageSize = val;
+                var _self = this;
+                _self.GloadingData();//重新加载数据
+            },
+            //公积金提取当前页修改事件
+            GcurrentPageChange: function (val) {
+                this.FcurrentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.GloadingData();//重新加载数据
+            },
+
+            //个人贷款修改事件
+            DpageSizeChange: function (val) {
+                console.log('每页 ' + val + ' 条');
+                this.DpageSize = val;
+                var _self = this;
+                _self.DloadingData();//重新加载数据
+            },
+            //个人贷款当前页修改事件
+            DcurrentPageChange: function (val) {
+                this.DcurrentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.DloadingData();//重新加载数据
+            }
+
+        }
+    })
+</script>
+</body>
+</html>

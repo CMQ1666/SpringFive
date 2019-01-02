@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>岗位管理</title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
+    <!-- 引入组件库 -->
+    <script src="../js/elementui.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+
+<div id="tableView">
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-button type="success" icon="plus" @click="addClicks">新增</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <!--列表-->
+    <el-row>
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                border
+                style="width: 100%">
+            <el-table-column
+                    prop="ID"
+                    label="ID"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="NAME"
+                    label="用户名"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="PASSWORD"
+                    label="密码"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="GW"
+                    label="岗位"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="PHONE"
+                    label="联系方式"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="ROLEID"
+                    label="权限"
+                    align="center">
+                <template scope="scope">
+                    {{ scope.row.ROLEID == 1 ?  '系统管理员': '' }}
+                    {{ scope.row.ROLEID == 2 ?  '审核员': '' }}
+                    {{ scope.row.ROLEID == 3 ?  '财务经理': '' }}
+                    {{ scope.row.ROLEID == 4 ?  '前台贷款员': '' }}
+                    {{ scope.row.ROLEID == 5 ?  '前台柜员': '' }}
+                    {{ scope.row.ROLEID == 6 ?  '管理员': '' }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    align="center">
+                <template scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑
+                    </el-button>
+                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
+                        删除
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-row>
+
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+        <el-col :span="18">
+            <el-pagination
+                    style="float: right"
+                    @size-change="pageSizeChange"
+                    @current-change="currentPageChange"
+                    :current-page="currentPage"
+                    :page-sizes="[5,10,20]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+
+    <!--编辑界面-->
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+             <el-form-item label="" prop="ID"  disabled="true">
+                 <el-input v-model="editForm.ID" type="hidden" auto-complete="off"></el-input>
+             </el-form-item>
+            <el-form-item label="账号" prop="NAME">
+                <el-input v-model="editForm.NAME" auto-complete="off" placeholder="请输入用户名称"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="PASSWORD">
+                <el-input v-model="editForm.PASSWORD" auto-complete="off" placeholder="请输入密码"></el-input>
+            </el-form-item>
+            <el-form-item label="岗位" prop="GW">
+                <el-input v-model="editForm.GW" auto-complete="off" placeholder="请输入密码"></el-input>
+            </el-form-item>
+            <el-form-item label="联系方式" prop="PHONE">
+                <el-input v-model="editForm.PHONE" auto-complete="off" placeholder="请输入密码"></el-input>
+            </el-form-item>
+            <el-form-item label="角色">
+                <template>
+                    <el-select v-model="editForm.ROLEID" clearable placeholder="请选择">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.ROLEID"
+                                :label="item.ROLENAME"
+                                :value="item.ROLEID">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+
+            <el-button @click.native="editFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </div>
+    </el-dialog>
+</div>
+
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '岗位管理'
+        }
+    });
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            keys:[],//授权弹出框默认选中
+            roleId: 1,//角色id
+            //菜单树
+            data2: [],
+            //部门下拉框框
+            options: [],
+            //角色下拉框
+            roles: [],
+            //列表数据
+            tableData: [],
+            //显示加载中样式
+            loading: false,
+            //搜索表单
+            searchForm: {
+                ROLE: ''
+            },
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage: 1,
+            //分页大小
+            pageSize: 5,
+            //总条数
+            total: 800,
+            //删除的弹出框
+            deleteVisible: false,
+            //编辑界面是否显示
+            editFormVisible: false,
+            shouquan: false,
+            editLoading: false,
+            goUrl: '',
+            editFormRules: {
+                ROLE: [
+                    {required: true, message: '请输入角色名称', trigger: 'blur'}
+                ]
+            },
+            //编辑界面数据
+            editForm: {
+                //ID:'',
+                ROLE: ''
+            },
+        },
+        //列表显示
+        created: function () {
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            axios.post('/station/list', {
+                'pageNo': self.currentPage,
+                'pageSize': self.pageSize
+            }).then(function (response) {
+                self.total = response.data.total;
+                self.tableData = response.data.pageData;
+            });
+            axios.post('/role/getRoleList').then(function (response) {
+                self.options = response.data;
+            });
+        },
+        methods: {
+            //表格重新加载数据
+            loadingData: function () {
+                var _self = this;
+                _self.loading = true;
+                //传过去的参数
+                var searchForm = {
+                    'pageNo': _self.currentPage,
+                    'pageSize': _self.pageSize,
+                };
+                axios.post('/station/list', searchForm).then(function (response) {
+                    _self.total = response.data.total;
+                    _self.tableData = response.data.pageData;
+                })
+                console.log(_self.currentPage);
+                //查
+                setTimeout(function () {
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                }, 300);
+            },
+            //表格编辑事件
+            editClick: function (row) {
+                this.goUrl = "/station/update";
+                this.editFormVisible = true;
+                this.editForm = Object.assign({}, row);
+            },
+            //表格添加事件
+            addClicks: function () {
+                this.editForm = {
+                    ID:'',
+                    NAME: '',
+                    PASSWORD:'',
+                    GW:'',
+                    PHONE:'',
+                    ROLEID:'',
+                },
+                this.goUrl = "/station/add";
+                this.editFormVisible = true;
+            },
+            //表格删除事件
+            deleteClick: function (row) {
+                var _self = this;
+                this.$confirm('确认删除' + row.ID + '吗?', '提示', {
+                    type: 'warning'
+                }).then(function () {
+                    var url = "/station/delete";
+                    axios.post(url, {ID: row.ID}).then(function (response) {
+                        if (response.data > 0) {
+                            _self.$message({
+                                message: row.ID + '删除成功',
+                                type: 'success'
+                            });
+                            _self.loadingData();//重新加载数据
+                        }
+                    });
+                }).catch(function (e) {
+                    if (e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //分页大小修改事件
+            pageSizeChange: function (val) {
+                console.log('每页 ' + val + ' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange: function (val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //保存点击事件
+            editSubmit: function (editForm) {
+                this.$refs[editForm].validate((valid) => {
+                    if (valid) {
+                        var _self = this;
+                        _self.loading = true;
+                        var formData = this.editForm;
+                        var goUrl = this.goUrl;
+                        axios.post(goUrl, formData).then(function (response) {
+                            if (response.data > 0) {
+                                _self.editFormVisible = false;
+                                _self.loadingData();//重新加载数据
+                            }
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                })
+            },
+        }
+    })
+</script>
+
+</body>
+</html>
