@@ -38,7 +38,7 @@ public interface ExamineDao {
      * 查询贷款记录表
      * @return
      */
-    @Select("select a.*,b.pid,c.idNUmber from tb_loanappval a join tb_paccountutil b on a.pid=b.pid join tb_person_info c on b.pid=c.pid\n")
+    @Select("select a.*,c.idnumber from tb_loanappval a join tb_paccountutil b on a.pid=b.pid join tb_person_info c on b.pid=c.pid")
     List<Map> loans(Map map);
 
 }
