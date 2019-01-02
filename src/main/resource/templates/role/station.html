@@ -60,6 +60,14 @@
                     prop="ROLEID"
                     label="权限"
                     align="center">
+                <template scope="scope">
+                    {{ scope.row.ROLEID == 1 ?  '系统管理员': '' }}
+                    {{ scope.row.ROLEID == 2 ?  '审核员': '' }}
+                    {{ scope.row.ROLEID == 3 ?  '财务经理': '' }}
+                    {{ scope.row.ROLEID == 4 ?  '前台贷款员': '' }}
+                    {{ scope.row.ROLEID == 5 ?  '前台柜员': '' }}
+                    {{ scope.row.ROLEID == 6 ?  '管理员': '' }}
+                </template>
             </el-table-column>
             <el-table-column
                     label="操作"
@@ -69,8 +77,6 @@
                     </el-button>
                     <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
                         删除
-                    </el-button>
-                    <el-button :plain="true" type="success" size="small" icon="add" @click="addClick(scope.row)">授权
                     </el-button>
                 </template>
             </el-table-column>
