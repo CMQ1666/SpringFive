@@ -75,7 +75,7 @@ public interface PersonDao {
      * 带转移用户列表
      * @return
      */
-    @Select("<script>select pname,idnumber,balance,state from tb_transfer_audit   where 1=1" +
+    @Select("<script>select pname,idnumber,balance,state from tb_transfer_audit   where audit_state='待审核'" +
             "<if test=\"pname!=null and pname!=''\"> and pname like '%'||#{pname}||'%'</if></script>")
     List<Map> UserSelect(Map map);
     /**

@@ -148,7 +148,6 @@ public class PersonController {
             resultMap.put("pageData",pageInfo.getList());
             //获取分页总数量
             resultMap.put("total",pageInfo.getTotal()) ;
-            System.out.println(resultMap+"fhdslkfjdskfhsdk");
             return resultMap;
 
         }else {
@@ -158,12 +157,10 @@ public class PersonController {
 
     @RequestMapping("/submits")
     public String submits1(@RequestBody Map map,HttpSession session) {
-        System.out.println("进入到了这里1111111"+map);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String name = session.getAttribute("name")+"";  //获取 当前操作人员
         String  pid = map.get("pid")+"";  //获取id
         Map shift = personService.shift(Integer.valueOf(pid));
-        System.out.println(shift+"云森+++++++++++++++++++++++++++++++++++");
         //根据id查询数据 个人信息 然后添加到待转移列表
       //通过id查询的信息   因为前台数据冲突
        Map selName = personService.uname(Integer.valueOf(map.get("selName")+""));
