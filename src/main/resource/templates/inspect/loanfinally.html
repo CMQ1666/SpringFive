@@ -76,16 +76,16 @@
                     align="center">
             </el-table-column>
 
-            <el-table-column
-                    prop="CTIME"
-                    label="创建时间"
-                    align="center">
-            </el-table-column>
 
             <el-table-column
                     prop="STATUS"
                     label="审核状态"
                     align="center">
+                <template scope="scope">
+                    {{ scope.row.STATUS == 3 ?  '审核通过': '' }}
+                    {{ scope.row.STATUS == 2 ?  '未审核': '' }}
+                    {{ scope.row.STATUS == 1 ?  '初审未通过': '' }}
+                </template>
             </el-table-column>
 
             <el-table-column

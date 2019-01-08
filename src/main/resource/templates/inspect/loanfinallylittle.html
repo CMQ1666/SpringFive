@@ -355,8 +355,8 @@
                 this.$confirm('确认通过吗?', '提示', {
                     type: 'warning'
                 }).then(function(){
-                    var url="/loanfirst/updatethird";
-                    location.href="/loanfirst/updatethird?PID="+[[${PID}]];
+                    //var url="/loanfirst/updatethird";
+                    location.href="/loanfinally/updatethird?PID="+[[${PID}]];
                 }).catch(function(e){
                     if(e != "cancel")
                         console.log("出现错误：" + e);
