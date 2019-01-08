@@ -1,0 +1,10 @@
+/*出错样式*/
+.field-validation-error { color: red;margin-top:2px; font-size:12px; line-height:22px;}
+/*正常样式*/
+.field-validation-valid { display: none; }
+/*表单框出错样式(附加)*/
+.input-validation-error { border-color: red !important; background: #ffeeee !important; }
+/*集体错误提示*/
+.validation-summary-errors { font-weight: bold; color: red; }
+/*集体正常提示*/
+.validation-summary-valid { display: none; }
