@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * author:cmq
  * createTime:2018-11-29 18:49
  */
-@SpringBootApplication
+ @SpringBootApplication
 @MapperScan("com.aaa.sb.dao") //扫描dao接口
 public class SpringBoot {
     public static void main(String[] args) {

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>汇缴办理</title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+<div id="tableView">
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form-item label="名称">
+                <el-input v-model="searchForm.UNAME" placeholder="名称"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <!--列表-->
+    <el-row>
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                style="width: 100%">
+            <!--<el-table-column-->
+                    <!--type="selection"-->
+                    <!--width="55">-->
+            <!--</el-table-column>-->
+            <el-table-column
+                    prop="DWZH"
+                    label="单位账号"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="UNAME"
+                    label="单位名称"
+                    width="150">
+            </el-table-column>
+
+            <el-table-column
+                    prop="UDEPOSITRATIO"
+                    label="单位缴存比例"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UPERSONRATIO"
+                    label="个人缴存比例"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UAREMAIN"
+                    label="单位账户余额"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UAOWEMONERY"
+                    label="应缴纳金额"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UDEPOSITEDPNUM"
+                    label="单位缴存人数"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UASTATE"
+                    label="单位账户状态"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UAPAYENDDATE"
+                    label="单位缴至年月"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    label="操作">
+                <template scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">汇缴办理</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-row>
+
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+        <!--<el-col :span="6" >-->
+            <!--<el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>-->
+        <!--</el-col>-->
+        <el-col :span="18" >
+            <el-pagination
+                    style="float: right"
+                    @size-change="pageSizeChange"
+                    @current-change="currentPageChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 30, 50]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+
+    <!--编辑界面-->
+    <el-dialog title="单位名称" :visible.sync="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="70px" :rules="editFormRules" ref="editForm">
+            <el-row :gutter="30">
+                <el-col :span="8">
+            <el-form-item label="单位账号" prop="DWZH">
+                <el-input v-model="editForm.DWZH"></el-input>
+            </el-form-item>
+                </el-col>
+            <!-- <el-form-item label="性别">
+                 <el-radio-group v-model="editForm.sex">
+                     <el-radio class="radio" :label="1">男</el-radio>
+                     <el-radio class="radio" :label="0">女</el-radio>
+                 </el-radio-group>  EMPNO: 0,
+                 ENAME: '',
+                 JOB: '',
+                 SAL: 0,
+                 HIREDATE: ''
+             </el-form-item>-->
+                <!--<el-col :span="8">-->
+            <!--<el-form-item label="记账日期">-->
+                <!--<el-date-number  v-model="editForm.UBDCTEATEDATE" ></el-date-number>-->
+            <!--</el-form-item>-->
+                <!--</el-col>-->
+                <el-col :span="8">
+            <el-form-item label="单位名称">
+                <el-input v-model="editForm.UNAME" ></el-input>
+            </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row :gutter="30">
+                <el-col :span="8">
+            <el-form-item label="汇缴月数">
+                <el-input-number  v-model="editForm.HJYS"></el-input-number>
+            </el-form-item>
+                </el-col>
+                <el-col :span="8">
+            <el-form-item label="单位存缴比例">
+                <el-input-number  v-model="editForm.UDEPOSITRATIO"></el-input-number>
+            </el-form-item>
+                </el-col>
+                <el-col :span="8">
+            <el-form-item label="账户状态">
+                <el-input  v-model="editForm.UASTATE"></el-input>
+            </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row :gutter="30">
+                <el-col :span="8">
+            <el-form-item label="个人存缴比例">
+                <el-input-number  v-model="editForm.UPERSONRATIO"></el-input-number>
+            </el-form-item>
+                </el-col>
+                <el-col :span="8">
+            <el-form-item label="账户余额">
+                <el-input-number  v-model="editForm.UAREMAIN"></el-input-number>
+            </el-form-item>
+                </el-col>
+                <el-col :span="8">
+            <el-form-item label="需缴存人数">
+                <el-input-number  v-model="editForm.UDEPPOSITEDPNUM"></el-input-number>
+            </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row :gutter="30">
+                <el-col :span="8">
+            <el-form-item label="应缴金额">
+                <el-input-number  v-model="editForm.UAOWEMONERY"></el-input-number>
+            </el-form-item>
+                </el-col>
+
+                <el-col :span="8">
+            <el-form-item label="操作人员">
+                <el-input v-model="editForm.YWBLR"> </el-input>
+            </el-form-item>
+                </el-col>
+
+                    <el-col :span="8">
+            <el-form-item label="备注">
+                <el-input  v-model="editForm.UBDREMARK"></el-input>
+            </el-form-item>
+                </el-col>
+
+            </el-row>
+            <!--<el-row :gutter="30">-->
+               <!--<el-col :span="10">-->
+                   <!--<el-form-item label="记账日期">-->
+                       <!--<el-input-date  v-model="editForm.UBDCREATEDATE" ></el-input-date>-->
+                   <!--</el-form-item>-->
+               <!--</el-col >-->
+            <!--</el-row>-->
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="editFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">保存</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '汇缴办理'
+        }
+    });
+
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            //列表数据
+            tableData: [],
+            //显示加载中样式
+            loading:false,
+            //搜索表单
+            searchForm: {
+                UNAME: ''
+            },
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage:1,
+            //分页大小
+            pageSize:10,
+            //总记录数
+            total:800,
+            //删除的弹出框
+            deleteVisible:false,
+            //编辑界面是否显示
+            editFormVisible: false,
+            editLoading: false,
+            goUrl:'',
+            editFormRules: {
+                uname: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                ]
+            },
+            //编辑界面数据
+            editForm: {
+                DWZH:'',
+               UNAME:'',
+               HJYS:'',
+                UDEPOSITRATIO:'',
+                UASTATE:'',
+                UPERSONRATIO:'',
+                UAREMAIN:'',
+                UAOWEMONERY:'',
+                YWBLR:'',
+                UBDREMARK:'',
+                //UBITNROP:'',
+                //UNITMONPAYSUM:'',
+                UBDCREATEDATE:'',
+                UBDPOPULATION:'',
+                UBDDETAILTYPE:'',
+                UBDPAYMENTDATE:'',
+                UBDPAYWAY:'',
+                ZCK:'',
+                UBDSETTLESTATES:'',
+                UBDCREATER:'',
+                HJYS:''
+            },
+        },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            axios.post('/remit/page',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
+                console.log(response.data);
+                //alert(response.data.total);
+                self.total=response.data.total;
+                self.tableData = response.data.pageData;
+                //alert(JSON.stringify(response.data.pageData));
+            })
+        },
+        methods:{
+            //表格重新加载数据
+            //刷新
+            toFlush:function(){
+                this.searchForm= {
+                    UNAME: ''
+                }
+                this.loadingData();
+            },
+            loadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                var self = this;
+                var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'UNAME':this.searchForm.UNAME};
+                //   alert(JSON.stringify(searchForm));
+                axios.post('/remit/page',searchForm).then(function(response){
+                    _self.total=response.data.total;
+                    _self.tableData = response.data.pageData;
+                })
+                console.log(_self.currentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+            },
+            searchClick:function() {
+                var self = this;
+                self.loadingData();
+            },
+            editClick:function(row) {
+                this.goUrl="/remit/add";
+                this.editFormVisible = true;
+                this.editForm = Object.assign({}, row);
+            },
+            pageSizeChange:function(val) {
+                console.log('每页 ' + val +' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange:function(val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //保存点击事件
+            editSubmit:function(){
+                var _self = this;
+                _self.loading = true;
+                var formData =this.editForm;
+                //alert(formData);
+                var goUrl=this.goUrl;
+                //alert(goUrl);
+                //alert(JSON.stringify(formData));
+                axios.post(goUrl,formData).then(function(response){
+                    // console.log(response.data);
+                    // alert(222);
+                    // self.total=response.data.total;
+                    if(response.data>0){
+                        _self.editFormVisible = false;
+                        _self.loadingData();//重新加载数据
+                        location.href="/detail/toPage";
+                    }
+                })
+                console.info(this.editForm);
+            }
+        }
+
+    })
+</script>
+
+</body>
+</html>

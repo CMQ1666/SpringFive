@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+<div id="tableView">
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form-item label="名称">
+                <el-input v-model="searchForm.UNAME" placeholder="名称"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <!--列表-->
+    <el-row>
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                style="width: 100%">
+            <!--<el-table-column-->
+            <!--type="selection"-->
+            <!--width="55">-->
+            <!--</el-table-column>-->
+            <el-table-column
+                    prop="DWZH"
+                    label="单位账号"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="UNAME"
+                    label="单位名称"
+                    width="150">
+            </el-table-column>
+
+
+            <el-table-column
+                    prop="UAOWEMONERY"
+                    label="应缴纳金额"
+                    width="120">
+            </el-table-column>
+
+            <el-table-column
+                    prop="UBDPOPULATION"
+                    label="缴纳人数"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UBDDETAILTYPE"
+                    label="业务类型"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="HJYS"
+                    label="汇缴月数"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UBDPAYWAY"
+                    label="缴纳方式"
+                    width="120">
+            </el-table-column>
+            <!--<el-table-column-->
+                    <!--prop=" UBDACCRUAL"-->
+                    <!--label="账户余额"-->
+                    <!--width="120">-->
+            <!--</el-table-column>-->
+            <el-table-column
+                    prop="ZCK"
+                    label="暂存款金额"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UBDSETTLESTATES"
+                    label="结算状态"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UBDCREATER"
+                    label="创建人"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UBDCREATEDATE"
+                    label="创建时间"
+                    width="120">
+            </el-table-column>
+        </el-table>
+    </el-row>
+
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+        <!--<el-col :span="6" >-->
+        <!--<el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>-->
+        <!--</el-col>-->
+        <el-col :span="18" >
+            <el-pagination
+                    style="float: right"
+                    @size-change="pageSizeChange"
+                    @current-change="currentPageChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 30, 50]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+   </div>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '明细查询'
+        }
+    });
+
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            //列表数据
+            tableData: [],
+            //显示加载中样式
+            loading:false,
+            //搜索表单
+            searchForm: {
+                UNAME: ''
+            },
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage:1,
+            //分页大小
+            pageSize:10,
+            //总记录数
+            total:800,
+            //删除的弹出框
+            deleteVisible:false,
+            //编辑界面是否显示
+            editFormVisible: false,
+            editLoading: false,
+            goUrl:'',
+            editFormRules: {
+                uname: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                ]
+            },
+     },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            axios.post('/detail/page',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
+                console.log(response.data);
+                //alert(response.data.total);
+                self.total=response.data.total;
+                self.tableData = response.data.pageData;
+                //alert(JSON.stringify(response.data.pageData));
+            })
+        },
+        methods:{
+            searchClick:function() {
+                var self = this;
+                self.loadingData();
+            },
+            pageSizeChange:function(val) {
+                console.log('每页 ' + val +' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange:function(val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+
+      }
+
+   })
+</script>
+
+</body>
+</html>
