@@ -1,4 +1,4 @@
-﻿package com.aaa.sb.dao.Gjjtq;
+package com.aaa.sb.dao.Gjjtq;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;

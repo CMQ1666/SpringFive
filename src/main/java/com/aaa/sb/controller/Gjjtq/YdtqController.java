@@ -48,15 +48,4 @@ public class YdtqController {
         return resultMap;
     }
 
-
-    /**
-     * 修改个人信息
-     * @param map
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/updYdtq")
-    public Object update(@RequestBody Map map){
-        return ydtqService.update(map);
-    }
 }

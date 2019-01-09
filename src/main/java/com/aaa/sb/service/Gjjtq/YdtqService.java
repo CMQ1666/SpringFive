@@ -14,11 +14,4 @@ public interface YdtqService {
     List<Map> getPageByParam(Map map);
 
 
-
-    /**
-     * 更新个人信息
-     * @param map
-     * @return
-     */
-    int update(Map map);
 }

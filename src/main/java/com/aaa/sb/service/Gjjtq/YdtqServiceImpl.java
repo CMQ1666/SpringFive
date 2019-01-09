@@ -22,13 +22,4 @@ public class YdtqServiceImpl implements YdtqService {
     }
 
 
-    /**
-     * 修改个人信息
-     * @param map
-     * @return
-     */
-    @Override
-    public int update(Map map) {
-        return ydtqDao.upadte(map);
-    }
 }
