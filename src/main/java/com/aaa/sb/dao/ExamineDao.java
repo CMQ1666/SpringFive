@@ -27,12 +27,13 @@ public interface ExamineDao {
     /**
      * 查询封存、启封、销户 记录表
      */
-    @Select("select * from tb_unseal_audit")
+    @Select(" select UNSEAL_ID,UNSEAL_NAME,UNSEAL_UNIT,UNSEAL_SEX,UNIT_POST,UNSEAL_NUMBER,UNSEAL_ACCOUNT,REASON,\n" +
+            "OPERATOR,to_char(CREATE_TIME,'yyyy-MM-dd') as CREATE_TIME ,AUDIT_STATE,AUDIT_NAME,BOHUI from tb_unseal_audit")
     List<Map> breaka(Map map);
     /**
      * 查询公积金提取记录表
      */
-    @Select("select pre_account,appl_name,comp_name,application_type,application_way,extract_reason,extract_money,appl_time,appl_state from tb_extract_application")
+    @Select("select pre_account,appl_name,comp_name,application_type,application_way,extract_reason,extract_money,to_char(appl_time,'yyyy-MM-dd') as APPL_TIME,appl_state from tb_extract_application")
     List<Map> extract(Map map);
     /**
      * 查询贷款记录表

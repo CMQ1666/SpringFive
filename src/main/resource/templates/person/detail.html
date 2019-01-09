@@ -90,7 +90,7 @@
             //alert("111");
             axios.post('/seal/detail',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
                 console.log(response.data);
-                //alert(response.data.total);
+                alert(JSON.stringify(response.data));
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
 

@@ -19,7 +19,7 @@ public interface SealDao {
      * @param map
      * @return
      */
-    @Select("<script>select a.grzh,a.ubitnrop,a.indinrop,a.pid,a.basenummber,a.dalance,a.lastnaydate,a.peraccstate,b.pname from tb_paccountutil a,tb_person_info b where a.pid=b.pid\n" +
+    @Select("<script>select a.grzh,a.ubitnrop,a.indinrop,a.pid,a.basenummber,a.dalance,to_char(a.lastnaydate,'yyyy-MM-dd') as LASTNAYDATE,a.peraccstate,b.pname from tb_paccountutil a,tb_person_info b where a.pid=b.pid\n" +
             "<where><if test=\"pname!=null and pname!=''\"> and pname like '%'||#{pname}||'%'</if></where></script>")
     List<Map> SealedPage(Map map);
     /**
@@ -77,7 +77,7 @@ public interface SealDao {
     /**
      * 明细列表分页
      */
-    @Select("<script>select a.GRZH,a.unitmonpaysum, a.ydrawamt,a.permonpaysum, a.paop,c.uname,b.pname,a.opendate from tb_paccountutil a, tb_person_info b, tb_unit c " +
+    @Select("<script>select a.GRZH,a.unitmonpaysum, a.ydrawamt,a.permonpaysum, a.paop,c.uname,to_char(a.opendate,'yyyy-MM-dd') as OPENDATE,b.pname from tb_paccountutil a, tb_person_info b, tb_unit c " +
             "where a.pid = b.pid and a.unid = c.unid " +
             "<where><if test=\"pname!=null and pname!=''\"> and pname like concat('%',#{pname},'%')</if></where></script>")
     List<Map> getPage(Map map);
