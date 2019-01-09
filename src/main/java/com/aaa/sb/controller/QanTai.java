@@ -3,6 +3,7 @@ package com.aaa.sb.controller;
 import com.aaa.sb.service.QianTaiService;
 
 
+import com.aaa.sb.util.PhoneTest;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +38,16 @@ public class QanTai {
      * 前台个人登录
      * @return
      */
+    @ResponseBody
     @RequestMapping("/denglu")
-    public Object tree(@RequestParam Map map){
-        System.out.println("登录进来了"+map);
+    public Object tree(@RequestBody  Map map) {
         List<Map> list = qianTaiService.ChackPersonLogin(map);
-        System.out.println("后台返回的值："+list);
-        httpSession.setAttribute("list",list);
-        if (list.size()>0&&list!=null){
-            return "XxGjj/login/green";
+        httpSession.setAttribute("list", list);
+        if (list.size() > 0 && list != null) {
+            return 1;
+        } else {
+            return 0;
         }
-        return "XxGjj/login/denglu";
     }
 
     /**
@@ -57,9 +58,7 @@ public class QanTai {
     @ResponseBody
     @RequestMapping("/seljiao")
     public Object SelJiao(@RequestParam Map map){
-        System.out.println("前台传来的值："+map);
         List<Map> list = qianTaiService.SelectCheckJiLu(map);
-        System.out.println("后台返回的值："+list);
         return list;
     }
 
@@ -71,9 +70,7 @@ public class QanTai {
     @ResponseBody
     @RequestMapping("/daikuan")
     public Object DaiKuan(@RequestParam Map map){
-        System.out.println("贷款前台传来的值："+map);
         List<Map> list = qianTaiService.SelectCheckDaiKuanJiLu(map);
-        System.out.println("贷款后台返回的值："+list);
         return list;
     }
     /**
@@ -82,9 +79,7 @@ public class QanTai {
      */
     @RequestMapping("/danwei")
     public Object DanWei(@RequestParam Map map){
-        System.out.println("单位登录进来了"+map);
         List<Map> list = qianTaiService.ChackUnitLogin(map);
-        System.out.println("单位后台返回的值："+list);
         httpSession.setAttribute("list",list);
         if (list.size()>0&&list!=null){
             return "XxGjj/login/dxinxi";
@@ -108,9 +103,7 @@ public class QanTai {
     @ResponseBody
     @RequestMapping("/danjiaona")
     public Object DanJiaoNa(@RequestParam Map map){
-        System.out.println("单位基金缴纳前台传来的值："+map);
         List<Map> list = qianTaiService.ChackUnitLogin1(map);
-        System.out.println("单位基金缴纳后台返回的值："+list);
         return list;
     }
     /**
@@ -121,9 +114,7 @@ public class QanTai {
     @ResponseBody
     @RequestMapping("/seldanjiao")
     public Object DanJiaoNaJiLu(@RequestParam Map map){
-        System.out.println("单位基金缴纳记录前台传来的值："+map);
         List<Map> list = qianTaiService.UnitJiaoNaJiLu(map);
-        System.out.println("单位基金缴纳记录后台返回的值："+list);
         return list;
     }
 
@@ -165,5 +156,18 @@ public class QanTai {
         //获取分页总数量
         resultMap.put("total", pageInfo.getTotal());
         return resultMap;
+    }
+
+    /**
+     * 短信验证码验证
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("sendCode")
+    public int sendCode(@RequestBody Map map) {
+        System.out.println("前台传来的值===："+map.get("tel"));
+        int modelMsg =PhoneTest.getModelMsg(map.get("tel")+"");
+        return  modelMsg ;
     }
 }

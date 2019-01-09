@@ -17,7 +17,7 @@ public interface QianTaiDao {
      * @param map
      * @return
      */
-    @Select("select a.*,b.* from tb_paccountutil a,tb_person_info b where a.pid=b.pid and GRZH=#{grzh} and GRMM=#{grmm}")
+    @Select("select a.*,b.* from tb_paccountutil a,tb_person_info b where a.pid=b.pid and GRZH=#{GRZH} and GRMM=#{GRMM}")
     List<Map> ChackPersonLogin(Map map);
 
     /**

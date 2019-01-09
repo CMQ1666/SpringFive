@@ -1,4 +1,4 @@
-package com.aaa.sb.dao.Gjjtq;
+﻿package com.aaa.sb.dao.Gjjtq;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
@@ -46,7 +46,7 @@ public interface BfxhYdtqDao {
     /**
      * 偿还购房贷款本息
      */
-    @Insert("insert into TB_AGREED_TO_EXTRACT(BID,PNAME,PIPHONE,PCNUMBER,GRZH,DALANCE,PERACCSTATE,LOAN_MONEY,LOAN_PERIODS,LOAN_REPAY,LOAN_RATE,PERACCSTATE1,YDRQ,HKJE,YDQS,DKLX,SHZT,SHIJIAN) values(seq_agreed_id.nextval,#{PNAME},#{PHONE},#{IDNUMBER},#{GRZH},#{DALANCE},#{STATE},#{LOAN_MONEY},#{LOAN_PERIODS},'等额本息',#{LOAN_RATE},#{LOAN_ID},#{APPOINTTIME},#{REFUND_LIMIT},#{LOAN_PERIODS},#{LOANTYPE},2,to_char(sysdate,'yyyy-MM-dd'))")
+    @Insert("insert into TB_AGREED_TO_EXTRACT(BID,PNAME,PIPHONE,PCNUMBER,GRZH,DALANCE,PERACCSTATE,LOAN_MONEY,LOAN_PERIODS,LOAN_REPAY,LOAN_RATE,PERACCSTATE1,YDRQ,HKJE,YDQS,DKLX,SHZT,SHIJIAN) values(seq_agreed_id.nextval,#{PNAME},#{PHONE},#{IDNUMBER},#{GRZH},#{DALANCE},#{STATE},#{LOAN_MONEY},#{LOAN_PERIODS},'等额本息',#{LOAN_RATE},#{LOAN_ID},#{APPOINTTIME},#{REFUND_LIMIT},#{LOAN_PERIODS},#{LOANTYPE},1,to_char(sysdate,'yyyy-MM-dd'))")
     int addDaikuan(Map map);
 
 }
