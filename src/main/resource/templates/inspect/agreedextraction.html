@@ -75,6 +75,10 @@
                     prop="DKLX"
                     label="贷款类型"
                     align="center">
+                <template scope="scope">
+                    {{ scope.row.DKLX == 1 ?  '公积金贷款': '' }}
+                    {{ scope.row.DKLX == 2 ?  '商业贷款': '' }}
+                </template>
             </el-table-column>
 
             <el-table-column
@@ -84,12 +88,12 @@
             </el-table-column>
 
             <el-table-column
-                    prop="SHIJIAN"
+                    prop="YDRQ"
                     label="约定提取时间"
-                    width="120">
+                    align="center">
             </el-table-column>
             <el-table-column
-                    prop="YDRQ"
+                    prop="SHIJIAN"
                     label="申请时间"
                     align="center">
             </el-table-column>
@@ -97,6 +101,11 @@
                     prop="SHZT"
                     label="审核状态"
                     align="center">
+                <template scope="scope">
+                    {{ scope.row.SHZT == 1 ?  '未审核': '' }}
+                    {{ scope.row.SHZT == 2 ?  '通过': '' }}
+                    {{ scope.row.SHZT == 3 ?  '驳回': '' }}
+                </template>
             </el-table-column>
             <el-table-column
                     label="操作">
