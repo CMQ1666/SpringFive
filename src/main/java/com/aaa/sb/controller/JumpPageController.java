@@ -41,7 +41,7 @@ public class JumpPageController {
     //单位登录
     @RequestMapping("/danwei")
     public String DanWei(){
-        return "qiantai/danwei";
+        return "XxGjj/login/danwei";
     }
     //单位登录信息
     @RequestMapping("/dxinxi")
