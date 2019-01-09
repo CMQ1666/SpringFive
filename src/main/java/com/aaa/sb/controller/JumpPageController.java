@@ -41,7 +41,6 @@ public class JumpPageController {
     //单位登录
     @RequestMapping("/danwei")
     public String DanWei(){
-        System.out.println("注销进来了：：：");
         return "qiantai/danwei";
     }
     //单位登录信息
