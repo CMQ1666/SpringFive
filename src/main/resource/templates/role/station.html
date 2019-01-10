@@ -119,13 +119,14 @@
             </el-form-item>
             <el-form-item label="角色">
                 <template>
-                    <el-select v-model="editForm.ROLEID" clearable placeholder="请选择">
+                    <el-select v-model="editForm.ROLEID" clearable placeholder="请选择" ><!--:formatter="format"-->
                         <el-option
                                 v-for="item in options"
                                 :key="item.ROLEID"
                                 :label="item.ROLENAME"
                                 :value="item.ROLEID">
                         </el-option>
+                        </el-table-column>
                     </el-select>
                 </template>
             </el-form-item>
@@ -229,9 +230,23 @@
             },
             //表格编辑事件
             editClick: function (row) {
+
                 this.goUrl = "/station/update";
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
+                if (Object.assign({}, row).ROLEID==1){
+                    this.editForm.ROLEID='系统管理员';
+                } else if(Object.assign({}, row).ROLEID==2){
+                    this.editForm.ROLEID='审核员';
+                }else if(Object.assign({}, row).ROLEID==3){
+                    this.editForm.ROLEID='财务经理';
+                }else if(Object.assign({}, row).ROLEID==4){
+                    this.editForm.ROLEID='前台贷款员';
+                }else if(Object.assign({}, row).ROLEID==5){
+                    this.editForm.ROLEID='前台柜员';
+                }else if(Object.assign({}, row).ROLEID==6){
+                    this.editForm.ROLEID='管理员';
+                }
             },
             //表格添加事件
             addClicks: function () {

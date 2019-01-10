@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人开户</title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{message}}</h2>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/users/toList' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item><a href="#">活动管理</a></el-breadcrumb-item>
+        <el-breadcrumb-item>个人开户</el-breadcrumb-item>
+    </el-breadcrumb>
+
+</div>
+
+
+<div id="app1" >
+    <el-steps :active="active" finish-status="success" id="active">
+        <el-step title="单个开户"></el-step>
+        <el-step title="批量开户"></el-step>
+    </el-steps>
+
+    <el-form ref="form" :model="form" label-width="180px" :rules="rules" >
+        <div v-if="active==0">
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="公司账号" prop="DWZH">
+                    <el-input v-model="form.DWZH" style="width: 200px;" @blur="blurSearchFor"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="公司名称" prop="UNAME">
+                    <el-input v-model="form.UNAME" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="职工姓名" prop="PNAME" :rules="[
+                 { required: true, message: '请输入姓名', trigger: 'blur' },
+                   { min: 2, max: 5, message: '请输入长度在 2 到 5 个字的姓名', trigger: 'blur' }]">
+                    <el-input v-model="form.PNAME" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="职工电话" prop="PHONE" :rules="[{pattern: /^1[34578]\d{9}$/, message: '手机号码格式不对请重新输入',trigger: 'blur'}]">
+                    <el-input v-model="form.PHONE" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="职工性别" prop="PSEX" :rules="[{ required: true, message: '职工性别名不能为空',trigger: 'blur'}]" >
+                    <el-select v-model="form.PSEX" placeholder="请选择">
+                        <el-option label="男"  value="男"></el-option>
+                        <el-option label="女" value="女"></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="证件类型" prop="IDCARD" :rules="[{ required: true, message: '证件类型不能为空',trigger: 'blur'}]">
+                    <el-select v-model="form.IDCARD" placeholder="请选择">
+                        <el-option label="身份证"  value="身份证"></el-option>
+                        <el-option label="户口本" value="户口本"></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="证件号码" prop="IDNUMBER" :rules="[{pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '证件号码格式不对请重新输入',trigger: 'blur'}]" >
+                    <el-input v-model="form.IDNUMBER" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="职工学历" prop="EDUCATION" :rules="[{ required: true, message: '职工学历不能为空',trigger: 'blur'}]">
+                    <el-select v-model="form.EDUCATION" placeholder="请选择学历" style="width: 200px">
+                        <el-option label="博士" value="博士"></el-option>
+                        <el-option label="硕士"  value="硕士"></el-option>
+                        <el-option label="本科" value="本科"></el-option>
+                        <el-option label="大专" value="大专"></el-option>
+                        <el-option label="高中" value="高中" ></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="职工职位" prop="PROFESSION" :rules="[
+                { required: true, message: '职工职位不能为空',trigger: 'blur'}]">
+                    <el-select v-model="form.PROFESSION" placeholder="请选择职位" style="width: 200px">
+                        <el-option label="董事长" value="董事长"></el-option>
+                        <el-option label="经理"  value="经理"></el-option>
+                        <el-option label="主管" value="主管"></el-option>
+                        <el-option label="职员" value="职员"></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="电子信箱" prop="PEMAIL"  :rules="[
+                 {required: true,message: '请输入邮箱',trigger: 'blur'},
+                {pattern:/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/, trigger: 'blur', message: '你的邮箱格式不正确'}]">
+                    <el-input v-model="form.PEMAIL" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="家庭住址" prop="PADDRESS" :rules="[
+                {required: true,message: '请输入家庭地址',trigger: 'blur'},
+                    { min: 10, max: 30, message: '请输入长度在 10 到 30 个字的地址', trigger: 'blur'}]" >
+                    <el-input v-model="form.PADDRESS" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="出生年月" prop="PDATE" :rules="[{ required: true, message: '出生年月不能为空',trigger: 'blur'}]" >
+                    <el-date-picker type="date" placeholder="选择日期" v-model="form.PDATE" value-formate="yyyy-mmm-dd"></el-date-picker>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="婚姻状态" prop="PMARRIAGE"  :rules="[{ required: true, message: '婚姻状态不能为空',trigger: 'blur'}]">
+                    <el-select v-model="form.PMARRIAGE" style="width: 200px;">
+                        <el-option label="已婚" value="已婚"></el-option>
+                        <el-option label="未婚"  value="未婚"></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="缴存基数" prop="BASENUMMBER"  :rules="[{ required: true, message: '缴存基数不能为空',trigger: 'blur'}]">
+                        <el-input v-model="form.BASENUMMBER" style="width: 200px;" ></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="开户银行名字" prop="KHYH"  :rules="[{ required: true, message: '开户银行名字不能为空',trigger: 'blur'}]">
+                    <el-select v-model="form.KHYH" placeholder="请选择银行" style="width: 200px">
+                        <el-option label="中国邮政银行" value="中国邮政银行"></el-option>
+                        <el-option label="中国工商银行"  value="中国工商银行"></el-option>
+                        <el-option label="中国农业银行" value="中国农业银行"></el-option>
+                        <el-option label="中国建设银行" value="中国建设银行"></el-option>
+                        <el-option label="中国光大银行" value="中国光大银行" ></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="开户银行账号" prop="YHZH" :rules="[{ required: true, message: '开户银行账号不能为空',trigger: 'blur'}]">
+                    <el-input v-model="form.YHZH" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="单位比例">
+                    <el-input v-model="form.UDEPOSITRATIO" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="个人比例">
+                    <el-input v-model="form.UPERSONRATIO" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="办理人员" prop="PAOP" :rules="[{ required: true, message: '办理人员不能为空',trigger: 'blur'}]">
+                    <el-input v-model="form.PAOP" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+            </div>
+
+
+        <div  v-if="active==1">
+            <el-row>
+            <!--<el-upload  :action="UploadUrl()"  :on-success="UploadSuccess" :file-list="fileList" v-model="form.yyzz"  >-->
+                <!--<el-button size="small" type="primary" >点击上传</el-button>-->
+            <!--</el-upload>-->
+                <el-row>
+                    <el-col :span="6"><div class="grid-content bg-purple">
+                        <el-form-item label="*办理人员">
+                            <el-input v-model="form.PAOP" style="width: 200px;"></el-input>
+                        </el-form-item>
+                    </div></el-col>
+                </el-row>
+            </el-row>
+        </div>
+        <el-form-item>
+            <el-button style="margin-top: 12px;" @click="prev" v-if="active==1">单个开户</el-button>
+            <el-button style="margin-top: 12px;" @click="next" v-if="active==0">批量开户</el-button>
+            <el-button type="primary" @click.native="addClick('form')" v-if="active==0||active==1">保存</el-button>
+        </el-form-item>
+    </el-form>
+
+
+
+</div>
+
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '个人开户'
+        }
+    });
+    var app1 = new Vue({
+        el:'#app1',
+
+        data: {
+            active: 0,
+            form: {
+                UNAME: '',
+                DWZH: '',
+                PEDUCATION: '',
+                KHYH: '',
+                PROFESSION: '',
+                YHZH: '',
+                PNAME: '',
+                PEMAIL: '',
+                UDEPOSITRATIO: '',
+                PMARRIAGE: '',
+                PHONE: '',
+                PADDRESS: '',
+                UPERSONRATIO: '',
+                PSEX: '',
+                PDATE: '',
+                PAOP: '',
+                IDCARD: '',
+                IDNUMBER: '',
+                BASENUMMBER: ''
+            },
+//          let:validate =(rule, value, callback)=>{
+//           //后台方法
+//           var url="/personal/unique/"+value,
+//           axios.post(url).then(function (res) {
+//               alert(res.data)
+//               if ( res.data >0) {
+//                   callback('账号有误请重新输入')
+//               } else {
+//                  callback()
+//               }
+//           })
+//            },
+            rules: {
+                DWZH: [
+                    { required: true, message: '单位账号不能为空', trigger: 'blur' },
+                ]},
+            },
+
+//            rules: {
+//                PEDUCATION: [{required: true, message: '请输入', trigger: 'blur'}],
+//                KHYH: [{required: true, message: '请输入', trigger: 'blur'}]
+//            },
+//        created:function(){
+//            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+//            var self = this;
+//            axios.post('/personal/page').then(function(response){
+//                console.log(response.data);
+//                //alert(response.data.total);
+//                self.total=response.data.total;
+//                self.tableData = response.data.pageData;
+//                //alert(JSON.stringify(response.data.pageData));
+//            })
+//        },
+            methods: {
+                addClick: function () {
+                    var _self = this;
+                    _self.loading = true;
+                    var formData = this.form;
+                    //alert(formData);
+//                  var goUrl=this.goUrl;
+//                  this.goUrl="/personal/add";
+                    //alert(goUrl);
+                    //alert(JSON.stringify(formData));
+                    axios.post("/personal/add", formData).then(function (response) {
+                        // console.log(response.data);
+                        // alert(222);
+                        // self.total=response.data.total;
+                        if (response.data != "") {
+                            alert(JSON.stringify(response.data));
+                            //alert("1111111111111111");
+                            _self.form = Object.assign({}, '');
+                            _self.$message({
+                                message: '恭喜你！开户成功。',
+                                type: 'success'
+                            });
+                            //location.href="/person/page"
+                        } else {
+                            _self.$message({
+                                message: '开户失败！！！',
+                                type: 'warning'
+                            });
+                        }
+                    })
+
+                },
+                blurSearchFor: function () {
+                    var _self = this;
+                    //alert(_self.form.DWZH);
+                    axios.post('/personal/getList', {DWZH: _self.form.DWZH}).then(function (response) {
+                        //alert("111");
+                        //_self.editForm = Object.assign({}, response.data[0]);
+                        //alert(JSON.stringify(response.data[0]));
+                        //  alert(DWZH);
+                        // alert(JSON.stringify(response.data));
+                        //  alert(response.data.UNAME);
+                        if (response.data != '' && response.data != null) {
+
+                            _self.form.UNAME = response.data.UNAME;
+                            _self.form.UDEPOSITRATIO = response.data.UDEPOSITRATIO;
+                            _self.form.UPERSONRATIO = response.data.UPERSONRATIO;
+                        } else {
+                            _self.editForm = Object.assign({}, '');
+                            _self.$message({
+                                message: '公司账号输入有误',
+                                type: 'warning'
+                            })
+                        }
+                    })
+                },
+                next: function () {
+                    if (this.active++ > 1) this.active = 0;
+                },
+                prev: function () {
+                    --this.active;
+                    if (this.active < 0) this.active = 0;
+                }
+            }
+
+    })
+</script>
+</body>
+</html>

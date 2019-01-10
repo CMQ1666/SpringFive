@@ -139,7 +139,8 @@ public class SealController {
         PageHelper.startPage(Integer.valueOf(map.get("pageNo")+""),Integer.valueOf(map.get("pageSize")+""));
         //用pageinfo对结果进行包装
         PageInfo<Map> pageInfo =new PageInfo<Map>(sealService.getPage(map));
-        System.out.println(map.get("pname"));
+        //System.out.println(map.get("pname"));
+       // System.out.println(map+"11111111111111111111");
         Map resultMap = new HashMap();
         //获取当前页数据
         resultMap.put("pageData",pageInfo.getList());

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单位开户</title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{message}}</h2>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/users/toList' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item><a href="#">活动管理</a></el-breadcrumb-item>
+        <el-breadcrumb-item>单位开户</el-breadcrumb-item>
+    </el-breadcrumb>
+    <h3>{{message}}</h3>
+</div>
+
+<div id="app1">
+    <el-form  ref="form" :model="form" label-width="180px" :rules="rules">
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="公司名称" prop="UNAME"  >
+                    <el-input v-model="form.UNAME" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="公司地址" prop="UADDRESS" :rules="[{ required: true, message: '公司地址不能为空',trigger: 'blur'}]" >
+                    <el-input v-model="form.UADDRESS" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <el-form-item label="公司类型" prop="GSLX"  :rules="[{ required: true, message: '公司类型不能为空',trigger: 'blur'}]">
+                        <!--<el-input v-model="form.gslx" style="width: 200px;"></el-input>-->
+                        <el-select v-model="form.GSLX" style="width: 200px;">
+                            <el-option label="请选择" value=""></el-option>
+                            <el-option label="国有企业" value="国有企业"></el-option>
+                            <el-option label="合伙企业" value="合伙企业"></el-option>
+                            <el-option label="有限责任公司" value="有限责任公司"></el-option>
+                            <el-option label="股份有限公司" value="股份有限公司"></el-option>
+                            <el-option label="全民所有制公司" value="全民所有制公司"></el-option>
+                            <el-option label="集体所有制公司" value="集体所有制公司"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="隶属关系" prop="LSGX" :rules="[{ required: true, message: '隶属关系不能为空',trigger: 'blur'}]">
+                    <el-select v-model="form.LSGX" style="width: 200px;">
+                        <el-option label="请选择" value=""></el-option>
+                        <el-option label="省" value="省"></el-option>
+                        <el-option label="市" value="市"></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="机构代码" prop="UNETWORKCODE" :rules="[{ required: true, message: '机构代码不能为空',trigger: 'blur'}]">
+                    <el-input v-model="form.UNETWORKCODE" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="法人姓名" prop="ULEGALPERSON" :rules="[{ required: true, message: '法人姓名不能为空',trigger: 'blur'}]">
+                    <el-input v-model="form.ULEGALPERSON" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="法人证件类型" prop="ULEGALTYPE" :rules="[{ required: true, message: '法人证件类型不能为空',trigger: 'blur'}]">
+                    <el-select v-model="form.ULEGALTYPE" placeholder="请选择">
+                        <el-option label="身份证"  value="身份证"></el-option>
+                        <el-option label="户口本" value="户口本"></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <el-form-item label="经济类型" prop="JJLX" :rules="[{ required: true, message: '经济类型不能为空',trigger: 'blur'}]">
+                        <!--<el-input v-model="form.jjlx" style="width: 200px;"></el-input>-->
+                        <el-select v-model="form.JJLX" style="width: 200px;">
+                            <el-option label="请选择" value=""></el-option>
+                            <el-option label="国有经济" value="国有经济"></el-option>
+                            <el-option label="集体经济" value="集体经济"></el-option>
+                            <el-option label="个体经济" value="个体经济"></el-option>
+                            <el-option label="私营经济" value="私营经济"></el-option>
+                            <el-option label="联营经济" value="联营经济"></el-option>
+                            <el-option label="股份制" value="股份制"></el-option>
+                            <el-option label="其他经济" value="其他经济"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="证件号码" prop="JBRZJHM" :rules="[{pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '证件号码格式不对请重新输入',trigger: 'blur'}]" >
+                    <el-input v-model="form.JBRZJHM" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="法人证件号" prop="ULEGALCARD" :rules="[{ required: true, message: '法人证件号不能为空',trigger: 'blur'}]">
+                    <el-input v-model="form.ULEGALCARD" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="经办人电话" prop="UOPIPHONE" :rules="[{pattern: /^1[34578]\d{9}$/, message: '手机号码格式不对请重新输入',trigger: 'blur'}]">
+                    <el-input v-model="form.UOPIPHONE" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="经办人证件类型" prop="JBRZJLX" :rules="[{ required: true, message: '经办人证件类型不能为空',trigger: 'blur'}]">
+                    <el-select v-model="form.JBRZJLX" placeholder="请选择">
+                        <el-option label="身份证"  value="身份证"></el-option>
+                        <el-option label="户口本" value="户口本"></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="经办人证件号码" prop="JBRZJHM" :rules="[{pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '证件号码格式不对请重新输入',trigger: 'blur'}]">
+                    <el-input v-model="form.JBRZJHM" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="开户银行名称" prop="UABANKNAME" :rules="[{ required: true, message: '开户银行名称不能为空',trigger: 'blur'}]">
+                    <el-select v-model="form.UABANKNAME" placeholder="请选择银行" style="width: 200px">
+                        <el-option label="中国邮政银行" value="中国邮政银行"></el-option>
+                        <el-option label="中国工商银行"  value="中国工商银行"></el-option>
+                        <el-option label="中国农业银行" value="中国农业银行"></el-option>
+                        <el-option label="中国建设银行" value="中国建设银行"></el-option>
+                        <el-option label="中国光大银行" value="中国光大银行" ></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="单位缴存比例" prop="UDEPOSITRATIO" :rules="[{ required: true, message: '单位缴存比例不能为空',trigger: 'blur'}]">
+                    <el-input v-model="form.UDEPOSITRATIO" style="width: 200px;" placeholder="以%为单位"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="个人缴存比例" prop="UPERSONRATIO" :rules="[{ required: true, message: '个人缴存比例不能为空',trigger: 'blur'}]">
+                    <el-input v-model="form.UPERSONRATIO" style="width: 200px;" placeholder="以%为单位"></el-input>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="受托银行名称" prop="STYH" :rules="[{ required: true, message: '受托银行名称不能为空',trigger: 'blur'}]">
+                    <el-select v-model="form.STYH" placeholder="请选择银行" style="width: 200px">
+                        <el-option label="中国邮政银行" value="中国邮政银行"></el-option>
+                        <el-option label="中国工商银行"  value="中国工商银行"></el-option>
+                        <el-option label="中国农业银行" value="中国农业银行"></el-option>
+                        <el-option label="中国建设银行" value="中国建设银行"></el-option>
+                        <el-option label="中国光大银行" value="中国光大银行" ></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="账号开户状态" prop="UASTATE" :rules="[{ required: true, message: '账号开户状态不能为空',trigger: 'blur'}]">
+                    <el-select v-model="form.UASTATE" style="width: 200px;">
+                        <el-option label="请选择" value=""></el-option>
+                        <el-option label="正常" value="1"></el-option>
+                        <el-option label="冻结" value="0"></el-option>
+                    </el-select>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="单位开户日期" prop="KHRQ" :rules="[{ required: true, message: '单位开户日期不能为空',trigger: 'blur'}]">
+                    <el-date-picker type="date" placeholder="选择日期" v-model="form.KHRQ" value-formate="yyyy-mmm-dd"></el-date-picker>
+                </el-form-item>
+            </div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <el-form-item label="业务操作员" prop="UCREATER" :rules="[{ required: true, message: '业务操作员不能为空',trigger: 'blur'}]">
+                    <el-input v-model="form.UCREATER" style="width: 200px;"></el-input>
+                </el-form-item>
+            </div></el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <el-form-item label="开户银行账号" prop="UABANKNUMBER" :rules="[{ required: true, message: '开户银行账号不能为空',trigger: 'blur'}]">
+                        <el-input v-model="form.UABANKNUMBER" style="width: 200px;"></el-input>
+                    </el-form-item>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <el-form-item label="业务办理人" prop="YWBLR" :rules="[{ required: true, message: '业务办理人不能为空',trigger: 'blur'}]">
+                        <el-input v-model="form.YWBLR" style="width: 200px;"></el-input>
+                    </el-form-item>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <el-form-item label="所属行业" prop="SSHY" :rules="[{ required: true, message: '所属行业不能为空',trigger: 'blur'}]" >
+                        <!--<el-input v-model="form.sshy" style="width: 200px;"></el-input>-->
+                        <el-select v-model="form.SSHY" style="width: 200px;">
+                            <el-option label="请选择" value=""></el-option>
+                            <el-option label="制造业" value="制造业"></el-option>
+                            <el-option label="房地产业" value="房地产业"></el-option>
+                            <el-option label="批发和零售业" value="批发和零售业"></el-option>
+                            <el-option label="农、林、牧、渔业" value="农、林、牧、渔业"></el-option>
+                            <el-option label="环境和公共设施管理业" value="环境和公共设施管理业"></el-option>
+                            <el-option label="交通运输、仓储业和邮政业" value="交通运输、仓储业和邮政业"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <el-form-item label="公司成立时间" prop="UNITBEGINDATE" :rules="[{ required: true, message: '公司成立时间不能为空',trigger: 'blur'}]" >
+                        <!--<el-input v-model="form.unitbegindate" style="width: 200px;"></el-input>-->
+                        <div class="block" style="width: 200px;">
+                            <el-date-picker
+                                    v-model="form.UNITBEGINDATE"
+                                    type="date"
+                                    placeholder="选择日期"
+                                    :picker-options="pickerOptions0">
+                            </el-date-picker>
+                        </div>
+                    </el-form-item>
+                </div>
+            </el-col>
+
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <el-form-item label="发薪日" prop="UPAYDATE" :rules="[{ required: true, message: '发薪日不能为空',trigger: 'blur'}]" >
+                        <el-input v-model="form.UPAYDATE" style="width: 200px;"></el-input>
+                    </el-form-item>
+                </div>
+            </el-col>
+
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <el-form-item label="经办人姓名" prop="UOPERATOR" :rules="[{ required: true, message: '经办人姓名不能为空',trigger: 'blur'}]" >
+                        <el-input v-model="form.UOPERATOR" style="width: 200px;"></el-input>
+                    </el-form-item>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="15">
+            <el-col :span="4">
+                <el-form-item label="营业执照:">
+                </el-form-item>
+            </el-col>
+            <el-col :span="10">
+                <el-upload
+                        v-model="form.YYZZ"
+                        action="//upLoadPic"
+                        list-type="picture-card"
+                        :auto-upload="true"
+                        :limit="1"
+                        :multiple="false"
+                        :on-success="uploadSuc">
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+            </el-col>
+        </el-row>
+        <el-form-item>
+            <el-button type="primary" @click.native="addClick">保存</el-button>
+            <el-button type="primary" @click="resetForm('form')">重置</el-button>
+        </el-form-item>
+    </el-form>
+</div>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '单位开户'
+        }
+    });
+    var app1 = new Vue({
+        el:'#app1',
+        data:{
+            form:{
+                UNAME:'',
+                UADDRESS:'',
+                GSLX:'',
+                UNETWORKCODE:'',
+                ULEGALPERSON:'',
+                ULEGALTYPE:'',
+                ULEGALCARD:'',
+                JBRZJHM:'',
+                UABANKNAME:'',
+                UDEPOSITRATIO:'',
+                UPERSONRATIO:'',
+                STYH:'',
+                UASTATE:'',
+                KHRQ:Date.now(),
+                UCREATER:'',
+                UABANKNUMBER:"",
+                YWBLR:"",
+                SSHY:"",
+                UNITBEGINDATE:"",
+                JBRZJLX:"",
+                UPAYDATE:"",
+                UOPERATOR:"",
+                UOPIPHONE:"",
+                YYZZ:"",
+                LSGX:''
+            },
+            let: UNAME = (rule, value, callback) =>
+            {
+                if (value == '') {
+                    callback()
+                } else {
+                    //后台方法
+                    //alert("sss");
+                    var url = "/company/uname/" + value;
+                    axios.post(url).then(function (res) {
+                        alert(res.data);
+                        if (res.data == 0) {
+                            callback('')
+                            //alert("1111");
+                        } else {
+                            //alert("2222");
+                            callback('公司名称已存在');
+                        }
+                    })
+                }
+
+            },
+            rules:{
+                UNAME :[{ required: true, message: '公司名称不能为空',trigger: 'blur'},
+                    {validator: UNAME, trigger: 'blur'}],
+                    sex :[{required: true, message: '请输入', trigger: 'blur'}]
+            },
+            pickerOptions0:{
+                disabledDate(time) {
+                    return time.getTime() > Date.now() - 8.64e7;
+                }
+            },
+        },
+        methods: {
+            //表格重新加载数据
+            loadingData: function () {
+                var self = this;
+                var adds = this.form = {
+                    UNAME:'',
+                    UADDRESS:'',
+                    GSLX:'',
+                    UNETWORKCODE:'',
+                    ULEGALPERSON:'',
+                    ULEGALTYPE:'',
+                    JBRZJHM:'',
+                    UABANKNAME:'',
+                    UDEPOSITRATIO:'',
+                    UPERSONRATIO:'',
+                    STYH:'',
+                    UASTATE:'',
+                    KHRQ:Date.now(),
+                    UCREATER:'',
+                    UABANKNUMBER:"",
+                    YWBLR:"",
+                    SSHY:"",
+                    UNITBEGINDATE:"",
+                    JBRZJLX:"",
+                    UPAYDATE:"",
+                   UOPERATOR:"",
+                    UOPIPHONE:"",
+                    YYZZ:"",
+                }
+            },
+
+            //上传成功后的方法
+            uploadSuc: function (response) {
+                this.form.YYZZ = response;
+            },
+            //重置
+            resetForm:function() {
+
+                this.$refs.form.resetFields();
+            },
+            addClick: function () {
+                var self = this;
+                var formData = this.form;
+                alert(formData);
+                axios.post('/company/add', formData).then(function (response) {
+                    alert("00000000000000");
+                    if (response.data != "") {
+                        self.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        self.loadingData();
+                    }
+                })
+            }
+
+
+        }
+
+    })
+
+</script>
+</body>
+</html>

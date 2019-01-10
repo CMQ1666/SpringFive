@@ -48,6 +48,8 @@ public class ShiroConfig {
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         Map<String,String> filterMap = new LinkedHashMap<String, String>();
         //不拦截该资源(放行)
+        filterMap.put("/Page/*","anon");
+        filterMap.put("/qiantai/*","anon");
         filterMap.put("/user/login","anon");
         filterMap.put("/css/**","anon");
         filterMap.put("/img/**","anon");

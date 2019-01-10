@@ -10,18 +10,24 @@
     <!-- 引入组件库 -->
     <script src="../js/elementui.js"></script>
     <style>
-        .el-header, .el-footer {
-            background-color: #B3C0D1;
-            color: #333;
-            text-align: center;
-            line-height: 60px;
-        }
+        .el-tree{
+            padding: 9px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 0px; color: white;
+            border-radius: 20px;
+            margin-top:40px;
 
+
+        }
+        .el-header{
+            background-color: rgba(0, 0, 0, 0.38);
+
+        }
         .el-aside {
-            background-color: #D3DCE6;
-            color: #333;
-            text-align: center;
-            line-height: 26px;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .el-tree-node__content:hover {
+            background-color: #e6a23c;
         }
 
         .el-main {
@@ -38,49 +44,59 @@
         .el-container:nth-child(6) .el-aside {
             line-height: 260px;
         }
-
         .el-container:nth-child(7) .el-aside {
             line-height: 320px;
         }
         .el-tree-node{
             padding-top: 10px;
             padding-bottom: 10px;
-            padding-left: 10px;
+            padding-left: 10px
         }
+
+        .el-submenu__title{
+            margin-right: 10px;
+
+        }
+        #logo{
+            color: white;
+
+            font-size: 30px;
+            margin-top: 15px;
+            margin-left: 8px;
+        }
+
     </style>
 </head>
-<body>
+<body style="background-color: rgba(0, 0, 0, 0.42)">
 <div class="diva">
-            <el-container>
-                <el-header style="height: 80px;">
+    <el-container>
+        <el-aside width="250px" style="height: 925px;">
+            <div id="logo">
+              <span>AAA公积金</span>
+            </div>
+            <el-tree :data="treeData" accordion @node-click="handleNodeClick" :icon-class="icon" style="height: 840px"></el-tree>
+        </el-aside>
+         <el-container>
+             <el-header style="height: 80px;">
+                 <el-menu :default-active="activeIndex2" class="el-menu-demo" style="float: right;" mode="horizontal" @select="handleSelect" background-color="#545c64" text-color="#ffb049" active-text-color="#ffd04b">
+                     <el-submenu index="2">
+                         <template slot="title">注销登录</template>
+                         <el-menu-item index="2-1"><a href="/user/toLogin" style="color: #ffb049">切换用户</a></el-menu-item>
+                         <el-menu-item index="2-2"><a href="/user/toLogin" style="color: #ffb049">退出登录</a></el-menu-item>
+                     </el-submenu>
+                 </el-menu>
 
-                </el-header>
-                <el-container>
-                    <el-aside width="200px" style="height: 840px;">
-                        <el-tree
-                                :data="treeData"
-                                accordion
-                                @node-click="handleNodeClick"
-                                :icon-class="icon"
-                                style="height: 840px"
-                        >
-                        </el-tree>
-                    </el-aside>
-                    <el-main style="height: 840px;">
-                        <el-tabs v-model="editableTabsValue2" type="card" closable @tab-remove="removeTab">
-                            <el-tab-pane
-                                    v-for="(item, index) in editableTabs2"
-                                    :key="item.name"
-                                    :label="item.title"
-                                    :name="item.name"
-                            >
-                                 <iframe :src="item.url" style="width:100%;height:750px;border: 0px;" scrolling="auto"></iframe>
-                            </el-tab-pane>
-                        </el-tabs>
-                    </el-main>
-                </el-container>
-            </el-container>
-    </div>
+             </el-header>
+            <el-main style="height: 840px">
+                <el-tabs v-model="editableTabsValue2" type="card" closable @tab-remove="removeTab">
+                    <el-tab-pane v-for="(item, index) in editableTabs2" :key="item.name" :label="item.title" :name="item.name">
+                        <iframe :src="item.url" style="width:100%;height:750px;border: 0px;" scrolling="auto"></iframe>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-main>
+         </el-container>
+    </el-container>
+</div>
    <script>
        var vm = new Vue({
            el:".diva",
@@ -89,9 +105,9 @@
                treeData:[],
                editableTabsValue2: '2',
                editableTabs2: [ {
-                   title: '',
-                   name: '',
-                   url: ''
+                   title: '首页',
+                   name: '2',
+                   url: 'https://www.baidu.com',
                }],
                tabIndex: 2
            },
@@ -102,6 +118,9 @@
                })
            },
            methods: {
+               editClick:function () {
+                   location.href="/user/toLogin";
+               },
                handleNodeClick: function (n) {
                    // alert(n.label+",url"+n.url);
                    if (n.url != null && n.url != 'null' && n.url != '')

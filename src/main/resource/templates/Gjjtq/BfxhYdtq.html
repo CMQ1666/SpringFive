@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>部分销户约定提取</title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
+    <!-- 引入组件库 -->
+    <script src="../js/elementui.js"></script>
+</head>
+<style>
+    .el-aside {
+        background-color: #D3DCE6;
+        color: #333;
+        text-align: center;
+        line-height: 200px;
+    }
+
+    .el-main {
+        background-color: #D3DCE6;
+        color: #333;
+        text-align: center;
+        line-height: 160px;
+    }
+
+    .el-container {
+        margin-bottom: 40px;
+    }
+
+    .el-container:nth-child(5) .el-aside,
+    .el-container:nth-child(6) .el-aside {
+        line-height: 260px;
+    }
+
+    .el-container:nth-child(7) .el-aside {
+        line-height: 320px;
+    }
+</style>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+
+<div id="tableView">
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form-item >
+                <el-input v-model="searchForm.PNAME" placeholder="请输入要查找的姓名"></el-input>
+            </el-form-item>
+
+            </el-form-item><el-form-item>
+            <el-button type="primary" icon="search" @click="searchClick">搜索</el-button>
+        </el-form-item>
+        </el-form>
+    </el-row>
+    <!--列表-->
+    <el-row>
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                border
+                @selection-change="selectionChange"
+                style="width: 100%">
+            <el-table-column
+                    prop="GRZH"
+                    label="个人帐号"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="PNAME"
+                    label="个人姓名"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="UBITNROP"
+                    label="单位缴存比例"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="INDINROP"
+                    label="个人缴存比例"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="BASENUMMBER"
+                    label="缴存基数"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="DALANCE"
+                    label="个人公积金余额"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="STATE"
+                    label="个人账户状态"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="LASTNAYDATE"
+                    label="最后汇缴日期"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    label="操作">
+                <template scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">选择</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-row>
+
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+        <el-col :span="18" >
+            <el-pagination
+                    style="float: right"
+                    @size-change="pageSizeChange"
+                    @current-change="currentPageChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 30, 50]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+
+    <!--编辑界面-->
+    <el-dialog title="公积金提取" :visible.sync="editFormVisible" :close-on-click-modal="false" >
+        <el-steps :active="active" finish-status="success" id="active" space="100%" align-center="true" >
+            <el-step title="申请人基本状况"></el-step>
+            <el-step title="提取原因"></el-step>
+        </el-steps>
+        <el-form :model="editForm" label-width="130px" :rules="rules" ref="editForm">
+            <div class="basicInfo" v-if="active==0">
+                <el-container>
+                    <el-aside width="280px" style="padding-top: 20px">
+                        <el-form-item label="个人账号" prop="GRZH">
+                            <el-input v-model="editForm.GRZH" :disabled="true" auto-complete="off" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="提取人员姓名"  >
+                            <el-input v-model="editForm.PNAME" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="证件类型">
+                            <el-input  v-model="editForm.IDCARD" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="证件号码">
+                            <el-input  v-model="editForm.IDNUMBER" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="单位名称">
+                            <el-input  v-model="editForm.UNAME" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="单位账号">
+                            <el-input  v-model="editForm.DWZH" :disabled="true"></el-input>
+                        </el-form-item>
+                    </el-aside>
+                    <el-main>
+                        <el-form-item label="提取类型：">
+                            <el-select  v-model="editForm.APPLICATION_TYPE" @change="changeWay">
+                                <el-option label="部分提取" value="部分提取"></el-option>
+                                <el-option label="销户提取" value="销户提取"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="提取方式：">
+                            <el-select  v-model="editForm.APPLICATION_WAY" placeholder="请选择" >
+                                <el-option label="现金" value="现金"></el-option>
+                                <el-option label="银行" value="银行"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <div v-if="bb==0">
+                            <el-form-item label="申请提取金额" prop="EXTRACT_MONEY">
+                                <el-input  v-model="editForm.EXTRACT_MONEY"  @blur="toLogin"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div  v-if="bb==1">
+                            <el-form-item label="申请提取金额">
+                                <el-input  v-model="editForm.EXTRACT_MONEY" :disabled="true" ></el-input>
+                            </el-form-item>
+                        </div>
+                        <el-form-item label="申请人收款户名" prop="APPL_BANK_NAME">
+                            <el-input  v-model="editForm.APPL_BANK_NAME" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="申请人收款账号" prop="YHZH">
+                            <el-input  v-model="editForm.YHZH" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="委托人姓名">
+                            <el-input  v-model="editForm.BAILOR_NAME" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="委托人身份证">
+                            <el-input  v-model="editForm.BILOR_IDNUM" ></el-input>
+                        </el-form-item>
+                    </el-main>
+                </el-container>
+            </div>
+            <div class="basicInfo" v-if="active==1">
+                <div v-if="aa==0">
+                    <h3 >个人提取原因</h3>
+                    <el-form-item label="提取原因：">
+                        <el-select v-model="editForm.EXTRACT_REASON" placeholder="请选择" @change="changeCause">
+                            <el-option label="房屋超出家庭工资收入的规定比例" value="房屋超出家庭工资收入的规定比例"></el-option>
+                            <el-option label="建造、翻修、大修住房" value="建造、翻修、大修住房"></el-option>
+                            <el-option label="偿还购房贷款本息" value="偿还购房贷款本息"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <div  v-if="divs==0">
+                        <el-form-item label="租房地址">
+                            <el-input  v-model="editForm.RENTING_ADDRESS" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="租房合同编号">
+                            <el-input  v-model="editForm.RENTING_COMPACT" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="房屋类型">
+                            <el-input  v-model="editForm.RENTING_TYPE" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="房屋支出">
+                            <el-input  v-model="editForm.RENTING_MONEY" ></el-input>
+                        </el-form-item>
+                    </div>
+                    <div v-if="divs==1">
+                        <el-form-item label="建筑面积" >
+                            <el-input  v-model="editForm.HOUSE_ACREAGE" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="修建部位">
+                            <el-input  v-model="editForm.HOUSE_PART" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="房屋地址">
+                            <el-input  v-model="editForm.HOUSE_ADDRESS" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="房屋价值">
+                            <el-input  v-model="editForm.HOUSE_MONEY" ></el-input>
+                        </el-form-item>
+                    </div>
+                    <div v-if="divs==2">
+                        <el-form-item label="贷款个人账号">
+                            <el-input  v-model="editForm.GRZH" :disabled="true"  ></el-input>
+                        </el-form-item>
+                        <el-form-item label="借款合同编号">
+                            <el-input  v-model="editForm.LOAN_ID" :disabled="true" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="贷款发放额">
+                            <el-input  v-model="editForm.LOAN_MONEY" :disabled="true" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="贷款期数">
+                            <el-input  v-model="editForm.LOAN_PERIODS" :disabled="true" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="约定提取时间">
+                            <el-select  v-model="editForm.APPOINTTIME" placeholder="请选择">
+                                <el-option label="5" value="5"></el-option>
+                                <el-option label="10" value="10"></el-option>
+                                <el-option label="15" value="15"></el-option>
+                                <el-option label="20" value="20"></el-option>
+                                <el-option label="25" value="25"></el-option>
+                                <el-option label="30" value="30"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="约定提取期数">
+                            <el-select  v-model="editForm.YDQS" placeholder="请选择">
+                                <el-option label="12" value="12"></el-option>
+                                <el-option label="24" value="24"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="还款金额">
+                            <el-input  v-model="editForm.REFUND_LIMIT" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="贷款类型">
+                            <el-select  v-model="editForm.LOANTYPE" placeholder="请选择">
+                                <el-option label="公积金贷款" value="1"></el-option>
+                                <el-option label="商业贷款" value="2"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </div>
+                </div>
+                <div v-if="aa==1">
+                    <h3 >个人提取原因</h3>
+                    <el-form-item label="提取类型：">
+                        <el-select  v-model="editForm.APPLICATION_TYPE">
+                            <el-option label="销户提取" value="销户提取"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="提取原因：">
+                        <el-input  v-model="editForm.EXTRACT_REASON" ></el-input>
+                        <!--<el-select v-model="editForm.APPLICATION_TYPE" placeholder="请选择" >-->
+                        <!--<el-option label="销户提取" value="销户提取"></el-option>-->
+                        <!--</el-select>-->
+                    </el-form-item>
+                </div>
+            </div>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button  @click="prev"  v-if="active==1">上一步</el-button>
+            <el-button  @click="next('editForm')"   v-if="active==0">下一步</el-button>
+            <el-button @click.native="editFormVisible = false">关闭</el-button>
+            <el-button type="primary" @click.native="editSubmit('editForm')" :loading="editLoading" v-if="active==1">提交</el-button>
+        </div>
+    </el-dialog>
+</div>
+
+
+<script type="text/javascript">
+
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '公积金提取'
+        }
+    });
+
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            active:0,
+            divs:0,
+            aa:0,
+            bb:0,
+            //列表数据
+            tableData: [],
+            //显示加载中样式
+            loading:false,
+            //搜索表单
+            searchForm: {
+                PNAME: ''
+            },
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage:1,
+            //分页大小
+            pageSize:10,
+            //总记录数
+            total:800,
+            //删除的弹出框
+            deleteVisible:false,
+            //编辑界面是否显示
+            editFormVisible: false,
+            editLoading: false,
+            goUrl:'',
+            // 校验规则
+            rules: {
+                APPL_BANK_NAME: [
+                    { required: true, message: '收款人姓名不能为空', trigger: 'blur'},
+                    { min: 2, max: 5,  message: '长度在 2 到 5 个字符', }
+                ],
+                YHZH: [
+                    {pattern: /^([1-9]{1})(\d{14}|\d{18})$/, required: true, message: '请输入申请人收款账号', trigger: 'blur' }
+                ],
+
+                RENTING_ADDRESS: [
+                    { required: true,message: '请输入房屋地址', trigger: 'blur' }
+                ],
+                RENTING_COMPACT: [
+                    { required: true,message: '请输入租房合同编号', trigger: 'blur' },
+                    {pattern: /^[0-9]*$/, message: '请输入正确的合同编号', trigger: 'blur' }
+                ],
+                RENTING_TYPE: [
+                    {required: true,message: '请输入房屋类型', trigger: 'blur' }
+                ],
+                RENTING_MONEY: [
+                    { required: true,message: '请输入租房支出', trigger: 'blur' },
+                    {pattern: /^[0-9]*$/, message: '请输入正确的租房支出', trigger: 'blur' }
+                ],
+                HOUSE_ACREAGE: [
+                    { required: true,message: '请输入建筑面积', trigger: 'blur' },
+                    {pattern: /^[0-9]*$/, message: '请输入正确的格式', trigger: 'blur' }
+                ],
+                HOUSE_PART: [
+                    { required: true,message: '请输入修建部位', trigger: 'blur' }
+                ],
+                HOUSE_MONEY: [
+                    { required: true,message: '请输入房屋价值', trigger: 'blur' },
+                    {pattern: /^[0-9]*$/, message: '请输入正确的格式', trigger: 'blur' }
+                ],
+                APPOINTTIME: [
+                    { required: true, message: '请选择约定提取时间', trigger: 'blur' }
+                ],
+                LOANTYPE: [
+                    { required: true, message: '请选择贷款类型', trigger: 'blur' }
+                ],
+                YDQS: [
+                    { required: true, message: '请选择约定期数', trigger: 'blur' }
+                ]
+
+            },
+
+
+
+            //编辑界面数据
+            editForm: {
+                GRZH: 0,
+                PHONE:'',
+                PNAME: '',
+                IDCARD: '',
+                IDNUMBER: 0,
+                UNAME: '',
+                DWZH: '',
+                APPLICATION_TYPE: '',
+                APPLICATION_WAY: '',
+                LASTNAYDATE:'',
+                DALANCE: 0,
+                EXTRACT_MONEY: 0,
+                APPL_NAME: '',
+                APPL_BANK_ACCOUNT: '',
+                APPL_BANK_NAME:   '',
+                BAILOR_NAME: '',
+                BILOR_IDNUM: '',
+                EXTRACT_REASON: '',
+                RENTING_ADDRESS:'',
+                RENTING_COMPACT:'',
+                RENTING_TYPE:'',
+                RENTING_MONEY:'',
+                HOUSE_ACREAGE:'',
+                HOUSE_PART:'',
+                HOUSE_ADDRESS:'',
+                HOUSE_MONEY:'',
+                LOAN_ID: 0,
+                LOAN_MONEY: 0,
+                LOAN_PERIODS: 0,
+                LOAN_REPAY:'',
+                LOAN_RATE:'',
+                APPL_STATE:1,
+                APPOINTTIME:'',
+                REFUND_LIMIT:'',
+                YDQS:12,
+                BASENUMMBER:0,
+                INDINROP:0,
+                LOANTYPE:''
+
+
+
+            },
+        },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            var start =(this.currentPage-1)*this.pageSize;
+            var end =this.currentPage*this.pageSize+1;
+            axios.post('/BfxhYdtq/pageBfxhYdtq',{'start':start,'end':end}).then(function(response){
+                self.total=response.data.total;
+                self.tableData = response.data.pageData;
+                
+            })
+        },
+        methods:{
+            //步骤条
+            next:function (formName) {
+                if (this.editForm.APPLICATION_TYPE == null || this.editForm.APPLICATION_WAY == null) {
+                    this.$message({
+                        showClose: true,
+                        message: '请选择提取方式和类型！',
+                        type: 'error'
+                    });
+                } else {
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            if (this.active++ > 1) this.active = 0;
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
+                };
+            },
+            prev:function() {
+                this.active--;
+                if (this.active< 1) this.active = 0;
+            },
+            changeWay:function () {
+                if (this.editForm.APPLICATION_TYPE=="部分提取"){
+                    this.editForm.EXTRACT_MONEY=this.editForm.DALANCE-10;
+                    this.aa=0;
+                    this.bb=0;
+                }else {
+                    this.editForm.EXTRACT_MONEY=this.editForm.DALANCE;
+                    this.aa=1;
+                    this.bb=1;
+                }
+            },
+
+            toLogin:function (value) {
+                var _self = this;
+                this.$forceUpdate();
+                var dalance=this.editForm.DALANCE;
+                if (this.editForm.EXTRACT_MONEY>dalance-10||this.editForm.EXTRACT_MONEY<=0){
+                    this.editForm.EXTRACT_MONEY=dalance-10;
+                }
+            },
+            changeCause:function () {
+                if (this.editForm.EXTRACT_REASON=="房屋超出家庭工资收入的规定比例"){
+                    this.divs=0;
+                }else if(this.editForm.EXTRACT_REASON=="建造、翻修、大修住房"){
+                    this.divs=1;
+                }else {
+                    this.divs=2;
+                }
+            },
+            //表格重新加载数据
+            loadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                var self = this;
+                var start =(this.currentPage-1)*this.pageSize;
+                var end =this.currentPage*this.pageSize+1;
+                var searchForm={'start':start,'end':end,'PNAME':this.searchForm.PNAME,};
+                axios.post('/BfxhYdtq/pageBfxhYdtq',searchForm).then(function(response){
+                    _self.total=response.data.total;
+                    _self.tableData = response.data.pageData;
+                })
+                console.log(_self.currentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+            },
+            //表格编辑事件
+            editClick:function(row) {
+                this.goUrl="/BfxhYdtq/addBfxhYdtq";
+                this.editFormVisible = true;
+                this.editForm = Object.assign({}, row);
+                this.active=0;
+                this.divs=0;
+                this.aa=0;
+            },
+
+            //表格查询事件
+            searchClick:function() {
+                var self = this;
+                self.loadingData();//重新加载数据
+            },
+
+            //分页大小修改事件
+            pageSizeChange:function(val) {
+                console.log('每页 ' + val +' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange:function(val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //点击提交事件
+            editSubmit:function(formName){
+
+                if(this.editForm.APPLICATION_TYPE=="销户提取") {
+                    var _self = this;
+                    _self.loading = true;
+                    var formData =this.editForm;
+                    //alert(formData);
+                    var goUrl=this.goUrl;
+                    axios.post(goUrl,formData).then(function(response){
+                        if(response.data>0){
+                            _self.editFormVisible = false;
+                            _self.loadingData();//重新加载数据
+                            _self.rest()
+                        }else{
+                            _self.$message({
+                                message: '操作失败',
+                                type: 'error'
+                            });
+                        }
+                        _self.loadingData();//重新加载数据
+                    })
+                }else{
+                    if(this.editForm.EXTRACT_REASON==null){
+                        this.$message({
+                            showClose: true,
+                            message: '请选择提取原因！',
+                            type: 'error'
+                        });
+                    }else if(this.editForm.EXTRACT_REASON =="偿还购房贷款本息"&&this.editForm.LOAN_ID == null){
+                        this.$message({
+                            showClose: true,
+                            message: '该用户没有贷款，不能选偿还购房贷款本息哦！',
+                            type: 'error'
+                        });
+                    }else if(this.editForm.REFUND_LIMIT>this.editForm.BASENUMMBER*this.editForm.INDINROP*2){
+                        this.$message({
+                            showClose: true,
+                            message: '还款金额不能大于每月公积金的发放金额！',
+                            type: 'error'
+                        });
+                    }else{
+                        this.$refs[formName].validate((valid) => {
+                            if (valid) {
+                                var _self = this;
+                                _self.loading = true;
+                                var formData =this.editForm;
+                                var goUrl=this.goUrl;
+                                axios.post(goUrl,formData).then(function(response){
+                                    if(response.data>0){
+                                        _self.editFormVisible = false;
+                                        _self.loadingData();//重新加载数据
+                                        _self.rest()
+                                    }else{
+                                        _self.$message({
+                                            message: '操作失败',
+                                            type: 'error'
+                                        });
+                                    }
+                                    _self.loadingData();//重新加载数据
+                                })
+                            } else {
+                                console.log('error submit!!');
+                                return false;
+                            }
+                        });
+                    }
+
+                }
+                console.info(this.editForm);
+            }
+        }
+
+    })
+</script>
+</body>
+</html>

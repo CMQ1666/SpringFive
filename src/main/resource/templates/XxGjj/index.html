@@ -1,0 +1,653 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>新乡市住房公积金管理中心</title>
+    <meta charset="utf-8">
+    <meta name="keywords" content="新乡市住房公积金管理中心, 公积金查询, 贷款查询, 公积金贷款查询, 公积金提取">
+    <meta name="description" content="新乡市住房公积金管理中心">
+    <!-- 基础css框架区starts -->
+    <!-- 以下部分为核心前端顶部资源加载内容，包含基础样式、兼容性适配功能的相关css和javascript文件，一般情况下请不要修改 -->
+    <!-- bootstrap -->
+    <link href="../css/index.css" tppabs="http://www.xxzfgjj.com/Content/images/index.css" rel="stylesheet" type="text/css" media="screen">
+    <link rel="shortcut icon" href="/Content/images/ico.png">
+    <link rel="bookmark" href="/Content/images/ico.png" />
+    <script src="../js/jquery-1.8.3.min.js" tppabs="http://www.xxzfgjj.com/Content/js/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="../swfobject_modified.js" tppabs="http://www.xxzfgjj.com/Content/Scripts/swfobject_modified.js" type="text/javascript"></script>
+
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+    <div class="top">
+<div class="top-bar">
+<div class="top-bar-cont clearfix">
+	<div class="top-bar-left">欢迎来到新乡市住房公积金管理中心！</div>
+	<div class="top-bar-right">
+		<div><a href="/Page/denglu"><img src="../img/weibo1.jpg" /><span>请登录</span><img src="../img/weibo.jpg" /></a></div>
+	</div>
+</div>	
+</div>
+<!--top-bar end-->
+<div class="top-cont">
+	<div class="logo">
+    </div>
+	<div class="top-right">
+<object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="650" height="120">
+	    <param name="movie" value="Content/images/top.swf" tppabs="http://www.xxzfgjj.com/Content/images/top.swf">
+	    <param name="quality" value="high">
+	    <param name="wmode" value="transparent">
+	    <param name="swfversion" value="9.0.45.0">
+	    <!-- 此 param 标签提示使用 Flash Player 6.0 r65 和更高版本的用户下载最新版本的 Flash Player。如果您不想让用户看到该提示，请将其删除。 -->
+	    <param name="expressinstall" value="Scripts/expressInstall.swf" tppabs="http://www.xxzfgjj.com/Scripts/expressInstall.swf">
+	    <!-- 下一个对象标签用于非 IE 浏览器。所以使用 IECC 将其从 IE 隐藏。 -->
+	    <!--[if !IE]>-->
+	    <object type="application/x-shockwave-flash" data="Content/images/top.swf" tppabs="http://www.xxzfgjj.com/Content/images/top.swf" width="650" height="120">
+	      <!--<![endif]-->
+	      <param name="quality" value="high">
+	      <param name="wmode" value="transparent">
+	      <param name="swfversion" value="9.0.45.0">
+	      <param name="expressinstall" value="Content/Scripts/expressInstall.swf" tppabs="http://www.xxzfgjj.com/Content/Scripts/expressInstall.swf">
+	     
+	      <!--[if !IE]>-->
+        </object>
+	    <!--<![endif]-->
+      </object>
+</div>
+</div>
+<div class="menu-bg">
+<div class="menu">
+	<ul>
+       <li class="active"><a title="首页" href="index.htm" tppabs="http://www.xxzfgjj.com/">首页</a></li>
+       <li><a title="中心简介" href="zxjj/glzxjj.htm" tppabs="http://www.xxzfgjj.com/zxjj/glzxjj">中心简介</a></li>
+       <li><a title="党风党建" href="dfdj/index.htm" tppabs="http://www.xxzfgjj.com/dfdj/">党风党建</a></li>
+       <li><a title="政务公开" href="zwgk/index.htm" tppabs="http://www.xxzfgjj.com/zwgk/">政务公开</a></li>
+       <li><a title="文明创建" href="wmcj.htm" tppabs="http://www.xxzfgjj.com/wmcj">文明创建</a></li>
+       <li><a title="工作动态" href="gzdt.htm" tppabs="http://www.xxzfgjj.com/gzdt">工作动态</a></li>
+       <li ><a title="政策法规" href="zcfg.htm" tppabs="http://www.xxzfgjj.com/zcfg">政策法规</a></li>
+       <li><a title="归集业务" href="gjyw.htm" tppabs="http://www.xxzfgjj.com/gjyw">归集业务</a></li>
+       <li><a title="提取指南" href="tqzn.htm" tppabs="http://www.xxzfgjj.com/tqzn">提取指南</a></li>
+       <li><a title="贷款专栏" href="dkzl.htm" tppabs="http://www.xxzfgjj.com/dkzl">贷款专栏</a></li>
+       <li><a title="县(市)管理站" href="xglz/index.htm" tppabs="http://www.xxzfgjj.com/xglz/">县(市)管理站</a></li>
+       <li><a title="公积金查询" href="gjjcx/index.htm" tppabs="http://www.xxzfgjj.com/gjjcx/">公积金查询</a></li>
+       <li><a title="表格下载" href="bgxz.htm" tppabs="http://www.xxzfgjj.com/bgxz">表格下载</a></li>
+       <li><a title="百姓问答" href="bxwd/index.htm" tppabs="http://www.xxzfgjj.com/bxwd/">百姓问答</a></li>
+	</ul>
+	
+</div>
+</div>
+<!--menu-bg end-->
+</div>
+    <div class="index-notice">
+        <div class="cont">
+            <div class="index-notice-tt">
+                <i class="iconfont"></i><span><a href="tzgg.htm" tppabs="http://www.xxzfgjj.com/tzgg" title="通知公告">通知公告</a></span></div>
+            <div class="index-notice-cont">
+                <div id="Scroll-ul">
+                    <ul>
+                            <li><a href="tzgg/1711035.html" tppabs="http://www.xxzfgjj.com/tzgg/1711035.html" title="如何开通你的公积金查询短信？很方便的！" target="_blank">如何开通你的公积金查询短信？很方便的！</a><span>2015-07-17</span></li>
+                            <li><a href="tzgg/1711034.html" tppabs="http://www.xxzfgjj.com/tzgg/1711034.html" title="每月最后一个工作日不办理提取、转移业务通知" target="_blank">每月最后一个工作日不办理提取、转移业务通知</a><span>2017-07-20</span></li>
+                            <li><a href="tzgg/1711033.html" tppabs="http://www.xxzfgjj.com/tzgg/1711033.html" title="我市住房公积金个人账户年度结息工作顺利完成" target="_blank">我市住房公积金个人账户年度结息工作顺利完成</a><span>2017-07-09</span></li>
+                            <li><a href="tzgg/1706202.html" tppabs="http://www.xxzfgjj.com/tzgg/1706202.html" title="2017年结息暂停业务的通知" target="_blank">2017年结息暂停业务的通知</a><span>2017-06-20</span></li>
+                    </ul>
+                </div>
+            </div>
+            <!--index-notice-cont end-->
+            <div class="index-notice-right">
+                <div class="cont">
+                <form role="form" method="get" action="http://www.xxzfgjj.com/Search">
+                    <input class="input" name="Key" value="" type="text" placeholder="请输入你要查询的问题" />
+                    <input type="submit" class="btn iconfont" value="&#xe61f" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main clearfix">
+    <div class="index-cont">
+        <div class="index-slider-pic">
+            <div id="index-slider-cont">
+                    <div>
+                        <a href="javascript:if(confirm('http://www.gov.cn/xinwen/2018-09/20/content_5323786.htm  \n\n���ļ��޷��� Teleport Ultra ����, ��Ϊ ����һ�����·���ⲿ������Ϊ������ʼ��ַ�ĵ�ַ��  \n\n�����ڷ������ϴ���?'))window.location='http://www.gov.cn/xinwen/2018-09/20/content_5323786.htm'" tppabs="http://www.gov.cn/xinwen/2018-09/20/content_5323786.htm" title="国务院办公厅开通 “国家政务服务投诉与建议”小程序" target="_blank">
+                            <img src="../img/201810161019233113.jpg"  /></a>
+                        <p class="title">国务院办公厅开通 “国家政务服务投诉与建议”小程序</p>
+                    </div>
+                    <div>
+                            <img src="../img/201801301108171665.jpg"  />
+                        <p class="title">新乡市住房公积金管理中心全体党员重温入党誓词</p>
+                    </div>
+                    <div>
+                            <img src="../img/201711031117144375.jpg"  />
+                        <p class="title">新乡市住房公积金管理中心开展健康知识讲座</p>
+                    </div>
+                    <div>
+                            <img src="../img/201711031127562343.jpg" />
+                        <p class="title">株洲市住房公积金管理中心莅临我中心调研</p>
+                    </div>
+                    <div>
+                            <img src="../img/201711031039018125.jpg"  />
+                        <p class="title">崔立峰教授莅临我中心讲授《学习党章 做合格共产党员》专题党课</p>
+                    </div>
+            </div>
+            <!--index-slider-cont end-->
+        </div>
+        <!--index-slider-pic end-->
+        <div class="index-hot">
+            <div class="index-title">
+                <div class="tt">
+                    <a href="zxdt.htm" tppabs="http://www.xxzfgjj.com/zxdt" title="最新动态">最新动态</a></div>
+                <div class="more">
+                    <a href="zxdt.htm" tppabs="http://www.xxzfgjj.com/zxdt" title="查看更多 最新动态">查看更多</a></div>
+            </div>
+            <!--index-title end-->
+                <dl>
+                    <dt><a href="zxdt/1812041.html" tppabs="http://www.xxzfgjj.com/zxdt/1812041.html" title="贷款预约叫号通知" target="_blank">贷款预约叫号通知</a></dt>
+                    <dd>
+                        </dd>
+                </dl>
+            <ul>
+                    <li><a href="zxdt/1811212.html" tppabs="http://www.xxzfgjj.com/zxdt/1811212.html" title="住房公积金贷款扣款通知" target="_blank">住房公积金贷款扣款通知</a><span>2018-11-21</span></li>
+                    <li><a href="zxdt/1811111.html" tppabs="http://www.xxzfgjj.com/zxdt/1811111.html" title="新业务系统试运行温馨告知" target="_blank">新业务系统试运行温馨告知</a><span>2018-11-11</span></li>
+                    <li><a href="zxdt/1810241.html" tppabs="http://www.xxzfgjj.com/zxdt/1810241.html" title="新乡市住房公积金管理中心 关于新业务系统上线后规范业务办理的通知" target="_blank">新乡市住房公积金管理中心 关于新业务系统上线后规范业务办理的通知</a><span>2018-10-24</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="index-side">
+        <div class="index-service">
+              <ul>
+                <li class="c1"><a href="gjjcx/index.htm" tppabs="http://www.xxzfgjj.com/gjjcx/"><i class="iconfont"></i><span>个人住房公积金余额查询</span></a></li>
+                <li class="c2"><a href="gjjcx/index.htm" tppabs="http://www.xxzfgjj.com/gjjcx/"><i class="iconfont"></i><span>个人住房公积金贷款查询</span></a></li>
+                <li class="c3"><a href="jsq/index.htm" tppabs="http://www.xxzfgjj.com/jsq/"><i class="iconfont"></i><span>贷款等额本息计算器</span></a></li>
+            </ul>
+        </div>
+        <!--index-service end-->
+    </div>
+    <!--index-side end-->
+    <div class="index-cont">
+       
+        <div class="index-cont-left">
+            <div class="index-title index-tt-border">
+                <div class="tt">
+                    <a href="zcfg.htm" tppabs="http://www.xxzfgjj.com/zcfg" title="政策法规">政策法规</a></div>
+                <div class="more">
+                    <a href="zcfg.htm" tppabs="http://www.xxzfgjj.com/zcfg" title="查看更多 政策法规">查看更多</a></div>
+            </div>
+            <!--index-title end-->
+            <div id="tableView">
+                <el-row>
+                    <el-table
+                            :data="tableData"
+                            v-loading.body="loading"
+                            border
+                            @selection-change="selectionChange"
+                            style="width: 100%">
+                        <el-table-column
+                                prop="NEWSHEAD"
+                                width="158">
+                        </el-table-column>
+                        <el-table-column
+                                prop="NEWSPASTDATE"
+                                width="100">
+                        </el-table-column>
+                        <el-table-column
+                                label=>
+                            <template scope="scope">
+                                <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">详情</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-row>
+            </div>
+            <div class="index-title index-tt-border">
+                <div class="tt">
+                    <a href="tqzn.htm" tppabs="http://www.xxzfgjj.com/tqzn" title="提取指南">提取指南</a></div>
+                <div class="more">
+                    <a href="tqzn.htm" tppabs="http://www.xxzfgjj.com/tqzn" title="查看更多 提取指南">查看更多</a></div>
+            </div>
+            <!--index-title end-->
+            <div class="index-art">
+                <ul>
+                        <li><a href="tqzn/1811013.html" tppabs="http://www.xxzfgjj.com/tqzn/1811013.html" target="_blank" title="提取一次性告知单">提取一次性告知单</a><span>2018-11-01</span></li>
+                        <li><a href="tqzn/1806212.html" tppabs="http://www.xxzfgjj.com/tqzn/1806212.html" target="_blank" title="新乡市住房公积金管理中心 关于调整住房公积金提取业务的通知">新乡市住房公积金管理中心 关于调整住房公积金提取业务的通知</a><span>2018-06-21</span></li>
+                </ul>
+            </div>
+        </div>
+        <!--index-cont-left end-->
+        <div class="index-cont-right">
+            <div class="index-title index-tt-border">
+                <div class="tt">
+                    <a href="gzdt.htm" tppabs="http://www.xxzfgjj.com/gzdt" title="工作动态">工作动态</a></div>
+                <div class="more">
+                    <a href="gzdt.htm" tppabs="http://www.xxzfgjj.com/gzdt" title="查看更多 工作动态">查看更多</a></div>
+            </div>
+            <!--index-title end-->
+            <div id="tableTNAME">
+                <el-row>
+                    <el-table
+                            :data="tableDataTNAME"
+                            v-loading.body="loading"
+                            border
+                            @selection-change="selectionChange"
+                            style="width: 100%">
+                        <el-table-column
+                                prop="NEWSHEAD"
+                                width="238">
+                        </el-table-column>
+                        <el-table-column
+                                prop="NEWSPASTDATE"
+                                width="100">
+                        </el-table-column>
+                        <el-table-column
+                                label=>
+                            <template scope="scope">
+                                <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">详情</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-row>
+
+                <!--编辑界面-->
+                <el-dialog title="新闻详情" :visible.sync="editFormVisible" :close-on-click-modal="false">
+                    <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+                        <el-form-item label="新闻标题" prop="NEWSHEAD">
+                            <el-input v-model="editForm.NEWSHEAD" :disabled="true"auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="发布时间" prop="NEWSPASTDATE">
+                            <el-input v-model="editForm.NEWSPASTDATE" :disabled="true"auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="新闻内容">
+                            <el-input type="textarea" v-model="editForm.NEWSCONTENT":readonly="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="发布人员" prop="NEWSPERSON">
+                            <el-input v-model="editForm.NEWSPERSON" auto-complete="off":disabled="true"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click.native="editFormVisible = false">关闭</el-button>
+                    </div>
+                </el-dialog>
+            </div>
+            <div class="index-title index-tt-border">
+                <div class="tt">
+                    <a href="dkzl.htm" tppabs="http://www.xxzfgjj.com/dkzl" title="贷款专栏">贷款专栏</a></div>
+                <div class="more">
+                    <a href="dkzl.htm" tppabs="http://www.xxzfgjj.com/dkzl" title="查看更多 贷款专栏">查看更多</a></div>
+            </div>
+            <!--index-title end-->
+            <div class="index-art">
+                <ul>
+                        <li><a href="dkzl/1811015.html" tppabs="http://www.xxzfgjj.com/dkzl/1811015.html" target="_blank" title="二手房贷款应提供的证明材料">二手房贷款应提供的证明材料</a><span>2018-11-01</span></li>
+                        <li><a href="dkzl/1811018.html" tppabs="http://www.xxzfgjj.com/dkzl/1811018.html" target="_blank" title=" 现房产抵押 购买新建住房贷款应提供的材料"> 现房产抵押 购买新建住房贷款应提供的材料</a><span>2018-11-01</span></li>
+                        <li><a href="dkzl/1811017.html" tppabs="http://www.xxzfgjj.com/dkzl/1811017.html" target="_blank" title="商业性个人住房贷款转住房公积金贷款 应提供的材料">商业性个人住房贷款转住房公积金贷款 应提供的材料</a><span>2018-11-01</span></li>
+                        <li><a href="dkzl/1811016.html" tppabs="http://www.xxzfgjj.com/dkzl/1811016.html" target="_blank" title="开发商担保 购买新建住房贷款应提供的证明材料">开发商担保 购买新建住房贷款应提供的证明材料</a><span>2018-11-01</span></li>
+                        <li><a href="dkzl/1811014.html" tppabs="http://www.xxzfgjj.com/dkzl/1811014.html" target="_blank" title="贷款须知">贷款须知</a><span>2018-11-01</span></li>
+                </ul>
+            </div>
+        </div>
+        <!--index-cont-right end-->
+        <div class="ad-60"><object id="FlashID2" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="810" height="80">
+		    <param name="movie" value="Content/images/w700.swf" tppabs="http://www.xxzfgjj.com/Content/images/w700.swf">
+		    <param name="quality" value="high">
+		    <param name="wmode" value="opaque">
+		    <param name="swfversion" value="9.0.45.0">
+
+		      <param name="quality" value="high">
+		      <param name="wmode" value="opaque">
+		      <param name="swfversion" value="9.0.45.0">
+		      <param name="expressinstall" value="Scripts/expressInstall.swf" tppabs="http://www.xxzfgjj.com/Scripts/expressInstall.swf">
+		      <!-- 浏览器将以下替代内容显示给使用 Flash Player 6.0 和更低版本的用户。 -->
+		      <div>
+		        <h4>此页面上的内容需要较新版本的 Adobe Flash Player。</h4>
+		        <p><a href="javascript:if(confirm('http://www.adobe.com/go/getflashplayer  \n\n���ļ��޷��� Teleport Ultra ����, ��Ϊ ����һ�����·���ⲿ������Ϊ������ʼ��ַ�ĵ�ַ��  \n\n�����ڷ������ϴ���?'))window.location='http://www.adobe.com/go/getflashplayer'" tppabs="http://www.adobe.com/go/getflashplayer"><img src="../www.adobe.com/images/shared/download_buttons/get_flash_player-1.gif" tppabs="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="获取 Adobe Flash Player" width="112" height="33" /></a></p>
+	          </div>
+		      <!--[if !IE]>-->
+	        </object>
+		    <!--<![endif]-->
+	      </object>
+        </div>
+        <div class="index-title index-tt-border">
+            <div class="tt">
+                <a href="bxwd/index.htm" tppabs="http://www.xxzfgjj.com/bxwd/" title="百姓问答">百姓问答</a></div>
+            <div class="more-link">
+                <a href="bxwd/index.htm" tppabs="http://www.xxzfgjj.com/bxwd/">我要投诉咨询</a></div>
+        </div>
+        <!--index-title end-->
+        <div class="index-faq">
+            <ul>
+                <li><i>称呼</i><a>主题内容</a><span>时间</span></li>
+                <li><i>齐少辉</i><a href="bxwd/1811288.html" tppabs="http://www.xxzfgjj.com/bxwd/1811288.html" target="_blank"><b class="">【已回复】</b>想提前还贷，我是每年十一月提取，还贷了可以什么时候提取公积金</a><span>2018-11-28</span></li>
+                <li><i>方先生</i><a href="bxwd/1811282.html" tppabs="http://www.xxzfgjj.com/bxwd/1811282.html" target="_blank"><b class="">【已回复】</b>请问公积金要交多长时间才能贷款，如果贷款可以贷多少</a><span>2018-11-28</span></li>
+                <li><i>王先生</i><a href="bxwd/1811281.html" tppabs="http://www.xxzfgjj.com/bxwd/1811281.html" target="_blank"><b class="">【已回复】</b>这个月扣款房贷少了280，是以后都要会少么？</a><span>2018-11-28</span></li>
+                <li><i>任</i><a href="bxwd/1811279.html" tppabs="http://www.xxzfgjj.com/bxwd/1811279.html" target="_blank"><b class="">【已回复】</b>我未婚，户口在鹤壁，，近期打算办理公积金贷款，查到政策说的是需要提供户...</a><span>2018-11-27</span></li>
+                <li><i>高先生</i><a href="bxwd/18112623.html" tppabs="http://www.xxzfgjj.com/bxwd/18112623.html" target="_blank"><b class="">【已回复】</b>你好，请问自签订购房合同5年以内的房是不是可以凭相关材料一次性支取所有公...</a><span>2018-11-26</span></li>
+                <li><i>徐先生</i><a href="bxwd/18112513.html" tppabs="http://www.xxzfgjj.com/bxwd/18112513.html" target="_blank"><b class="">【已回复】</b>公积金贷款还款已满一年，想提取一年的还款金额，具体流程和需要携带材料有...</a><span>2018-11-25</span></li>
+                <li><i>张</i><a href="bxwd/1811215.html" tppabs="http://www.xxzfgjj.com/bxwd/1811215.html" target="_blank"><b class="">【已回复】</b>你好！我现在名下有一套全款房，现在需要购买第二套住房可以使用公积金贷款...</a><span>2018-11-21</span></li>
+                <li><i>李</i><a href="bxwd/18112044.html" tppabs="http://www.xxzfgjj.com/bxwd/18112044.html" target="_blank"><b class="">【已回复】</b>我想提前还款，新系统什么时候可以使用</a><span>2018-11-20</span></li>
+                <li><i>张女士</i><a href="bxwd/18112018.html" tppabs="http://www.xxzfgjj.com/bxwd/18112018.html" target="_blank"><b class="">【已回复】</b>2018年11月20日收到一条公积金扣款信息，没有任何的说明，不知道是什么情况</a><span>2018-11-20</span></li>
+                
+            </ul>
+        </div>
+        <!--index-faq end-->
+    </div>
+    <!--index-cont end-->
+    <div class="index-side">
+         
+<div class="index-title index-tt-border">
+            <div class="tt">
+                最新利率(2016-02-21)</div>
+        </div>
+        <!--index-title end-->
+        <div class="index-table">
+            <table width="100%" border="0" cellpadding="0">
+                <tr>
+                    <th colspan="2">
+                        <b>个人住房公积金存款</b>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        当年缴存
+                    </td>
+                    <td>
+                        年利率 1.50%
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        上年结转
+                    </td>
+                    <td>
+                        年利率 1.50%
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <b>个人住房公积金贷款</b>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        五年以下(含五年)
+                    </td>
+                    <td>
+                        年利率 2.75% 月利率 2.2917‰
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        五年以上
+                    </td>
+                    <td>
+                        年利率 3.25% 月利率 2.7083‰
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--index-table end-->
+            <div class="index-title index-tt-border">
+                <div class="tt">
+                    <a href="bgxz.htm" tppabs="http://www.xxzfgjj.com/bgxz" title="表格下载">表格下载</a></div>
+                <div class="more">
+                    <a href="bgxz.htm" tppabs="http://www.xxzfgjj.com/bgxz" title="查看更多 表格下载">查看更多</a></div>
+            </div>
+            <!--index-title end-->
+            <div class="index-side-art">
+                <ul>
+                        <li><a href="bgxz/1811211.html" tppabs="http://www.xxzfgjj.com/bgxz/1811211.html" target="_blank" title="汇（补）缴清册">汇（补）缴清册</a></li>
+                        <li><a href="bgxz/1811102.html" tppabs="http://www.xxzfgjj.com/bgxz/1811102.html" target="_blank" title="个人帐户设立登记表">个人帐户设立登记表</a></li>
+                        <li><a href="bgxz/1811101.html" tppabs="http://www.xxzfgjj.com/bgxz/1811101.html" target="_blank" title="住房公积金缴存职工封存登记表">住房公积金缴存职工封存登记表</a></li>
+                        <li><a href="bgxz/18110122.html" tppabs="http://www.xxzfgjj.com/bgxz/18110122.html" target="_blank" title="集中办理住房公积金异地转移接续申请委托书">集中办理住房公积金异地转移接续申请委托书</a></li>
+                        <li><a href="bgxz/18110121.html" tppabs="http://www.xxzfgjj.com/bgxz/18110121.html" target="_blank" title="个人账户合并申请表">个人账户合并申请表</a></li>
+                </ul>
+            </div>
+        <!--index-zt-cont end-->
+        <div class="index-title index-tt-border">
+            <div class="tt">
+                联系我们</div>
+        </div>
+        <!--index-title end-->
+        <div class="index-zhinan">
+            <ul>
+                <li><a href="zxjj/gwhjj/index.htm" tppabs="http://www.xxzfgjj.com/zxjj/gwhjj/" title="管委会简介"><i class="iconfont"></i><span>管委会简介</span></a></li>
+                <li><a href="zxjj/glzxjj.htm" tppabs="http://www.xxzfgjj.com/zxjj/glzxjj" title="管理中心简介"><i class="iconfont"></i><span>管理中心简介</span></a></li>
+                <li><a href="zxjj/xzjg.htm" tppabs="http://www.xxzfgjj.com/zxjj/xzjg" title="行政机构"><i class="iconfont"></i><span>行政机构</span></a></li>
+                <li><a href="zxjj/gzzz.htm" tppabs="http://www.xxzfgjj.com/zxjj/gzzz" title="工作职责"><i class="iconfont"></i><span>工作职责</span></a></li>
+                
+            </ul>
+        </div>
+        <div class="index-contact">
+             <ul>
+                <li>地址：新乡市东区西如意楼市民中心三楼北厅（市政府西南200米处）</li>
+                <!--<li>电话： </li>-->
+                <li>欢迎拨打新乡公积金热线电话：12329</li>
+                <li>传真：2035508</li>
+            </ul>
+
+        </div>
+    </div>
+    <!--index-side end-->
+</div>
+
+
+
+
+
+
+
+<DIV id="img1" style="Z-INDEX: 1000;right: 2px; WIDTH: 250px; POSITION: fixed; bottom: 0px; HEIGHT: 162px;
+ visibility: visible;">
+
+</div>
+<SCRIPT src="../js/js.js" tppabs="http://www.xxzfgjj.com/Content/js/js.js"></SCRIPT>    <!--index-contact-bg end-->
+    <div class="index-flink">
+        <div class="cont">
+            <select name="jumpMenu" id="jumpMenu" onchange="MM_jumpMenu('parent',this,0)">
+                <option>---------------中央部门站点---------------</option>
+                    <option value="http://www.gov.cn/xinwen/2018-09/20/content_5323786.htm">国务院办公厅开通 “国家政务服务投诉与建议”小程序</option>
+                    <option value="http://www.mohurd.gov.cn/">中华人民共和国住房和城乡建设部</option>
+            </select>
+            <select name="jumpMenu2" id="jumpMenu2" onchange="MM_jumpMenu('parent',this,0)">
+                <option>--------------国内省市政府站点--------------</option>
+                    <option value="http://www.henan.gov.cn">河南省人民政府</option>
+                    <option value="http://www.hnjs.gov.cn/jst/index.html">河南省住房和城乡建设厅</option>
+            </select>
+            <select name="jumpMenu3" id="jumpMenu3" onchange="MM_jumpMenu('parent',this,0)">
+                <option>----------------市直机关网站----------------</option>
+                    <option value="http://www.xinxiang.gov.cn">新乡市人民政府</option>
+            </select>
+            <select name="jumpMenu4" id="jumpMenu4" onchange="MM_jumpMenu('parent',this,0)">
+                <option>-----------------优秀站点-----------------</option>
+                    <option value="http://www.baidu.com">百度</option>
+                    <option value="http://www.163.com">网易</option>
+                    <option value="http://www.qq.com">腾讯</option>
+                    <option value="http://news.sina.com.cn/">新浪</option>
+            </select>
+        </div>
+    </div>
+    <!--index-flink edn-->
+    <div class="footer">
+	<div class="cont clearfix">
+		<div class="blinks">
+电话： / 欢迎拨打新乡公积金热线电话：12329 / 传真：2035508
+<br />地址：新乡市东区西如意楼市民中心三楼北厅（市政府西南200米处）
+<br /><a href="gov_Manage/Index.htm" tppabs="http://www.xxzfgjj.com/gov_Manage/Index" title="新乡市住房公积金管理中心"  target="_blank"> 新乡市住房公积金管理中心</a> 技术支持:<a href="javascript:if(confirm('http://www.shangxiacehua.com/  \n\n���ļ��޷��� Teleport Ultra ����, ��Ϊ ����һ�����·���ⲿ������Ϊ������ʼ��ַ�ĵ�ַ��  \n\n�����ڷ������ϴ���?'))window.location='http://www.shangxiacehua.com/'" tppabs="http://www.shangxiacehua.com/" target="_blank">上下策划</a> <script src="../count.knowsky.com/count1/count.asp-id=87611&sx=1&ys=43" tppabs="http://count.knowsky.com/count1/count.asp?id=87611&sx=1&ys=43" language="JavaScript" charset="gb2312"></script><script src="../s22.cnzz.com/stat.php-id=3258887&web_id=3258887" tppabs="http://s22.cnzz.com/stat.php?id=3258887&web_id=3258887" language="JavaScript"></script>
+<br /><a href="javascript:if(confirm('http://www.miitbeian.gov.cn/  \n\n���ļ��޷��� Teleport Ultra ����, ��Ϊ ����һ�����·���ⲿ������Ϊ������ʼ��ַ�ĵ�ַ��  \n\n�����ڷ������ϴ���?'))window.location='http://www.miitbeian.gov.cn/'" tppabs="http://www.miitbeian.gov.cn/" target="_blank" title="工信部网站查询">豫ICP备11016369号</a>
+<br/><script type="text/javascript">document.write(unescape("%3Cspan id='_ideConac' %3E%3C/span%3E%3Cscript src='../dcs.conac.cn/js/17/257/0000/40669810/CA172570000406698100001.js'/*tpa=http://dcs.conac.cn/js/17/257/0000/40669810/CA172570000406698100001.js*/ type='text/javascript'%3E%3C/script%3E"));</script>
+		 	<div style="width:220px;margin:0 auto; padding:0px 0;">
+		 		<a target="_blank" href="javascript:if(confirm('http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41070202000290  \n\n���ļ��޷��� Teleport Ultra ����, ��Ϊ ����һ�����·���ⲿ������Ϊ������ʼ��ַ�ĵ�ַ��  \n\n�����ڷ������ϴ���?'))window.location='http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41070202000290'" tppabs="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41070202000290" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="../img/beian.png" tppabs="http://www.xxzfgjj.com/beian.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#cccccc;">豫公网安备 41070202000290号</p></a>
+		 	</div>		</div>
+	</div>
+</div>
+    
+    <script type="text/javascript" src="../js/jscarousel.js" tppabs="http://www.xxzfgjj.com/Content/js/jscarousel.js"></script>
+    <script type="text/javascript" src="../js/jquery.hoveraccordion.js" tppabs="http://www.xxzfgjj.com/Content/js/jquery.hoveraccordion.js"></script>
+    <script type="text/javascript" src="../js/jquery.kinMaxShow.js" tppabs="http://www.xxzfgjj.com/Content/js/jquery.kinMaxShow.js"></script>
+    <script type="text/javascript" src="../js/jquery.jslides.js" tppabs="http://www.xxzfgjj.com/Content/js/jquery.jslides.js"></script>
+
+    <script type="text/javascript">
+        function MM_jumpMenu(targ, selObj, restore) {
+            eval(targ + ".location='" + selObj.options[selObj.selectedIndex].value + "'");
+            if (restore) selObj.selectedIndex = 0;
+        }
+        function AutoScroll(obj) {
+            $(obj).find("ul:first").animate({
+                marginTop: "-35px"
+            }, 500, function () {
+                $(this).css({ marginTop: "0px" }).find("li:first").appendTo(this);
+            });
+        }
+        $(document).ready(function () {
+            setInterval('AutoScroll("#Scroll-ul")', 3000);
+        });
+    </script>
+    
+    <script type="text/javascript">
+        $(function () {
+            $("#index-slider-cont").kinMaxShow({
+                height: 250,
+                button: {
+                    switchEvent: 'mouseover',
+                    showIndex: true,
+                    normal: { width: '18px', height: '18px', lineHeight: '18px', right: '2px', bottom: '8px', fontSize: '12px', opacity: 0.8, background: "#CC0000", border: "1px solid #CC0000", color: "#FFFFFF", marginRight: '6px' },
+                    //当前焦点图按钮样           
+                    focus: { background: "#ffffff", border: "1px solid #CC0000", color: "#CC0000" }
+                }
+            });
+        });
+
+    </script>
+
+
+<script type="text/javascript" src="../js/layer.js" tppabs="http://www.xxzfgjj.com/content/js/layer/layer.js" ></script>
+<script>
+$('#weixin').on('click', function(){
+    layer.open({
+    type: 1,
+    //skin: 'layui-layer-rim', //加上边框
+    area: ['250px', '300px'], //宽高
+    content: '<DIV class="weixin-cont"><IMG src="code.jpg"/*tpa=http://www.xxzfgjj.com/code.jpg*/><span>关注新乡公积金</span></DIV>',
+});
+})
+</script>
+ <script>
+
+var tableTNAME= new Vue({
+    el: '#tableTNAME',
+    data: {
+        //列表数据
+        tableDataTNAME: [],
+        //显示加载中样式
+        loading:false,
+        //当前页
+        currentPage:1,
+        //分页大小
+        pageSize:10,
+        //总记录数
+        total:800,
+
+        //编辑界面是否显示
+        editFormVisible: false,
+        editLoading: false,
+        goUrl:'',
+        editFormRules: {
+            name: [
+                { required: true, message: '请输入姓名', trigger: 'blur' }
+            ]
+        },
+        //编辑界面数据
+        editForm: {
+            NEWSHEAD: '',
+            NEWSCONTENT: '',
+            NEWSPERSON: '',
+            NEWSPASTDATE: '',
+            TNAME:'',
+            ZNAME:''
+
+
+        },
+
+    },
+
+        created: function () {
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            var start = (this.currentPage - 1) * this.pageSize;
+            var end = this.pageSize;
+            //var end =this.currentPage*this.pageSize+1;
+            axios.post('/qiantai/pageTNAME', {'start': start, 'end': end}).then(function (response) {
+                // console.log(response.data);
+                //alert(response.data.total);
+                self.total = response.data.total;
+                self.tableDataTNAME = response.data.pageData;
+                // alert(JSON.stringify(response.data.pageData));
+                // self.multipleSelection=response.data.data;
+            })
+        },
+    methods: {
+        //表格编辑事件
+        editClick: function (row) {
+            this.goUrl = "/ZcxgFb/updZcxgFb";
+            this.editFormVisible = true;
+            this.editForm = Object.assign({}, row);
+        },
+    }
+})
+
+var tableView = new Vue({
+    el: '#tableView',
+    data: {
+        //列表数据
+        tableData: [],
+        //显示加载中样式
+        loading:false,
+        //当前页
+        currentPage:1,
+        //分页大小
+        pageSize:10,
+        //总记录数
+        total:800,
+
+        //编辑界面是否显示
+        editFormVisible: false,
+        editLoading: false,
+        goUrl:'',
+        editFormRules: {
+            name: [
+                { required: true, message: '请输入姓名', trigger: 'blur' }
+            ]
+        },
+    },
+    created: function () {
+        //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+        var self = this;
+        var start = (this.currentPage - 1) * this.pageSize;
+        var end = this.pageSize;
+        //var end =this.currentPage*this.pageSize+1;
+        axios.post('/qiantai/pageQianTai', {'start': start, 'end': end}).then(function (response) {
+            // console.log(response.data);
+            //alert(response.data.total);
+            self.total = response.data.total;
+            self.tableData = response.data.pageData;
+            // alert(JSON.stringify(response.data.pageData));
+            // self.multipleSelection=response.data.data;
+        })
+    },
+    methods: {
+        //表格编辑事件
+        editClick: function (row) {
+            this.goUrl = "/ZcxgFb/updZcxgFb";
+            this.editFormVisible = true;
+            this.editForm = Object.assign({}, row);
+        },
+    }
+
+})
+
+</script>
+
+</body>
+</html>
