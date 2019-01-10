@@ -27,7 +27,6 @@ public class LoanServiceImpl implements LoanService {
         for (Map map1:map){
             map2.putAll(map1);
         }
-      //  System.out.println(map2+"**************");
         i = loanDao.addLoan(map2);
         return i ;
     }
@@ -44,7 +43,6 @@ public class LoanServiceImpl implements LoanService {
         for (Map map1:map){
             map2.putAll(map1);
         }
-        //  System.out.println(map2+"**************");
         i = loanDao.addRepay(map2);
         return i ;
 

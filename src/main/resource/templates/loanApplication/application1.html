@@ -16,7 +16,7 @@
 <body>
 <div id="app">
     <div>
-        <span style="color: black;font-size: x-large;">个人抵押贷款</span><p></p>
+        <span style="color: black;font-size: x-large;">个人抵押贷款</span>
         <i class="el-icon-arrow-right"><span style="font-size: large;color: limegreen;"></span></i>
         <el-steps :active="active"  finish-status="success"  simple style="margin-top: 20px" >
             <el-step title="贷款基本资料"></el-step>
@@ -24,7 +24,6 @@
             <el-step title="购房信息"></el-step>
             <el-step title="抵押信息"></el-step>
         </el-steps>
-        <p></p>
     </div>
     <!--11111111111111111111111111111111111111111111111111111-->
     <div id="form1" v-if="active==1">
@@ -111,7 +110,7 @@
                 <el-col :span="5">
                     <div class="grid-content bg-purple">
                         <el-form-item label="*单位账号">
-                            <el-input v-model="form1.UNIT_ID" style="width: 200px;" ::disabled="true"></el-input>
+                            <el-input v-model="form1.UNIT_ID" style="width: 200px;" :disabled="true"></el-input>
                         </el-form-item>
                     </div>
                 </el-col>
@@ -575,11 +574,11 @@
                 spouseNum:''
             },
             let:validate = (rule, value, callback) => {
-                alert(111111)
+               // alert(111111)
                 //后台方法
                 var url="/loan/unique/"+value;
                 axios.post(url).then(function (res) {
-                    alert(res.data)
+                  //  alert(res.data)
                     if ( res.data >0) {
                         callback('账号有误请重新输入')
                     } else {
@@ -685,14 +684,11 @@
                 value: '商品房',
                 label: '商品房'
             }, {
-                value: '解困房',
-                label: '解困房'
+                value: '别墅',
+                label: '别墅'
             }, {
-                value: '花园式住宅',
-                label: '花园式住宅'
-            }, {
-                value: '经济适用房',
-                label: '经济适用房'
+                value: '学区房',
+                label: '学区房'
             }, {
                 value: '平价房',
                 label: '平价房'
@@ -726,7 +722,7 @@
             },
             blurs:function () {
                 var self=this;
-               alert(this.form1.GRZH)
+             //  alert(this.form1.GRZH)
                 var url="/loan/user/"+this.form1.GRZH;
                if(this.form1.GRZH!='') {
                     axios.get(url).then(function (response) {
@@ -811,7 +807,6 @@
                 this.formData.push(this.form2);
                 this.formData.push(this.form3);
                 this.formData.push(this.form4);
-                alert(JSON.stringify(this.formData));
                 var goUrl="/loan/add";
                 axios.post(goUrl,this.formData).then(function(response){
                         if(response.data>0){
@@ -829,7 +824,7 @@
                     })
                 },
 
-
+            //根据期数进行利率对的计算
             periods:function () {
                 //alert(1111);
                 if(this.form1.loanPeriods<=50){
@@ -849,4 +844,3 @@
 </script>
 </body>
 </html>
-.

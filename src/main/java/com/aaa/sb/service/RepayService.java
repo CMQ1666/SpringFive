@@ -61,7 +61,18 @@ public interface RepayService {
      * @param map
      * @return
      */
-    int yuqi(Map map);
+    List<Map> yuqi(Map map);
+
+    /**
+     * 逾期利息计算
+     * @param GRZH
+     * @return
+     */
+
+
+    List<Map> yuqiList(String GRZH);
+
+
 
 
 
