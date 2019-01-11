@@ -53,7 +53,7 @@ public class RepayServiceImpl implements RepayService{
             double i = rate/12 ;//月利率
             int p = Integer.valueOf(repayed_periods);//已还期数
             double s= n-p;//剩余期数；
-            Double yuqi = Double.valueOf(residue_money)*0.01;//违约金！！！！！！
+            Double yuqi = Double.valueOf(residue_money)*0.003;//违约金！！！！！！
             map2.put("REPAYED_PERIODS",p);
             map2.put("RESIDUE_PERIODS",s);
 
@@ -98,7 +98,7 @@ public class RepayServiceImpl implements RepayService{
     @Override
     public List<Map> yuqi(Map map) {
         //repayDao.archiveRepay(map);
-        System.out.println("2312123"+map);
+
         return repayDao.yuqi(map);
     }
 
@@ -114,7 +114,7 @@ public class RepayServiceImpl implements RepayService{
      */
     @Override
     public int archiveRepay(Map map) {
-        System.out.println("/*/*/*/*//*/*"+map);
+       // System.out.println("/*/*/*/*//*/*"+map);
         repayDao.insertRecord(map);
         String time = map.get("REPAYED_DATE")+"";//获取放贷日期
         SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");

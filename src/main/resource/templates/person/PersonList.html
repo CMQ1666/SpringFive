@@ -281,25 +281,11 @@
             },
             //点击销户按钮
             editClickP:function(row) {
-                alert("账户还有剩余金额,确定销户吗？可到公积金提取进行销户提取。");
                 var _self = this;
-                var url = "/seal/query";
-                axios.post(url,{grzh:row.GRZH}).then(function (response) {
-                    if (response.data.daikan == '0'){
-                        alert("此人有带贷款信息,不能进行操作!");
-                    }else{
-                        if(response.data.grzh=='0'){
-                            alert("请勿重复操作!");
-                        }else{
-                            //点击编辑按钮
-                            _self.editFormVisibleP = true;
-                            _self.editForm = Object.assign({}, response.data);
-                            _self.loadingData();
-                        }
-                    }
-                });
+                alert("账户还有剩余金额,确定销户吗？可到公积金提取进行销户提取。");
+                _self.loadingData();
             },
-            //销户按钮保存点击事件
+           /* //销户按钮保存点击事件
             editSubmitP:function(){
                 var _self = this;
                 _self.loading = true;
@@ -327,7 +313,7 @@
                     _self.editFormVisibleP = false;
                     _self.loadingData();//重新加载数据
                 }
-            },
+            },*/
             //点击启封按钮
             editClickQ:function(row) {
                 var _self = this;

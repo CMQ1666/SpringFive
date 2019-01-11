@@ -50,7 +50,7 @@ public interface RepayDao {
             "ALL_MONEY=#{ALL_MONEY}," +
             "REPAY_INTERESTS=#{REPAY_INTERESTS}," +
             "REPAY_MONTH=#{MONTH}," +
-            "REPAYED_DATE=TO_DATE(add_months(sysdate,2))," +
+            "REPAYED_DATE=TO_DATE(add_months(sysdate,1))," +
             "REPAYED_All_MONEY=#{REPAYED_ALL_MONEY}," +
             "REPAY_MONTH_MONEY=#{REPAY_MONTH_MONEY}," +
             "REPAY_STATUS='正常'" +
