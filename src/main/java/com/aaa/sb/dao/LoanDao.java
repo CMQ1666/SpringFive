@@ -34,11 +34,11 @@ public interface LoanDao {
     @Insert("insert into tb_loanappval(loan_id,pid,DWZH,grzh,togetherzh,SALARY,bank_money,loan_money,loan_periods,loan_rate,loan_bank,loan_repay,"+
             "loan_repayer,loan_repaydate,REPAY_BANK,REPAY_ACCOUNTNAME,REPAY_ACCOUNT,status,house_type,house_location," +
             "house_area,buy_id,buy_name,bank_account,house_total,house_firstpay," +
-            "house_price,pawn_type,pawn_name,pawn_idnumber,pawn_address,pawn_status,pawn_money) " +
+            "house_price,pawn_type,pawn_name,pawn_idnumber,pawn_address,pawn_status,pawn_money,DAIKAN) " +
             "values(SEQ_LOANAPPVAL1.nextval,#{PID},#{DWZH},#{GRZH},#{GRZH1},#{ SALARY},#{BANK_MONEY},#{loanAmount}," +
             "#{loanPeriods},#{loanRate},#{trustBank},#{paymentMethod},#{payee},#{paymentDay},#{openBank},#{paymentName},#{paymentAccount},1," +
             "#{houseType},#{houseAddress},#{houseArea},#{HIdNum},#{HName},#{HBank},#{houseTotal},#{houseFirst}," +
-            "#{housePrice},#{DYType},#{DYName},#{DYIdNum},#{DYAddress},#{DYStatus},#{DYMoney})")
+            "#{housePrice},#{DYType},#{DYName},#{DYIdNum},#{DYAddress},#{DYStatus},#{DYMoney},'个人贷款')")
 
     int addLoan(Map map);
 

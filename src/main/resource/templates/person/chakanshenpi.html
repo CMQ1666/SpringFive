@@ -49,7 +49,6 @@
                 <el-table-column prop="AUDITOR" label="转移申请人" ></el-table-column>
                 <el-table-column prop="PERSON_ACCOUNT" label="个人账户" ></el-table-column>
                 <el-table-column prop="TRANSFER_REASON" label="转移原因" ></el-table-column>
-                <el-table-column prop="OPERATOR" label="操作人" ></el-table-column>
                 <el-table-column prop="SUBMIT_TIME" label="转移提交时间"></el-table-column>
                 <el-table-column prop="AUDIT_STATE" label="转移审核状态" ></el-table-column>
             </el-table>
@@ -62,7 +61,7 @@
         </el-row>
     </el-dialog>
     <!----------------------------------------点击查看，出现封存、启封、销户审批------------------------------------------------------>
-    <el-dialog title="封存、启封、销户审批" :visible.sync="FeditFormVisible" :close-on-click-modal="false" width="80%">
+    <el-dialog title="封存、启封审批" :visible.sync="FeditFormVisible" :close-on-click-modal="false" width="80%">
         <el-row>
             <el-table :data="FtableData" v-loading.body="loading" border style="width: 100%" >
                 <el-table-column prop="UNSEAL_ID" label="编号" ></el-table-column>
@@ -73,12 +72,11 @@
                 <el-table-column prop="UNSEAL_NUMBER" label="身份证号" ></el-table-column>
                 <el-table-column prop="UNSEAL_ACCOUNT" label="个人封启账号" ></el-table-column>
                 <el-table-column prop="REASON" label="封启原因" ></el-table-column>
-                <el-table-column prop="OPERATOR" label="创建人" ></el-table-column>
                 <el-table-column prop="CREATE_TIME" label="创建日期" ></el-table-column>
-                <el-table-column prop="AUDIT_STATE" label="业务类型" >
+                <el-table-column prop="STATE" label="业务类型" >
                     <template scope="scope">
-                        {{ scope.row.STATE == 1 ?  '封存审核': '' }}
-                        {{ scope.row.STATE == 2 ?  '启封审核': '' }}
+                        {{ scope.row.STATE == 2?  '封存': '' }}
+                        {{ scope.row.STATE == 1?  '启封': '' }}
                     </template>
                 </el-table-column>
                 <el-table-column prop="AUDIT_NAME" label="审核状态" >
@@ -111,7 +109,7 @@
                 <el-table-column prop="EXTRACT_MONEY" label="提取金额" width="100"></el-table-column>
                 <el-table-column prop="APPL_TIME" label="申请时间" width="150"></el-table-column>
                 <el-table-column prop="APPL_STATE" label="审核状态" width="100">
-                    <template scope="scope">
+                    <template scope="scope">.
                         {{ scope.row.APPL_STATE == 1 ?  '通过': ''}}
                         {{ scope.row.APPL_STATE == 2 ?  '驳回': '' }}
                     </template>
