@@ -20,7 +20,7 @@ public interface RepayDao {
      * @return
      */
         @Select("<script> select * from tb_repay  "+
-                " <where> repay_status='正常'<if test=\"PNAME!=null and PNAME!=''\"> and PNAME like '%'||#{PNAME}||'%'</if></where></script>")
+                " <where> repay_status='正常' and state = 1 <if test=\"PNAME!=null and PNAME!=''\"> and PNAME like '%'||#{PNAME}||'%'</if></where></script>")
     List<Map> getList(Map map);
 
     /**

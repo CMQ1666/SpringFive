@@ -201,7 +201,6 @@
 
     <el-dialog title="还款记录" :visible.sync="editFormVisible1" :close-on-click-modal="false" width="810px">
         <div  >
-                <el_row>
 
                     <el-table
                             :data="tableData1"
@@ -388,7 +387,7 @@
             },
             //还款详情表
             editClick: function (row) {
-                if(row.LOAN_PERIODS==row.REPAYED_PERIODS){
+                if(row.RESIDUE_PERIODS==0){
                     this.$message({
                         message: '已还款完毕',
                         type: 'error'

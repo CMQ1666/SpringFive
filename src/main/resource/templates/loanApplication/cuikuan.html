@@ -23,7 +23,9 @@
 
     <center>
         <div>
-            <el-button  style="margin-top: 12px;"  type="primary" @licck.native="onSubmit()"  >返回</el-button>
+<!--
+            //<el-button  style="margin-top: 12px;"  type="primary" @click.native="onSubmit()"  >返回</el-button>
+-->
         </div>
     </center>
 </div>
@@ -41,7 +43,6 @@
 
             onSubmit:function () {
                 var _self = this;
-
                 var goUrl="/loan/toUser";
                 axios.post(goUrl,this.formData).then(function(response){
 
