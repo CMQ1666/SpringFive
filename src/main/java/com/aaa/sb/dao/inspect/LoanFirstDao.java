@@ -18,7 +18,7 @@ public interface LoanFirstDao {
      * @return
      */
     @Select("<script> select a.PID,a.PNAME,b.LOAN_MONEY,b.LOAN_PERIODS,b.LOAN_RATE,b.LOAN_BANK,b.LOAN_REPAY,b.CTIME,b.STATUS \n" +
-            "from tb_person_info a,tb_loanappval b   \n"  +
+            "from tb_person_info a,tb_loanappval b \n"  +
             "<where> a.PID=b.PID and STATUS=1 <if test=\"PNAME!=null and PNAME!=''\"> and a.PNAME like '%'||#{PNAME}||'%'</if></where></script>")
     List<Map> getList(Map map);
 

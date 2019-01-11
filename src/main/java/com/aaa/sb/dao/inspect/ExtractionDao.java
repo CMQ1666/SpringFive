@@ -17,7 +17,7 @@ public interface ExtractionDao {
      * 获得提取数据
      * @return
      */
-    @Select("<script> select * from tb_extract_application \n" +
+    @Select("<script> select EXTRACT_APPLICATION_ID,COMP_NAME,APPL_NAME,APPL_BANK_ACCOUNT,EXTRACT_MONEY,APPLICATION_WAY,APPLICATION_TYPE,EXTRACT_REASON,to_char(APPL_TIME,'yyyy-MM-dd') as APPL_TIME,APPL_STATE,PRE_ACCOUNT,APPL_IDNUM,APPL_BANK_NAME,BAILOR_NAME,BILOR_IDNUM from tb_extract_application \n" +
             "<where> appl_state=1 and APPLICATION_TYPE=#{radio} <if test=\"PNAME!=null and PNAME!=''\"> and PNAME like '%'||#{PNAME}||'%'</if></where></script>")
     List<Map> getList(Map map);
 

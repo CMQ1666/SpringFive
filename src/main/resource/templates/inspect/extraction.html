@@ -75,68 +75,68 @@
                     align="center"
                     prop="EXTRACT_APPLICATION_ID"
                     label="编号"
-                    width="55">
+                    width="70">
             </el-table-column>
             <el-table-column
                     align="center"
                     prop="COMP_NAME"
                     label="单位名称"
-                    width="150">
+                    >
             </el-table-column>
 
             <el-table-column
                     align="center"
                     prop="APPL_NAME"
                     label="职工姓名"
-                    width="80">
+                   >
             </el-table-column>
 
             <el-table-column
                     align="center"
                     prop="APPL_BANK_ACCOUNT"
                     label="职工账户"
-                    width="150">
+                    >
             </el-table-column>
 
             <el-table-column
                     align="center"
                     prop="EXTRACT_MONEY"
                     label="申请提取金额"
-                    width="150">
+                    >
             </el-table-column>
 
             <el-table-column
                     align="center"
                     prop="APPLICATION_WAY"
                     label="提取方式"
-                    width="120">
+                   >
             </el-table-column>
 
             <el-table-column
                     align="center"
                     prop="APPLICATION_TYPE"
                     label="提取类型"
-                    width="80">
+                    >
             </el-table-column>
 
             <el-table-column
                     align="center"
                     prop="EXTRACT_REASON"
                     label="提取原因"
-                    width="220">
+                    >
             </el-table-column>
 
             <el-table-column
                     align="center"
                     prop="APPL_TIME"
                     label="申请时间"
-                    width="150">
+                    >
             </el-table-column>
             <el-table-column
                     prop="APPL_STATE"
                     label="审批状态"
                     align="center"
-                    width="80">
+                    >
                 <template scope="scope">
                     {{ scope.row.APPL_STATE === 1 ?  '未审核': '' }}
                     {{ scope.row.APPL_STATE === 2 ?  '通过': '' }}
@@ -182,9 +182,9 @@
                     <el-form-item label="姓名" prop="APPL_NAME">
                         <el-input v-model="editForm.APPL_NAME" :disabled="true" auto-complete="off" ></el-input>
                     </el-form-item>
-                    <el-form-item label="证件类型" prop="IDCARD">
+                <!--<el-form-item label="证件类型" prop="IDCARD">
                         <el-input v-model="editForm.IDCARD" :disabled="true" auto-complete="off" ></el-input>
-                    </el-form-item>
+                    </el-form-item>-->
                     <el-form-item label="证件号码" prop="APPL_IDNUM">
                         <el-input v-model="editForm.APPL_IDNUM" :disabled="true" auto-complete="off" ></el-input>
                     </el-form-item>
@@ -195,7 +195,7 @@
                 <el-main width="700px">
                     <el-container>
                         <el-aside width="300px" style="padding-top: 20px">
-                            <el-form-item label="申请提取金额" prop="EXTRACT_MONEY">
+                            <el-form-item label="提取金额" prop="EXTRACT_MONEY">
                                 <el-input v-model="editForm.EXTRACT_MONEY" :disabled="true" auto-complete="off" ></el-input>
                             </el-form-item>
                             <el-form-item label="收款账号" prop="APPL_BANK_ACCOUNT">
@@ -210,9 +210,7 @@
                             <el-form-item label="提取原因" prop="EXTRACT_REASON">
                                 <el-input v-model="editForm.EXTRACT_REASON" :disabled="true" auto-complete="off" ></el-input>
                             </el-form-item>
-                            <el-form-item label="申请时间" prop="APPL_TIME">
-                                <el-input v-model="editForm.APPL_TIME" :disabled="true" auto-complete="off" ></el-input>
-                            </el-form-item>
+
                         </el-aside>
                         <el-main width="300px">
                             <el-form-item label="收款户名" prop="APPL_BANK_NAME">
@@ -224,12 +222,15 @@
                             <el-form-item label="委托人身份证号" prop="BILOR_IDNUM">
                                 <el-input v-model="editForm.BILOR_IDNUM" :disabled="true" auto-complete="off" ></el-input>
                             </el-form-item>
-                            <el-form-item label="审批状态" prop="APPL_STATE">
+                           <!-- <el-form-item label="审批状态" prop="APPL_STATE">
                                 <el-input v-model="editForm.APPL_STATE" :disabled="true" auto-complete="off" ></el-input>
+                            </el-form-item>-->
+                            <el-form-item label="申请时间" prop="APPL_TIME">
+                                <el-input v-model="editForm.APPL_TIME" :disabled="true" auto-complete="off" ></el-input>
                             </el-form-item>
-                            <el-form-item label="准许提取金额" prop="EXTRACT_MONEY">
+                            <!--<el-form-item label="准许提取金额" prop="EXTRACT_MONEY">
                                 <el-input v-model="editForm.EXTRACT_MONEY"  auto-complete="off" ></el-input>
-                            </el-form-item>
+                            </el-form-item>-->
                         </el-main>
                     </el-container>
                 </el-main>
@@ -349,7 +350,7 @@
                 } else {
                     self.aa = 1;
                 }
-                self.goUrl = "extraction/exCount?PRE_ACCOUNT"+row.PRE_ACCOUNT;
+                self.goUrl = "extr0action/exCount?PRE_ACCOUNT"+row.PRE_ACCOUNT;
                 self.editFormVisible = true;
                 self.editForm = Object.assign({}, row);
             },
