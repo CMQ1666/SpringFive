@@ -363,7 +363,7 @@
                 var id = Object.assign({}, row).ROLEID;
                 this.roleId = Object.assign({}, row).ROLEID;
                 axios.post('/power/backTree',{'roleId':id}).then(function (response) {
-                    alert(response.data)
+                    //alert(response.data)
                     _self.keys = response.data
                     _self.$refs.tree.setCheckedKeys(_self.keys);
                 })
@@ -377,7 +377,7 @@
                 //alert(al);
                 var self = this;
                ;//角色id
-                alert(this.roleId);
+               // alert(this.roleId);
                  axios.post('/role/insertPowerTree', {'powerId': al,'roleId': self.roleId}).then(function (response) {
                     if (response.data == 1) {
                         alert('授权成功！');

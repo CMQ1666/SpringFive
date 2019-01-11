@@ -29,7 +29,7 @@ public interface FinalDao {
     /**
      * 统计每月汇缴金额
      */
-    @Select("select sum(uaowemonery) as money,substr(to_char(ubdcreatedate, 'yyyy-mm-dd'),0,7) as yuefen FROM tb_unitbizdetail GROUP BY substr(to_char(ubdcreatedate, 'yyyy-mm-dd'),0,7)\n")
+    @Select("select nvl(sum(uaowemonery),0) as money,to_char(ubdcreatedate, 'yyyy-mm') as yuefen FROM tb_unitbizdetail GROUP BY to_char(ubdcreatedate, 'yyyy-mm')\n")
     List<Map> meiYueJinE();
     /**
      * 统计每月提取金额
