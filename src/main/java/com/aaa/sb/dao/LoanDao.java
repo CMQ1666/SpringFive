@@ -50,15 +50,15 @@ public interface LoanDao {
      */
 
     @Insert("insert into tb_repay (REPAY_ID,GRZH,PNAME,LOAN_MONEY,LOAN_PERIODS,LOAN_RATE,REPAYED_DATE," +
-            "REPAY_BANK,REPAY_ACCOUNT,REPAYED_PERIODS,REPAYED_ALL_MONEY,RESIDUE_MONEY) values(SEQ_REPAY_ID.nextval,#{GRZH},#{PNAME},#{loanAmount},#{loanPeriods},#{loanRate}," +
+            "REPAY_BANK,REPAY_ACCOUNT,REPAYED_PERIODS,REPAYED_ALL_MONEY,RESIDUE_MONEY，NEXT_DATE,REPAY_STATUS，REPAYED_MONEY,STATE) values(SEQ_REPAY_ID.nextval,#{GRZH},#{PNAME},#{loanAmount},#{loanPeriods},#{loanRate}," +
             "add_months(trunc(sysdate),1)," +
-            "#{openBank},#{paymentAccount},0,0,#{loanAmount})")
+            "#{openBank},#{paymentAccount},0,0,#{loanAmount},to_date(sysdate),'正常',0,0)")
 
     int addRepay(Map map);
 
     /**
      * 对贷款人是否之前贷过款进行验证
-     * @param map
+     * @param
      * @return
      */
     @Select("select count(*) from TB_LOANAPPVAL l left join TB_PACCOUNTUTIL p on " +

@@ -38,7 +38,7 @@
                 v-loading.body="loading"
                 border
                 @selection-change="selectionChange"
-                style="width: 1200px">
+                style="width: 1400px">
 
             <el-table-column
                     prop="GRZH"
@@ -72,15 +72,21 @@
                     width="120">
             </el-table-column>
             <el-table-column
+                    prop="RESIDUE_PERIODS"
+                    label="剩余期数"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="REPAYED_MONEY"
+                    label="已还本金"
+                    width="120">
+            </el-table-column>
+            <el-table-column
                 prop="RESIDUE_MONEY"
                 label="未还本金"
                 width="120">
         </el-table-column>
-            <el-table-column
-                    prop="RESIDUE_MONEY"
-                    label="还款状态"
-                    width="120">
-            </el-table-column>
+
             <el-table-column
                     label="操作">
                 <template slot-scope="scope">
@@ -187,7 +193,7 @@
        </div>
         <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click.native="editSubmit" :loading="editLoading">本期还款</el-button>
-            <el-button type="primary" @click.native="editFormVisible2" :loading="editLoading">提前还款</el-button>
+            <el-button type="danger" @click.native="editFormVisible2" :loading="editLoading">提前还款</el-button>
 
         </div>
     </el-dialog>
@@ -340,7 +346,8 @@
                //alert(response.data.total);
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
-               alert(JSON.stringify(response.data.pageData));
+
+               // alert(JSON.stringify(response.data.pageData));
                // self.multipleSelection=response.data.data;
             })
         },
@@ -365,7 +372,7 @@
                     'pageSize': this.pageSize,
                     'PNAME': this.searchForm.PNAME,
                 };
-                alert(JSON.stringify(searchForm));
+                //alert(JSON.stringify(searchForm));
                 axios.post('/repay/page', searchForm).then(function (response) {
                     // console.log(response.data);
                     // alert(222);
@@ -390,11 +397,11 @@
                     // this.editFormVisible = true;
                     //  this.editForm = Object.assign({}, row);
                     var self = this;
-                    alert(row.GRZH)
+                   // alert(row.GRZH)
 
                     var url = "/repay/list/" + row.GRZH;
                     axios.get(url).then(function (response) {
-                        alert(JSON.stringify(response.data));
+                       // alert(JSON.stringify(response.data));
                         self.form1 = response.data;
                         self.form1 = Object.assign({}, response.data[0])
                     }),
@@ -443,7 +450,7 @@
                 // alert(row.GRZH)
                 var url = "/repay/record/" + row.GRZH;
                 axios.get(url).then(function (response) {
-                    alert(JSON.stringify(response.data));
+                 //   alert(JSON.stringify(response.data));
                     /* self.form2.GRZH = response.data.GRZH;
                     self.form2.PNAME = response.data.PNAME;
                     self.form2.REPAY_MONTH_MONEY = response.data.REPAY_MONTH_MONEY;
@@ -459,11 +466,11 @@
 
              //提前还款事件
             editFormVisible2: function () {
-                alert(this.form1.REPAYED_PERIODS);
+               // alert(this.form1.REPAYED_PERIODS);
                 if(this.form1.REPAYED_PERIODS>=12){
                     var _self = this;
                     this.formData = this.form1;
-                    alert(JSON.stringify(this.formData));
+                  //  alert(JSON.stringify(this.formData));
                     console.log("this.form的值==" + JSON.stringify(this.formData));
                     var goUrl = "/repay/tiqian";
                     this.$confirm('确认提前还款吗?', '提示', {
@@ -498,7 +505,6 @@
 
                 //this.editFormVisible=false
             },
-
 
 
             //按期还款点击事件

@@ -51,10 +51,20 @@ public class LoanController {
      * @return
      */
 
-
+    /**
+     * 等待
+     * @return
+     */
     @RequestMapping("/wait")
     public String  toWait(){
         return "loanApplication/wait";}
+
+
+
+    @RequestMapping("/cuikuan")
+    public String  cuikuan(){
+        return "loanApplication/cuikuan";}
+
 
     /**
      * 添加贷款信息

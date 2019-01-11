@@ -30,19 +30,52 @@ public class RepayController {
     public String trans (){
         return  "/repay/repay";
     }
-    @ResponseBody
+
     @RequestMapping("/toyuqi")
-    public Object yuqi(@RequestBody Map map){
-        repayService.yuqi(map);
-        System.out.println("90909090990"+map);
+    public Object yuqi(){
         return  "/repay/yuqi";
     }
-    /* int archiveRepay=repayService.archiveRepay();*/
+    @ResponseBody
+    @RequestMapping("/list2")
+    public  Object yuqiList(@RequestParam Map map){
+     return repayService.yuqi(map);
+    }
+
+
+
     @ResponseBody
     @RequestMapping("/list/{GRZH}")
     public Object getLoanUser(@PathVariable("GRZH") String GRZH){
       //  System.out.println(GRZH);
         return repayService.getListByName(GRZH);
+    }
+    @ResponseBody
+    @RequestMapping("/list2/{GRZH}")
+    public Object yuqiList(@PathVariable("GRZH") String GRZH){
+        //  System.out.println(GRZH);
+        return repayService.yuqiList(GRZH);
+    }
+
+    /**
+     * 列表分页
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/page2")
+    public Object page2(@RequestBody Map map){
+        //第一个参数是当前第几页页码 第二个参数是显示数量
+        PageHelper.startPage(Integer.valueOf(map.get("pageNo")+""),Integer.valueOf(map.get("pageSize")+""));
+        //用pageinfo对结果进行包装
+        PageInfo<Map> pageInfo =new PageInfo<Map>(repayService.yuqi(map));
+        Map resultMap = new HashMap();
+        //获取当前页数据
+        resultMap.put("pageData",pageInfo.getList());
+        //获取分页总数量
+        resultMap.put("total",pageInfo.getTotal()) ;
+
+        return  resultMap;
+
     }
     /**
      * 列表分页
@@ -87,12 +120,6 @@ public class RepayController {
      * @param map
      * @return
      */
-    /*@ResponseBody
-    @RequestMapping("/insertRecord")
-    public Object insertRecord(Map map){
-        return repayService.insertRecord(map);
-
-    }*/
     @ResponseBody
     @RequestMapping("/tiqian")
     public  Object  tiqian(@RequestBody Map map){

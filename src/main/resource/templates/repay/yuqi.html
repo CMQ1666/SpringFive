@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>贷款信息</title>
+    <title>逾期还款信息</title>
     <!-- 引入样式 -->
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
@@ -38,12 +38,12 @@
                 v-loading.body="loading"
                 border
                 @selection-change="selectionChange"
-                style="width: 1200px">
+                style="width: 1400px">
 
             <el-table-column
                     prop="GRZH"
                     label="个人账号"
-                    width="200">
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="PNAME"
@@ -72,14 +72,30 @@
                     width="120">
             </el-table-column>
             <el-table-column
-                    prop="RESIDUE_MONEY"
-                    label="未还本金"
+                    prop="RESIDUE_PERIODS"
+                    label="剩余期数"
                     width="120">
             </el-table-column>
             <el-table-column
+                    prop="REPAYED_MONEY"
+                    label="已还本金"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                prop="RESIDUE_MONEY"
+                label="未还本金"
+                width="120">
+        </el-table-column>
+            <el-table-column
+                    prop="REPAY_STATUS"
+                    label="状态"
+                    width="120">
+            </el-table-column>
+
+            <el-table-column
                     label="操作">
                 <template slot-scope="scope">
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">还款</el-button>
+                    <el-button :plain="true" type="danger" size="small" icon="edit" @click="editClick(scope.row)">逾期还款</el-button>
                     <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick1(scope.row)">还款记录</el-button>
                 </template>
             </el-table-column>
@@ -181,8 +197,8 @@
             </el-form>
        </div>
         <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">本期还款</el-button>
-            <el-button type="primary" @click.native="editFormVisible2" :loading="editLoading">提前还款</el-button>
+            <el-button type="danger" @click.native="editSubmit" :loading="editLoading">逾期还款</el-button>
+
 
         </div>
     </el-dialog>
@@ -242,7 +258,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: ''
+            message: '贷款信息'
         }
     });
     var vm =new Vue({
@@ -330,12 +346,13 @@
             var self = this;
             //var start =(this.currentPage-1)*this.pageSize;
             //var end =this.currentPage*this.pageSize+1;
-            axios.post('/repay/page',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
+            axios.post('/repay/page2',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
                 // console.log(response.data);
                //alert(response.data.total);
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
-               alert(JSON.stringify(response.data.pageData));
+
+               // alert(JSON.stringify(response.data.pageData));
                // self.multipleSelection=response.data.data;
             })
         },
@@ -360,8 +377,8 @@
                     'pageSize': this.pageSize,
                     'PNAME': this.searchForm.PNAME,
                 };
-                alert(JSON.stringify(searchForm));
-                axios.post('/repay/page', searchForm).then(function (response) {
+                //alert(JSON.stringify(searchForm));
+                axios.post('/repay/page2', searchForm).then(function (response) {
                     // console.log(response.data);
                     // alert(222);
                     _self.total = response.data.total;
@@ -382,14 +399,10 @@
                         type: 'error'
                     });
                 }else{
-                    // this.editFormVisible = true;
-                    //  this.editForm = Object.assign({}, row);
                     var self = this;
-                    alert(row.GRZH)
-
-                    var url = "/repay/toyuqi/" + row.GRZH;
+                    var url = "/repay/list2/" + row.GRZH;
                     axios.get(url).then(function (response) {
-                        alert(JSON.stringify(response.data));
+                       // alert(JSON.stringify(response.data));
                         self.form1 = response.data;
                         self.form1 = Object.assign({}, response.data[0])
                     }),
@@ -423,7 +436,7 @@
                 this.currentPage = val;
                 console.log('当前页: ' + val);
                 var _self = this;
-                _self.loadingData();//重新加载数据0
+                _self.loadingData();//重新加载数据
             },
             //还款记录表
             /*editClick1:function(row) {
@@ -438,7 +451,7 @@
                 // alert(row.GRZH)
                 var url = "/repay/record/" + row.GRZH;
                 axios.get(url).then(function (response) {
-                    alert(JSON.stringify(response.data));
+                 //   alert(JSON.stringify(response.data));
                     /* self.form2.GRZH = response.data.GRZH;
                     self.form2.PNAME = response.data.PNAME;
                     self.form2.REPAY_MONTH_MONEY = response.data.REPAY_MONTH_MONEY;
@@ -450,51 +463,6 @@
                 }),
                     this.editFormVisible1 = true;
             },
-
-
-             //提前还款事件
-            editFormVisible2: function () {
-                alert(this.form1.REPAYED_PERIODS);
-                if(this.form1.REPAYED_PERIODS>=12){
-                    var _self = this;
-                    this.formData = this.form1;
-                    alert(JSON.stringify(this.formData));
-                    console.log("this.form的值==" + JSON.stringify(this.formData));
-                    var goUrl = "/repay/tiqian";
-                    this.$confirm('确认提前还款吗?', '提示', {
-                        type: 'warning'
-                    }).then(function(){
-                        axios.post(goUrl, _self.formData).then(function (response) {
-                            console.log(JSON.stringify(response.data));
-
-
-                            if (response.data !=''&&response.data!=null) {
-                                //location.href = "/loan/wait";
-                                _self.$message({
-                                    message: '提前还款成功',
-                                    type: 'success'
-                                });
-                                _self.editFormVisible = false;
-                                _self.loadingData();
-                            } else {
-                                _self.$message({
-                                    message: '提前还款失败',
-                                    type: 'error'
-                                });
-                            }
-                        })
-                    })
-                }else {
-                    this.$message({
-                        message: '未还够12期不能提前还款',
-                        type: 'error'
-                    });
-                }
-
-                //this.editFormVisible=false
-            },
-
-
 
             //按期还款点击事件
             editSubmit: function () {
