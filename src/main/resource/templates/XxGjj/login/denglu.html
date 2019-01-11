@@ -182,9 +182,9 @@
                     //alert(JSON.stringify("temp="+temp))
                     if (temp == true) {
                         axios.post('/qiantai/denglu', _self.editForm).then(function (response) {
-                            alert(JSON.stringify(response.data));
+                           // alert(JSON.stringify(response.data));
                             if (response.data==1) {
-                                alert("2343243243423432")
+                                //alert("2343243243423432")
                                 location.href = "/Page/green"
                             } else {
                                 location.href = "/Page/denglu"

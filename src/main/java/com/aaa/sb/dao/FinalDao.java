@@ -24,12 +24,12 @@ public interface FinalDao {
      * 统计每月还款信息
      * @return
      */
-   @Select("select sum(repay_money) as money ,substr(to_char(repayed_date, 'yyyy-mm-dd'),0,7) as yuefen FROM tb_repay_record  GROUP BY substr(to_char(repayed_date, 'yyyy-mm-dd'),0,7)")
+   @Select("select sum(repay_money) as money ,substr(repayed_date,0,7) as yuefen FROM tb_repay_record  GROUP BY substr(repayed_date,0,7)")
     List<Map> huanKuanXinxi();
     /**
      * 统计每月汇缴金额
      */
-    @Select("select sum(uaowemonery) as money,substr(to_char(ubdcreateDate, 'yyyy-mm-dd'),0,7) as yuefen FROM tb_unitbizdetail GROUP BY substr(to_char(ubdCreateDate, 'yyyy-mm-dd'),0,7)\n")
+    @Select("select sum(uaowemonery) as money,substr(to_char(ubdcreatedate, 'yyyy-mm-dd'),0,7) as yuefen FROM tb_unitbizdetail GROUP BY substr(to_char(ubdcreatedate, 'yyyy-mm-dd'),0,7)\n")
     List<Map> meiYueJinE();
     /**
      * 统计每月提取金额

@@ -34,11 +34,13 @@ public class LoanFinallyServiceImpl implements LoanFinallyService{
 
     @Override
     public int thirdUpdate(Map map) {
+        int i = loanFinallyDao.fiveUpdate(map);
         return loanFinallyDao.thirdUpdate(map);
     }
 
     @Override
     public int fourUpdate(Map map) {
+        int i = loanFinallyDao.sixUpdate(map);
         return loanFinallyDao.fourUpdate(map);
     }
 }

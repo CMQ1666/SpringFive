@@ -43,15 +43,15 @@
     <el-dialog title="人员转移审批" :visible.sync="ReditFormVisible" :close-on-click-modal="false">
         <el-row>
             <el-table :data="RtableData" v-loading.body="loading" border style="width: 100%">
-                <el-table-column prop="TRANSFER_ID" label="编号" width="300"></el-table-column>
-                <el-table-column prop="TRANSFER_OUT_UNIT" label="转出单位" width="300"></el-table-column>
-                <el-table-column prop="TRANSFER_INTO_UNIT" label="转入单位" width="300"></el-table-column>
-                <el-table-column prop="AUDITOR" label="转移申请人" width="300"></el-table-column>
-                <el-table-column prop="PERSON_ACCOUNT" label="个人账户" width="300"></el-table-column>
-                <el-table-column prop="TRANSFER_REASON" label="转移原因" width="300"></el-table-column>
-                <el-table-column prop="OPERATOR" label="操作人" width="300"></el-table-column>
-                <el-table-column prop="SUBMIT_TIME" label="转移提交时间" width="300"></el-table-column>
-                <el-table-column prop="AUDIT_STATE" label="转移审核状态" width="300"></el-table-column>
+                <el-table-column prop="TRANSFER_ID" label="编号" ></el-table-column>
+                <el-table-column prop="TRANSFER_OUT_UNIT" label="转出单位" ></el-table-column>
+                <el-table-column prop="TRANSFER_INTO_UNIT" label="转入单位" ></el-table-column>
+                <el-table-column prop="AUDITOR" label="转移申请人" ></el-table-column>
+                <el-table-column prop="PERSON_ACCOUNT" label="个人账户" ></el-table-column>
+                <el-table-column prop="TRANSFER_REASON" label="转移原因" ></el-table-column>
+                <el-table-column prop="OPERATOR" label="操作人" ></el-table-column>
+                <el-table-column prop="SUBMIT_TIME" label="转移提交时间"></el-table-column>
+                <el-table-column prop="AUDIT_STATE" label="转移审核状态" ></el-table-column>
             </el-table>
         </el-row>
         <!--列表底部工具条和分页符-->
@@ -62,33 +62,33 @@
         </el-row>
     </el-dialog>
     <!----------------------------------------点击查看，出现封存、启封、销户审批------------------------------------------------------>
-    <el-dialog title="封存、启封、销户审批" :visible.sync="FeditFormVisible" :close-on-click-modal="false">
+    <el-dialog title="封存、启封、销户审批" :visible.sync="FeditFormVisible" :close-on-click-modal="false" width="80%">
         <el-row>
-            <el-table :data="FtableData" v-loading.body="loading" border style="width: 100%">
-                <el-table-column prop="UNSEAL_ID" label="编号" width="300"></el-table-column>
-                <el-table-column prop="UNSEAL_NAME" label="封启人姓名" width="300"></el-table-column>
-                <el-table-column prop="UNSEAL_UNIT" label="所在单位" width="300"></el-table-column>
-                <el-table-column prop="UNSEAL_SEX" label="性别" width="300"></el-table-column>
-                <el-table-column prop="UNIT_POST" label="工作职位" width="300"></el-table-column>
-                <el-table-column prop="UNSEAL_NUMBER" label="身份证号" width="300"></el-table-column>
-                <el-table-column prop="UNSEAL_ACCOUNT" label="个人封启账号" width="300"></el-table-column>
-                <el-table-column prop="REASON" label="封启原因" width="300"></el-table-column>
-                <el-table-column prop="OPERATOR" label="创建人" width="300"></el-table-column>
-                <el-table-column prop="CREATE_TIME" label="创建日期" width="300"></el-table-column>
-                <el-table-column prop="AUDIT_STATE" label="业务类型" width="300">
+            <el-table :data="FtableData" v-loading.body="loading" border style="width: 100%" >
+                <el-table-column prop="UNSEAL_ID" label="编号" ></el-table-column>
+                <el-table-column prop="UNSEAL_NAME" label="封启人姓名" ></el-table-column>
+                <el-table-column prop="UNSEAL_UNIT" label="所在单位" ></el-table-column>
+                <el-table-column prop="UNSEAL_SEX" label="性别" ></el-table-column>
+                <el-table-column prop="UNIT_POST" label="工作职位" ></el-table-column>
+                <el-table-column prop="UNSEAL_NUMBER" label="身份证号" ></el-table-column>
+                <el-table-column prop="UNSEAL_ACCOUNT" label="个人封启账号" ></el-table-column>
+                <el-table-column prop="REASON" label="封启原因" ></el-table-column>
+                <el-table-column prop="OPERATOR" label="创建人" ></el-table-column>
+                <el-table-column prop="CREATE_TIME" label="创建日期" ></el-table-column>
+                <el-table-column prop="AUDIT_STATE" label="业务类型" >
                     <template scope="scope">
                         {{ scope.row.STATE == 1 ?  '封存审核': '' }}
                         {{ scope.row.STATE == 2 ?  '启封审核': '' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="AUDIT_NAME" label="审核状态" width="300">
+                <el-table-column prop="AUDIT_NAME" label="审核状态" >
                     <template scope="scope">
                         {{ scope.row.AUDIT_NAME == 0 ?  '驳回': ''  }}
                         {{ scope.row.AUDIT_NAME == 1 ?  '待审核': '' }}
                         {{ scope.row.AUDIT_NAME == 2 ?  '审核通过': '' }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="BOHUI" label="驳回理由" width="300"></el-table-column>
+                <el-table-column prop="BOHUI" label="驳回理由" ></el-table-column>
             </el-table>
         </el-row>
         <!--列表底部工具条和分页符-->
@@ -129,15 +129,15 @@
     <el-dialog title="个人贷款审批" :visible.sync="DeditFormVisible" :close-on-click-modal="false">
         <el-row>
             <el-table :data="DtableData" v-loading.body="loading" border style="width: 100%">
-                <el-table-column prop="GRZH" label="个人账号" width="150"></el-table-column>
-                <el-table-column prop="PAWN_NAME" label="姓名" width="150"></el-table-column>
-                <el-table-column prop="IDNUMBER" label="证件号码" width="150"></el-table-column>
-                <el-table-column prop="DAIKAN" label="业务类型" width="150"></el-table-column>
-                <el-table-column prop="LOAN_MONEY" label="贷款金额" width="250"></el-table-column>
-                <el-table-column prop="LOAN_PERIODS" label="贷款期数" width="100"></el-table-column>
-                <el-table-column prop="LOAN_RATE" label="贷款利率" width="150"></el-table-column>
-                <el-table-column prop="LOAN_BANK" label="贷款银行" width="150"></el-table-column>
-                <el-table-column prop="STATUS" label="贷款状态" width="100">
+                <el-table-column prop="GRZH" label="个人账号" align="center"></el-table-column>
+                <el-table-column prop="PAWN_NAME" label="姓名" align="center"></el-table-column>
+                <el-table-column prop="IDNUMBER" label="证件号码" align="center"></el-table-column>
+                <el-table-column prop="DAIKAN" label="业务类型" align="center"></el-table-column>
+                <el-table-column prop="LOAN_MONEY" label="贷款金额" align="center"></el-table-column>
+                <el-table-column prop="LOAN_PERIODS" label="贷款期数" align="center"></el-table-column>
+                <el-table-column prop="LOAN_RATE" label="贷款利率" align="center"></el-table-column>
+                <el-table-column prop="LOAN_BANK" label="贷款银行" align="center"></el-table-column>
+                <el-table-column prop="STATUS" label="贷款状态" align="center">
                     <template scope="scope">
                         {{ scope.row.STATUS == 2?  '初审通过': ''}}
                         {{ scope.row.STATUS == 0?  '初审驳回': '' }}

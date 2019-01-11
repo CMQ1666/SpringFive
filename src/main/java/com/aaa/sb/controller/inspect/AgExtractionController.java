@@ -34,6 +34,11 @@ public class AgExtractionController {
         return "inspect/agreedextraction";
     }
 
+    /**
+     * 查询待审核约定提取数据
+     * @param map
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/agExList")
     public Object getList(@RequestBody Map map){
@@ -47,6 +52,30 @@ public class AgExtractionController {
         //获取分页总数量
         resultMap.put("total",pageInfo.getTotal()) ;
         return resultMap;
+    }
+
+    /**
+     * 通过审核
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/pass")
+    public int pass(@RequestBody Map map){
+        int i=agExtractionService.pass(map);
+        return i;
+    }
+
+    /**
+     * 驳回审核
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/twoPass")
+    public int twoPass(@RequestBody Map map){
+        int i=agExtractionService.twoPass(map);
+        return i;
     }
 
 }

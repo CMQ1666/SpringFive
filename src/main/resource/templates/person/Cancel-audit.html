@@ -30,18 +30,18 @@
     <!--列表-->
     <el-row>
         <el-table :data="tableData" v-loading.body="loading" border style="width: 100%">
-            <el-table-column prop="UNSEAL_ID" label="编号" width="75"></el-table-column>
-            <el-table-column prop="UNSEAL_NAME" label="销号人姓名" width="27"></el-table-column>
-            <el-table-column prop="UNSEAL_UNIT" label="所在单位" width="130"></el-table-column>
-            <el-table-column prop="UNSEAL_SEX" label="性别" width="50"></el-table-column>
-            <el-table-column prop="UNIT_POST" label="工作职位" width="70"></el-table-column>
-            <el-table-column prop="UNSEAL_PHONE" label="电话号码" width="120"></el-table-column>
-            <el-table-column prop="UNSEAL_NUMBER" label="身份证号" width="150"></el-table-column>
-            <el-table-column prop="UNSEAL_ACCOUNT" label="个人销户账户" width="50"></el-table-column>
-            <el-table-column prop="REASON" label="销户原因" width="70"></el-table-column>
-            <el-table-column prop="OPERATOR" label="创建人" width="120"></el-table-column>
-            <el-table-column prop="CREATE_TIME" label="创建日期" width="150"></el-table-column>
-            <el-table-column prop="AUDIT_STATE" label="审核状态" width="150"></el-table-column>
+            <el-table-column prop="UNSEAL_ID" label="编号" align="center"></el-table-column>
+            <el-table-column prop="UNSEAL_NAME" label="销号人姓名" align="center"></el-table-column>
+            <el-table-column prop="UNSEAL_UNIT" label="所在单位" align="center"></el-table-column>
+            <el-table-column prop="UNSEAL_SEX" label="性别" align="center"></el-table-column>
+            <el-table-column prop="UNIT_POST" label="工作职位" align="center"></el-table-column>
+            <el-table-column prop="UNSEAL_PHONE" label="电话号码" align="center"></el-table-column>
+            <el-table-column prop="UNSEAL_NUMBER" label="身份证号" align="center"></el-table-column>
+            <el-table-column prop="UNSEAL_ACCOUNT" label="个人销户账户" align="center"></el-table-column>
+            <el-table-column prop="REASON" label="销户原因" align="center"></el-table-column>
+            <el-table-column prop="OPERATOR" label="创建人" align="center"></el-table-column>
+            <el-table-column prop="CREATE_TIME" label="创建日期" align="center"></el-table-column>
+            <el-table-column prop="AUDIT_STATE" label="审核状态" align="center"></el-table-column>
             <el-table-column label="操作">
                 <template scope="scope">
                     <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">通过</el-button>

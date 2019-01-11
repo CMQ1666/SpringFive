@@ -56,4 +56,20 @@ public interface LoanFinallyDao {
      */
     @Update(value = "update tb_loanappval set STATUS=1 where PID=#{PID}")
     int fourUpdate(Map map);
+
+    /**
+     * 终审通过
+     * @param map
+     * @return
+     */
+    @Update(value = "update tb_repay set STATE =1 where PID=#{PID}")
+    int fiveUpdate(Map map);
+
+    /**
+     * 终身驳回
+     * @param map
+     * @return
+     */
+    @Update(value = "update tb_repay set STATE=2 where PID=#{PID}")
+    int sixUpdate(Map map);
 }
