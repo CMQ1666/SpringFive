@@ -83,11 +83,11 @@
             <el-col :span="6"><div class="grid-content bg-purple">
                 <el-form-item label="职工学历" prop="EDUCATION" :rules="[{ required: true, message: '职工学历不能为空',trigger: 'blur'}]">
                     <el-select v-model="form.EDUCATION" placeholder="请选择学历" style="width: 200px">
-                        <el-option label="博士" value="博士"></el-option>
-                        <el-option label="硕士"  value="硕士"></el-option>
-                        <el-option label="本科" value="本科"></el-option>
-                        <el-option label="大专" value="大专"></el-option>
-                        <el-option label="高中" value="高中" ></el-option>
+                        <el-option label="博士" value="博士" key="博士"></el-option>
+                        <el-option label="硕士"  value="硕士" key="硕士"></el-option>
+                        <el-option label="本科" value="本科" key="本科"></el-option>
+                        <el-option label="大专" value="大专" key="大专"></el-option>
+                        <el-option label="高中" value="高中" key="高中"></el-option>
                     </el-select>
                 </el-form-item>
             </div></el-col>
@@ -114,7 +114,7 @@
             <el-col :span="6"><div class="grid-content bg-purple">
                 <el-form-item label="家庭住址" prop="PADDRESS" :rules="[
                 {required: true,message: '请输入家庭地址',trigger: 'blur'},
-                    { min: 10, max: 30, message: '请输入长度在 10 到 30 个字的地址', trigger: 'blur'}]" >
+                    { min: 6, max: 12, message: '请输入长度在 6 到 12个字的地址', trigger: 'blur'}]" >
                     <el-input v-model="form.PADDRESS" style="width: 200px;"></el-input>
                 </el-form-item>
             </div></el-col>
@@ -139,7 +139,8 @@
                 </el-form-item>
             </div></el-col>
             <el-col :span="6"><div class="grid-content bg-purple">
-                <el-form-item label="开户银行名字" prop="KHYH"  :rules="[{ required: true, message: '开户银行名字不能为空',trigger: 'blur'}]">
+                <el-form-item label="开户银行名字" prop="KHYH"  :rules="[
+                { required: true, message: '开户银行名字不能为空',trigger: 'blur'},]">
                     <el-select v-model="form.KHYH" placeholder="请选择银行" style="width: 200px">
                         <el-option label="中国邮政银行" value="中国邮政银行"></el-option>
                         <el-option label="中国工商银行"  value="中国工商银行"></el-option>
@@ -152,7 +153,10 @@
         </el-row>
         <el-row :gutter="20">
             <el-col :span="6"><div class="grid-content bg-purple">
-                <el-form-item label="开户银行账号" prop="YHZH" :rules="[{ required: true, message: '开户银行账号不能为空',trigger: 'blur'}]">
+                <el-form-item label="开户银行账号" prop="YHZH" :rules="[
+                { required: true, message: '开户银行账号不能为空',trigger: 'blur'},
+               {pattern: /^([1-9]{1})(\d{14}|\d{18})$/, required: true, message: '请输入申请人收款账号', trigger: 'blur' }
+                ]">
                     <el-input v-model="form.YHZH" style="width: 200px;"></el-input>
                 </el-form-item>
             </div></el-col>
@@ -303,9 +307,9 @@
                 },
                 blurSearchFor: function () {
                     var _self = this;
-                    //alert(_self.form.DWZH);
+                    alert(_self.form.DWZH);
                     axios.post('/personal/getList', {DWZH: _self.form.DWZH}).then(function (response) {
-                        //alert("111");
+                        alert("111");
                         //_self.editForm = Object.assign({}, response.data[0]);
                         //alert(JSON.stringify(response.data[0]));
                         //  alert(DWZH);

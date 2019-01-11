@@ -34,8 +34,8 @@
                 v-loading.body="loading"
                 style="width: 100%">
             <!--<el-table-column-->
-                    <!--type="selection"-->
-                    <!--width="55">-->
+            <!--type="selection"-->
+            <!--width="55">-->
             <!--</el-table-column>-->
             <el-table-column
                     prop="DWZH"
@@ -111,7 +111,7 @@
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
         <!--<el-col :span="6" >-->
-            <!--<el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>-->
+        <!--<el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>-->
         <!--</el-col>-->
         <el-col :span="18" >
             <el-pagination
@@ -132,100 +132,100 @@
         <el-form :model="editForm" label-width="70px" :rules="editFormRules" ref="editForm">
             <el-row :gutter="30">
                 <el-col :span="8">
-            <el-form-item label="单位账号" prop="DWZH">
-                <el-input v-model="editForm.DWZH" :disabled="true"></el-input>
-            </el-form-item>
+                    <el-form-item label="单位账号" prop="DWZH">
+                        <el-input v-model="editForm.DWZH"></el-input>
+                    </el-form-item>
                 </el-col>
-            <!-- <el-form-item label="性别">
-                 <el-radio-group v-model="editForm.sex">
-                     <el-radio class="radio" :label="1">男</el-radio>
-                     <el-radio class="radio" :label="0">女</el-radio>
-                 </el-radio-group>  EMPNO: 0,
-                 ENAME: '',
-                 JOB: '',
-                 SAL: 0,
-                 HIREDATE: ''
-             </el-form-item>-->
+                <!-- <el-form-item label="性别">
+                     <el-radio-group v-model="editForm.sex">
+                         <el-radio class="radio" :label="1">男</el-radio>
+                         <el-radio class="radio" :label="0">女</el-radio>
+                     </el-radio-group>  EMPNO: 0,
+                     ENAME: '',
+                     JOB: '',
+                     SAL: 0,
+                     HIREDATE: ''
+                 </el-form-item>-->
                 <!--<el-col :span="8">-->
-            <!--<el-form-item label="记账日期">-->
+                <!--<el-form-item label="记账日期">-->
                 <!--<el-date-number  v-model="editForm.UBDCTEATEDATE" ></el-date-number>-->
-            <!--</el-form-item>-->
+                <!--</el-form-item>-->
                 <!--</el-col>-->
                 <el-col :span="8">
-            <el-form-item label="单位名称">
-                <el-input v-model="editForm.UNAME" :disabled="true"></el-input>
-            </el-form-item>
+                    <el-form-item label="单位名称">
+                        <el-input v-model="editForm.UNAME" ></el-input>
+                    </el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="暂存款余额">
-                        <el-input v-model="editForm.UATEBALANCE" :disabled="true"></el-input>
+                        <el-input v-model="editForm.UATEBALANCE" ></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
 
-            <el-row :gutter="30">
-                <el-col :span="8">
-            <el-form-item label="汇缴月数">
-                <el-input-number  v-model="editForm.UAOWEMONTHS" :disabled="true"></el-input-number>
-            </el-form-item>
-                </el-col>
-                <el-col :span="8">
-            <el-form-item label="单位存缴比例">
-                <el-input-number  v-model="editForm.UDEPOSITRATIO" :disabled="true"></el-input-number>
-            </el-form-item>
-                </el-col>
+            <!--<el-row :gutter="30">-->
                 <!--<el-col :span="8">-->
-            <!--<el-form-item label="账户状态">-->
-                <!--<el-input  v-model="editForm.UASTATE">-->
-                <!--</el-input>-->
-            <!--</el-form-item>-->
+                    <!--<el-form-item label="汇缴月数">-->
+                        <!--<el-input-number  v-model="editForm.UAOWEMONTHS"></el-input-number>-->
+                    <!--</el-form-item>-->
                 <!--</el-col>-->
-            </el-row>
+                <!--<el-col :span="8">-->
+                    <!--<el-form-item label="单位存缴比例">-->
+                        <!--<el-input-number  v-model="editForm.UDEPOSITRATIO"></el-input-number>-->
+                    <!--</el-form-item>-->
+                <!--</el-col>-->
+                <!--<el-col :span="8">-->
+                    <!--<el-form-item label="账户状态">-->
+                        <!--<el-input  v-model="editForm.UASTATE">-->
+                        <!--</el-input>-->
+                    <!--</el-form-item>-->
+                <!--</el-col>-->
+            <!--</el-row>-->
+
+            <!--<el-row :gutter="30">-->
+                <!--<el-col :span="8">-->
+                    <!--<el-form-item label="个人存缴比例">-->
+                        <!--<el-input-number  v-model="editForm.UPERSONRATIO"></el-input-number>-->
+                    <!--</el-form-item>-->
+                <!--</el-col>-->
+                <!--<el-col :span="8">-->
+                    <!--<el-form-item label="账户余额">-->
+                        <!--<el-input-number  v-model="editForm.UAREMAIN"></el-input-number>-->
+                    <!--</el-form-item>-->
+                <!--</el-col>-->
+                <!--<el-col :span="8">-->
+                    <!--<el-form-item label="需缴存人数">-->
+                        <!--<el-input-number  v-model="editForm.UDEPOSITEDPNUM"></el-input-number>-->
+                    <!--</el-form-item>-->
+                <!--</el-col>-->
+            <!--</el-row>-->
 
             <el-row :gutter="30">
                 <el-col :span="8">
-            <el-form-item label="个人存缴比例">
-                <el-input-number  v-model="editForm.UPERSONRATIO" :disabled="true"></el-input-number>
-            </el-form-item>
-                </el-col>
-                <el-col :span="8">
-            <el-form-item label="账户余额">
-                <el-input-number  v-model="editForm.UAREMAIN" :disabled="true"></el-input-number>
-            </el-form-item>
-                </el-col>
-                <el-col :span="8">
-            <el-form-item label="需缴存人数">
-                <el-input-number  v-model="editForm.UDEPOSITEDPNUM" :disabled="true"></el-input-number>
-            </el-form-item>
-                </el-col>
-            </el-row>
-
-            <el-row :gutter="30">
-                <el-col :span="8">
-            <el-form-item label="应缴金额">
-                <el-input-number  v-model="editForm.UAOWEMONERY" :disabled="true"></el-input-number>
-            </el-form-item>
+                    <el-form-item label="应缴金额">
+                        <el-input-number  v-model="editForm.UAOWEMONERY"></el-input-number>
+                    </el-form-item>
                 </el-col>
 
                 <el-col :span="8">
-            <el-form-item label="操作人员">
-                <el-input v-model="editForm.YWBLR" :disabled="true"> </el-input>
-            </el-form-item>
+                    <el-form-item label="操作人员">
+                        <el-input v-model="editForm.YWBLR"> </el-input>
+                    </el-form-item>
                 </el-col>
 
-                    <el-col :span="8">
-            <el-form-item label="备注">
-                <el-input  v-model="editForm.UBDREMARK"></el-input>
-            </el-form-item>
+                <el-col :span="8">
+                    <el-form-item label="备注">
+                        <el-input  v-model="editForm.UBDREMARK"></el-input>
+                    </el-form-item>
                 </el-col>
 
             </el-row>
             <!--<el-row :gutter="30">-->
-               <!--<el-col :span="10">-->
-                   <!--<el-form-item label="记账日期">-->
-                       <!--<el-input-date  v-model="editForm.UBDCREATEDATE" ></el-input-date>-->
-                   <!--</el-form-item>-->
-               <!--</el-col >-->
+            <!--<el-col :span="10">-->
+            <!--<el-form-item label="记账日期">-->
+            <!--<el-input-date  v-model="editForm.UBDCREATEDATE" ></el-input-date>-->
+            <!--</el-form-item>-->
+            <!--</el-col >-->
             <!--</el-row>-->
 
         </el-form>
@@ -240,7 +240,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: '汇缴办理'
+            message: '挂账办理'
         }
     });
 
@@ -276,34 +276,17 @@
             },
             //编辑界面数据
             editForm: {
-               /* DWZH:'',
-                UNAME:'',
-                UAOWEMONTHS:1,
-                UDEPOSITRATIO:'',
-                UASTATE:'',
-                UPERSONRATIO:'',
-                UAREMAIN:'',
-                UAOWEMONERY:'',
-                YWBLR:'',
-                UBDREMARK:'',
-                //UBITNROP:'',
-                //UNITMONPAYSUM:'',
-                UBDCREATEDATE:'',
-                UBDPOPULATION:'',
-                UBDDETAILTYPE:'',
-                //UBDPAYMENTDATE:'',
-                UBDPAYWAY:'',
-                ZCK:'',
-                UBDSETTLESTATES:'',
-                UBDCREATER:''*/
+                DWZH:'',
+                UANEM:'',
+                UAREMAIN: 0,
+                UATEBALANCE: '',
             },
         },
         created:function(){
             //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
             var self = this;
-            axios.post('/remit/page',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
+            axios.post('/guazhang/page',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
                 console.log(response.data);
-                //alert(response.uapayenddate);
                 //alert(response.data.total);
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
@@ -325,7 +308,7 @@
                 var self = this;
                 var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'UNAME':this.searchForm.UNAME};
                 //   alert(JSON.stringify(searchForm));
-                axios.post('/remit/page',searchForm).then(function(response){
+                axios.post('/guazhang/page',searchForm).then(function(response){
                     _self.total=response.data.total;
                     _self.tableData = response.data.pageData;
                 })
@@ -340,8 +323,7 @@
                 self.loadingData();
             },
             editClick:function(row) {
-                this.goUrl="/remit/page";
-                //alert(row.uapayenddate);
+                this.goUrl="/guazhang/page";
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
             },
@@ -364,30 +346,13 @@
                 _self.loading = true;
                 //var formData =this.searchForm2;
                 var DWZH = this.editForm.DWZH;
-                var UDEPOSITEDPNUM = this.editForm.UDEPOSITEDPNUM;
-                var UATEBALANCE=this.editForm.UATEBALANCE;
-                var YWBLR=this.editForm.YWBLR;
-                var UAOWEMONTHS=this.editForm.UAOWEMONTHS;
+                var UATEBALANCE= this.editForm.UATEBALANCE;
                 var UAREMAIN=this.editForm.UAREMAIN;
-                var UAOWEMONERY=this.editForm.UAOWEMONERY
-                if(UAREMAIN>UAOWEMONERY) {
-                    axios.post('/remit/add', {
-                        'UAOWEMONERY': UAOWEMONERY,
-                        'DWZH': DWZH,
-                        'UDEPOSITEDPNUM': UDEPOSITEDPNUM,
-                        'UATEBALANCE': UATEBALANCE,
-                        'YWBLR': YWBLR,
-                        'UAOWEMONTHS': UAOWEMONTHS,
-                        'UAREMAIN': UAREMAIN
-                    }).then(function (response) {
-                        _self.editFormVisible1 = false;
-                        _self.editFormVisible = false;
-                        _self.loadingData();
-                    })
-                }else{
-                    this.$message.error('余额不足请充值。。。');
+                axios.post('/guazhang/update',{'DWZH':DWZH,'UATEBALANCE':UATEBALANCE,UAREMAIN:'UAREMAIN'}).then(function(response){
+                    _self.editFormVisible1 = false;
+                    _self.editFormVisible = false;
                     _self.loadingData();
-                }
+                })
             }
         }
 

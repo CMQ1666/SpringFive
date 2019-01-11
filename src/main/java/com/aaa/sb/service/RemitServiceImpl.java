@@ -25,8 +25,9 @@ public class RemitServiceImpl  implements  RemitService{
 
     @Override
     public Object add(Map map) {
+        //remitDao.add1(map);
         remitDao.update(map);
-        return remitDao.add(map);
+        return remitDao.add1(map);
     }
 
     @Override

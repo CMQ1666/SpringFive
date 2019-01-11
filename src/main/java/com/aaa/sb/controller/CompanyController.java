@@ -19,8 +19,8 @@ import java.util.Map;
 public class CompanyController {
      @Autowired
     private CompanyService companyService;
-//    @Autowired
-//    private FtpUtil ftpUtil;
+    @Autowired
+    private FtpUtil ftpUtil;
 
     @ResponseBody
      @RequestMapping("add")
@@ -48,11 +48,11 @@ public class CompanyController {
      * @param file
      * @return
      */
-//    @ResponseBody
-//    @RequestMapping("/upLoadPic")
-//    public Object upLoadPic(@RequestParam MultipartFile file){
-//        System.out.println(file);
-//        String s = ftpUtil.upLoad(file);
-//        return s;
-//    }
+  @ResponseBody
+  @RequestMapping("/upLoadPic")
+   public Object upLoadPic(@RequestParam MultipartFile file){
+       //System.out.println(file);
+       String s = ftpUtil.upLoad(file);
+       return s;
+   }
 }

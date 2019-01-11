@@ -77,6 +77,10 @@
                     prop="UASTATE"
                     label="单位账户状态"
                     width="120">
+                <template scope="scope">
+                    {{ scope.row.UASTATE == 1 ?  '正常': '' }}
+                    {{ scope.row.UASTATE == 0 ? '不正常': '' }}
+                </template>
             </el-table-column>
             <el-table-column
                     prop="UAPAYENDDATE"
@@ -414,7 +418,7 @@
                 var self = this;
 //                var start1 =(this.currentPage-1)*this.pageSize;
 //                var end1 =this.currentPage*this.pageSize+1;
-                axios.post('/percentage/page1',{'pageNo':this.currentPage,'pageSize':this.pageSize,}).then(function(response1){
+                axios.post('/percentage/page1',{'pageNo':this.currentPage,'pageSize':this.pageSize,DWZH:row.DWZH}).then(function(response1){
                     //alert("111111111111111111");
                     // alert(response1.data.total1);
                     self.total1=response1.data.total1;

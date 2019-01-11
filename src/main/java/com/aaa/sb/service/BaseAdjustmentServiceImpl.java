@@ -43,6 +43,7 @@ public class BaseAdjustmentServiceImpl implements BaseAdjustmentService {
         hashMap.put("c",baseAdjustmentDao.update(map));
         //根据公司ID更改应缴纳金额
         hashMap.put("b",baseAdjustmentDao.update2(map));
+        //System.out.println("hashMap :" + hashMap);
         return hashMap;
     }
 }

@@ -77,6 +77,10 @@
                     prop="UASTATE"
                     label="单位账户状态"
                     width="120">
+                <template scope="scope">
+                    {{ scope.row.UASTATE == 1 ?  '正常': '' }}
+                    {{ scope.row.UASTATE == 0 ? '不正常': '' }}
+                </template>
             </el-table-column>
             <el-table-column
                     prop="UAPAYENDDATE"
@@ -305,8 +309,10 @@
                 var year1 = row.UAPAYENDDATE.substring(0, 4);
                 var month = date.getMonth() + 1;
                 var month1 = row.UAPAYENDDATE.substring(5, 7);
-                if (month != month1) {
-                    if (row.UAREMAIN > row.UAOWEMONERY) {
+               // alert(row.DWZH+"11111111");
+                //alert(row.UAPAYENDDATE+"222222222")
+             if (month != month1) {
+                   if (row.UAREMAIN > row.UAOWEMONERY) {
                         var goUrl = "/feePayable/select";
                         axios.post(goUrl, {"DWZH": row.DWZH, "UAOWEMONTHS": row.UAPAYENDDATE}).then(function (response) {
                             if (response.data != "") {
