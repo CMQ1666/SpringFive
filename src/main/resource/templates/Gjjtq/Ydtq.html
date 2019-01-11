@@ -133,7 +133,7 @@
                 <el-table-column
                         prop="DKLX"
                         label="贷款类型"
-                        width="90">
+                        width="120">
                     <template scope="scope">
                         <div v-if="scope.row.DKLX==1">
                             <span>公积金贷款</span>
@@ -146,7 +146,7 @@
                 <el-table-column
                         prop="SHZT"
                         label="审核状态"
-                        width="180">
+                        width="150">
                     <template scope="scope">
                         <div v-if="scope.row.SHZT==1">
                             <span style="color:green;">待审核</span>

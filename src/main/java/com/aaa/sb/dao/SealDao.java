@@ -35,7 +35,7 @@ public interface SealDao {
      * @param map
      * @return
      */
-    @Select(" select * from tb_repay_detail  where  GRZH = #{grzh}")
+    @Select(" select * from tb_repay where  GRZH = #{grzh}")
     List<Map> loansVerification(Map map);
 
     /**
@@ -62,7 +62,7 @@ public interface SealDao {
      * @return
      * element
      */
-    @Insert("insert into tb_unseal_audit(unseal_id,unseal_name,unseal_unit,unseal_sex,unit_post,unseal_phone,unseal_number,unseal_account,reason,operator,create_time,state) values(seq_unseal_audit.nextval,#{UNSEAL_NAME},#{UNSEAL_UNIT},#{UNSEAL_SEX},#{UNIT_POST},#{UNSEAL_PHONE},#{UNSEAL_NUMBER},#{UNSEAL_ACCOUNT},#{REASON},#{OPERATOR},sysdate,#{STATE})")
+    @Insert("insert into tb_unseal_audit(unseal_id,unseal_name,unseal_unit,unseal_sex,unit_post,unseal_phone,unseal_number,unseal_account,reason,operator,create_time,state,AUDIT_NAME) values(seq_unseal_audit.nextval,#{UNSEAL_NAME},#{UNSEAL_UNIT},#{UNSEAL_SEX},#{UNIT_POST},#{UNSEAL_PHONE},#{UNSEAL_NUMBER},#{UNSEAL_ACCOUNT},#{REASON},#{OPERATOR},sysdate,#{STATE},1)")
     int unsealAuditAdd(Map map);
 
     /**
@@ -72,7 +72,7 @@ public interface SealDao {
      */
     @Select("<script>select unseal_id,unseal_name,unseal_unit,unseal_sex,unit_post,unseal_phone," +
             "unseal_number,unseal_account,reason,operator,state,audit_state,audit_name from tb_unseal_audit " +
-            "<where><if test=\"pname!=null and pname!=''\"> and pname like '%'||#{pname}||'%'</if></where></script>")
+            "<where><if test=\"GRZH!=null and GRZH!=''\"> and GRZH like '%'||#{GRZH}||'%'</if></where></script>")
     List<Map>  sealAudit(Map map);
     /**
      * 明细列表分页

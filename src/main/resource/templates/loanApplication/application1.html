@@ -110,7 +110,7 @@
                 <el-col :span="5">
                     <div class="grid-content bg-purple">
                         <el-form-item label="*单位账号">
-                            <el-input v-model="form1.UNIT_ID" style="width: 200px;" :disabled="true"></el-input>
+                            <el-input v-model="form1.DWZH" style="width: 200px;" :disabled="true"></el-input>
                         </el-form-item>
                     </div>
                 </el-col>
@@ -538,6 +538,7 @@
             active:1,
             formData:[],
             form1:{
+                DWZH:'',
                 PID:'',
                 GRZH:'',
                 PNAME:'',
@@ -721,6 +722,7 @@
                     axios.get(url).then(function (response) {
                         //alert(JSON.stringify(response.data));
                         //self.form1=response.data;
+                        self.form1.DWZH = response.data.DWZH;
                         self.form1.PID = response.data.PID;
                         self.form1.GRZH = response.data.GRZH;
                         self.form1.PNAME = response.data.PNAME;
@@ -741,6 +743,7 @@
                         self.form1.paymentDay = "放款日起";
                     })
                 }else{
+                   self.form1.DWZH = '';
                     self.form1.PID = '';
                     self.form1.GRZH = '';
                     self.form1.PNAME ='';
