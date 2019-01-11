@@ -7,6 +7,6 @@ public interface RemitService {
 
     List<Map> getList(Map map);
 
-    Object add (Map map);
+    Object add(Map map);
     Object update(Map map);
 }

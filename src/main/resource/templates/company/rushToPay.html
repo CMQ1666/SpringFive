@@ -37,7 +37,7 @@
             <!--type="selection"-->
             <!--width="55">-->
             <!--</el-table-column>-->
-            <el-table-column prop="PACCID" label="个人账号" width="70"></el-table-column>
+            <el-table-column prop="GRZH" label="个人账号" width="170"></el-table-column>
             <el-table-column prop="PNAME" label="员工姓名" width="150"></el-table-column>
             <el-table-column prop="UNAME" label="所在单位" width="110"></el-table-column>
             <el-table-column prop="YDRAWAMT" label="总共缴纳" width="110"></el-table-column>
@@ -73,8 +73,8 @@
     <!--编辑界面-->
     <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-            <el-form-item label="个人账号" prop="PACCID">
-                <el-input v-model="editForm.PACCID" auto-complete="off"></el-input>
+            <el-form-item label="个人账号" prop="GRZH">
+                <el-input v-model="editForm.GRZH" auto-complete="off"></el-input>
             </el-form-item>
             <!-- <el-form-item label="性别">
                  <el-radio-group v-model="editForm.sex">

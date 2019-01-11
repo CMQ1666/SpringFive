@@ -19,6 +19,7 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyDao companyDao;
     @Override
     public Map add(Map map) {
+        //System.out.println(map+"..............");
             int add = companyDao.add(map);
             int i = companyDao.add1(map);
             Map paramMap =new HashMap();

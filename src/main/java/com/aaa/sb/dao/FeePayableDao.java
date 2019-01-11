@@ -107,7 +107,7 @@ public interface FeePayableDao {
      * @param map
      * @return
      */
-    @Insert("insert into precord (ID,PNAME,PACCOUNT,PMONEY,PTYPE,PDATE,PCMONEY,PMONTH) values(seq_precord_id.nextval,#{PNAME},#{GRZH},(#{DALANCE}+#{YDRAWAMT}*#{uaowemonths}),'补缴',#{LASTNAYDATE},#{PERMONPAYSUM},#{UAOWEMONTHS})")
+    @Insert("insert into precord (ID,PNAME,PACCOUNT,PMONEY,PTYPE,PDATE,PMONTH) values(seq_precord_id.nextval,#{PNAME},#{GRZH},(#{DALANCE}+#{YDRAWAMT}*#{uaowemonths}),'补缴',#{LASTNAYDATE},#{UAOWEMONTHS})")
     int insert1(Map map);
 }
 

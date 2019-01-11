@@ -18,6 +18,7 @@ import java.util.UUID;
  * author:zz
  * createTime:2019-01-04 14:14
  */
+@Component
 public class FtpUtil {
     @Autowired
     private FtpConfig ftpConfig;

@@ -16,9 +16,9 @@ public interface CompanyDao {
      * @param map
      * @return
      */
-    @Insert("insert into TB_UNITACCOUNT(uaid,UDEPOSITRATIO,UPERSONRATIO,UASTATE,UABANKNAME,UABANKNUMBER,STYH,YWBLR,KHRQ,DWZH,UNID,UAOWEMONTHS) values(seq_tb_unitaccount.nextval,\n" +
+    @Insert("insert into TB_UNITACCOUNT(uaid,UDEPOSITRATIO,UPERSONRATIO,UASTATE,UABANKNAME,UABANKNUMBER,STYH,YWBLR,KHRQ,DWZH,UNID,UAOWEMONTHS,UAREMAIN) values(seq_tb_unitaccount.nextval,\n" +
             "#{UDEPOSITRATIO},#{UPERSONRATIO},#{UASTATE},#{UABANKNAME},#{UABANKNUMBER},#{STYH},#{YWBLR},to_date(substr(#{KHRQ},1,10),'yyyy-MM-dd'), \n" +
-            "extract(year from sysdate)||extract(month from sysdate)||extract(day from sysdate)||to_char(seq_tb_unitaccount.currval,'fm00000'),seq_tb_unit.currval,1)")
+            "extract(year from sysdate)||extract(month from sysdate)||extract(day from sysdate)||to_char(seq_tb_unitaccount.nextval,'fm00000'),seq_tb_unit.currval,1,0)")
     int add1(Map map);
     @Select("select count(*) from tb_unit where UNAME = #{name}")
     int uname(String name);

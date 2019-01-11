@@ -32,8 +32,15 @@ public class PersonalController {
     public Object add(@RequestBody Map map) {
 
         //System.out.println("map0000000000000000000000000000000"+map);
-        personalService.add(map);
+        //personalService.add(map);
         return personalService.add(map);
     }
+@ResponseBody
+@RequestMapping("getList")
+    public Map getList(@RequestBody Map map) {
+
+        return personalService.getList(map);
+    }
+
 
 }
