@@ -42,8 +42,8 @@
             <el-table-column prop="OPERATOR" label="创建人" width="120" align="center"></el-table-column>
             <el-table-column prop="STATE" label="审批类型" align="center" width="80">
                 <template scope="scope">
-                    {{ scope.row.STATE == 1 ?  '封存审核': '' }}
-                    {{ scope.row.STATE == 2 ?  '启封审核': '' }}
+                    {{ scope.row.STATE == 2 ?  '封存审核': '' }}
+                    {{ scope.row.STATE == 1 ?  '启封审核': '' }}
                 </template>
             </el-table-column>
             <el-table-column prop="AUDIT_NAME" label="审核状态" width="150" align="center">
@@ -56,8 +56,8 @@
             <el-table-column label="操作">
                 <template scope="scope">
                     <div v-if="scope.row.AUDIT_NAME==1">
-                        <el-button :plain="true" type="success" size="small" icon="edit" @click="fengcun(scope.row)" v-if="scope.row.STATE==1">封存</el-button>
-                        <el-button :plain="true" type="warning" size="small" icon="edit" @click="qifeng(scope.row)" v-if="scope.row.STATE==2">启封</el-button>
+                        <el-button :plain="true" type="success" size="small" icon="edit" @click="fengcun(scope.row)" v-if="scope.row.STATE==2">封存</el-button>
+                        <el-button :plain="true" type="warning" size="small" icon="edit" @click="qifeng(scope.row)" v-if="scope.row.STATE==1">启封</el-button>
                         <el-button :plain="true" type="danger" size="small" icon="delete" @click="bohui(scope.row)" >驳回</el-button>
                     </div>
                 </template>
