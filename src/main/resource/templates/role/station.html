@@ -264,23 +264,31 @@
             //表格删除事件
             deleteClick: function (row) {
                 var _self = this;
-                this.$confirm('确认删除' + row.ID + '吗?', '提示', {
-                    type: 'warning'
-                }).then(function () {
-                    var url = "/station/delete";
-                    axios.post(url, {ID: row.ID}).then(function (response) {
-                        if (response.data > 0) {
-                            _self.$message({
-                                message: row.ID + '删除成功',
-                                type: 'success'
-                            });
-                            _self.loadingData();//重新加载数据
-                        }
+                if(row.ID==1){
+                    _self.$message({
+                        message: '系统管理员不能删除',
+                        type: 'error'
                     });
-                }).catch(function (e) {
-                    if (e != "cancel")
-                        console.log("出现错误：" + e);
-                });
+                    _self.loadingData();//重新加载数据
+                }else{
+                    this.$confirm('确认删除' + row.ID + '吗?', '提示', {
+                        type: 'warning'
+                    }).then(function () {
+                        var url = "/station/delete";
+                        axios.post(url, {ID: row.ID}).then(function (response) {
+                            if (response.data > 0) {
+                                _self.$message({
+                                    message: row.ID + '删除成功',
+                                    type: 'success'
+                                });
+                                _self.loadingData();//重新加载数据
+                            }
+                        });
+                    }).catch(function (e) {
+                        if (e != "cancel")
+                            console.log("出现错误：" + e);
+                    });
+                }
             },
             //分页大小修改事件
             pageSizeChange: function (val) {
