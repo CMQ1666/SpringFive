@@ -27,16 +27,18 @@ public class RemitServiceImpl  implements  RemitService{
     public Object add(Map map) {
         //remitDao.add1(map);
         remitDao.update(map);
+        remitDao.update1(map);
         return remitDao.add1(map);
     }
 
-    @Override
-    public Object update(Map map) {
-        Map map1=new HashMap();
-        int i=remitDao.update(map);
-        int i1=remitDao.update1(map);
-        map1.put("i",i);
-        map1.put("i1",i1);
-        return map1;
-    }
+//    @Override
+//    public Object update(Map map) {
+//        Map map1=new HashMap();
+//        int i=remitDao.update(map);
+//        int i1=remitDao.update1(map);
+//        System.out.println("kljliojiojoi"+i1);
+//        map1.put("i",i);
+//        map1.put("i1",i1);
+//        return map1;
+//    }
 }

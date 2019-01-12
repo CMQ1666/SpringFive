@@ -1,6 +1,7 @@
 package com.aaa.sb.controller;
 
 import com.aaa.sb.service.RemitService;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,14 @@ public class RemitController {
     @RequestMapping("/add")
     public Object add(@RequestBody Map map){
         System.out.println(map+"..........");
-        return remitService.add(map);
+        Object add = remitService.add(map);
+        System.out.println("add="+ JSON.toJSONString(add));
+        return add;
     }
     @RequestMapping("/page")
     @ResponseBody
     public Object page(@RequestBody Map map){
+        System.out.println("前台穿了的值======"+map);
         //第一个参数是当前第几页页码 第二个参数是显示数量
         PageHelper.startPage(Integer.valueOf(map.get("pageNo")+""),Integer.valueOf(map.get("pageSize")+""));
         //用pageinfo对结果进行包装
