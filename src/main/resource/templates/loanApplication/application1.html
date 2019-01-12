@@ -427,7 +427,7 @@
                 <el-col :span="5">
                     <div class="grid-content bg-purple">
                         <el-form-item key="9" label="银行账户" prop="HBank" :rules="[{ required: true, message: '银行账户不能为空',trigger: 'blur'},
-                                                          {min:18,max:21, message: '银行账户为18到21位的数字',trigger: 'blur'}]">
+                                                          {min:18,max:21, message: '银行账户格式不规范',trigger: 'blur'}]">
                             <el-input v-model="form3.HBank" style="width: 200px;"></el-input>
                         </el-form-item>
                     </div>
@@ -574,11 +574,10 @@
                 spouseNum:''
             },
             let:validate = (rule, value, callback) => {
-               // alert(111111)
-                //后台方法
+                //贷款人唯一性验证
                 var url="/loan/unique/"+value;
                 axios.post(url).then(function (res) {
-                  //  alert(res.data)
+
                     if ( res.data >0) {
                         callback('账号有误请重新输入')
                     } else {
@@ -696,6 +695,7 @@
                 label: '抵押中'
             }]
             },
+        //提交时的认证
         methods: {
             next(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -714,14 +714,14 @@
                 --this.active;
                 if (this.active< 0) this.active = 0;
             },
+            //由个人账号显示个人信息
             blurs:function () {
                 var self=this;
-             //  alert(this.form1.GRZH)
+
                 var url="/loan/user/"+this.form1.GRZH;
                if(this.form1.GRZH!='') {
                     axios.get(url).then(function (response) {
-                        //alert(JSON.stringify(response.data));
-                        //self.form1=response.data;
+
                         self.form1.DWZH = response.data.DWZH;
                         self.form1.PID = response.data.PID;
                         self.form1.GRZH = response.data.GRZH;
@@ -770,7 +770,7 @@
                 var url="/loan/user/"+this.form2.GRZH1;
                 if(this.form2.GRZH1!=""){
                     axios.get(url).then(function (response) {
-                        //alert(JSON.stringify(response.data));
+
                         self.form2.GRZH1=response.data.GRZH;
                         self.form2.PNAME1=response.data.PNAME;
                         self.form2.PHONE=response.data.PHONE;
@@ -826,13 +826,13 @@
 
             //根据期数进行利率对的计算
             periods:function () {
-                //alert(1111);
+
                 if(this.form1.loanPeriods<=50){
                     this.form1.loanRate=2.75;
                 }else {
                     this.form1.loanRate=3.25;
                 }
-                //alert(this.form1.loanPeriods);
+
             },
             houseMoney:function () {
                 var price = this.form3.houseTotal / this.form3.houseArea;

@@ -31,10 +31,20 @@ public class RepayController {
         return  "/repay/repay";
     }
 
+    /**
+     * 跳转逾期还款
+     * @return
+     */
     @RequestMapping("/toyuqi")
     public Object yuqi(){
         return  "/repay/yuqi";
     }
+
+    /**
+     * 逾期还款
+     * @param map
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/list2")
     public  Object yuqiList(@RequestParam Map map){
@@ -46,13 +56,13 @@ public class RepayController {
     @ResponseBody
     @RequestMapping("/list/{GRZH}")
     public Object getLoanUser(@PathVariable("GRZH") String GRZH){
-      //  System.out.println(GRZH);
         return repayService.getListByName(GRZH);
     }
+
     @ResponseBody
     @RequestMapping("/list2/{GRZH}")
     public Object yuqiList(@PathVariable("GRZH") String GRZH){
-        //  System.out.println(GRZH);
+
         return repayService.yuqiList(GRZH);
     }
 
@@ -100,14 +110,18 @@ public class RepayController {
     }
 
 
-
+    /**
+     * 按期还款
+     * @param map
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/repayMoney")
     public Object repayMoney(@RequestBody Map map){
-        //repayService.insertRecord(map);
-      // System.out.println("收到的参数==**********************************"+map);
+
             return repayService.archiveRepay(map);
     }
+
     @ResponseBody
     @RequestMapping("/record/{GRZH}")
     public Object getRecord(@PathVariable("GRZH") String GRZH){
@@ -123,7 +137,7 @@ public class RepayController {
     @ResponseBody
     @RequestMapping("/tiqian")
     public  Object  tiqian(@RequestBody Map map){
-        //System.out.println("--==-=-=-=-=-=-========-="+map);
+
         return repayService.tiqian(map);
 
     }

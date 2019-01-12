@@ -60,7 +60,7 @@ public class PersonController {
         PageHelper.startPage(Integer.valueOf(map.get("pageNo")+""),Integer.valueOf(map.get("pageSize")+""));
         //用pageinfo对结果进行包装
         PageInfo<Map> pageInfo =new PageInfo<Map>(personService.getList(map));
-        System.out.println(map.get("pname"));
+
         Map resultMap = new HashMap();
         //获取当前页数据
         resultMap.put("pageData",pageInfo.getList());
@@ -77,9 +77,7 @@ public class PersonController {
     @ResponseBody
     @RequestMapping("/trans/{pname}")
     public Object transfer(@PathVariable("pname") String pname) {
-        //System.out.println(pname+"--------------------");
         Map name = personService.UserIDSelect(pname);
-        // System.out.println(name+"************************");
         return name;
     }
     /**
@@ -127,7 +125,6 @@ public class PersonController {
     @ResponseBody   //标志该方法返回值为json集合对象		相当于response.getWriter().print(json);
     @RequestMapping("/PersonTransfer")
     public Object userList1(@RequestBody Map map) {
-        System.out.println("-----------"+map);
         List<Map> userSelect = personService.UserSelect(map);
         List<Person> userList = new ArrayList<Person>();
         if(userSelect!=null&userSelect.size()>0){

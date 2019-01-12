@@ -114,7 +114,7 @@ public class RepayServiceImpl implements RepayService{
      */
     @Override
     public int archiveRepay(Map map) {
-       // System.out.println("/*/*/*/*//*/*"+map);
+
         repayDao.insertRecord(map);
         String time = map.get("REPAYED_DATE")+"";//获取放贷日期
         SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");

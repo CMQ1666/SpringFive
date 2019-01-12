@@ -33,7 +33,6 @@ public class FinalcalController {
      * @return
      */
     @RequestMapping("/page")
-    //public String trans(){ return "/person/PersonTransfer" ;}
     public String page(){ return "/financial/DKQKFX";}
     /**
      * 每月贷款信息
