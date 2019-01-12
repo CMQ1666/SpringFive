@@ -16,7 +16,7 @@ public interface YdtqDao {
      */
     @Select("<script> select a.GRZH,a.PNAME,a.LOAN_MONEY,a.LOAN_PERIODS,a.LOAN_REPAY,a.LOAN_RATE,b.RESIDUE_MONEY," +
             "b.RESIDUE_PERIODS,a.HKJE,a.YDRQ,b.RESIDUE_MONEY,a.SHIJIAN,b.RESIDUE_PERIODS,a.DKLX,a.SHZT from " +
-            "TB_AGREED_TO_EXTRACT a left join tb_repay b  on a.PERACCSTATE1=b.LOAN_ID " +
+            "tb_repay b left join  TB_AGREED_TO_EXTRACT a on a.GRZH=b.GRZH " +
             "<where><if test=\"PNAME!=null and PNAME!=''\"> and PNAME=#{PNAME}</if> </where></script>")
     List<Map> getPageByParam(Map map);
 

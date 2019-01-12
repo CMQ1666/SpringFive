@@ -23,7 +23,10 @@ public interface RemitDao {
     int add1(Map map);
     @Update("update tb_unitaccount set UAREMAIN=UAREMAIN-#{UAOWEMONERY},UAPAYENDDATE=sysdate where DWZH=#{DWZH}")
     int update(Map map);
-    @Update("update tb_paccountutil set DALANCE=DALANCE+(select YDRAWAMT from tb_paccountutil where UNID=(select UNID from tb_unitaccount where DWZH = #{DWZH})),YINTERESTBAL=1 where UNID=(select UNID from tb_unitaccount where DWZH = #{DWZH}) and YINTERESTBal = 0 and PERACCSTATE = 1")
+
+
+
+    @Update("update tb_paccountutil set DALANCE=DALANCE+(select YDRAWAMT from tb_paccountutil where UNID=(select UNID from tb_unitaccount where DWZH = #{DWZH})),YINTERESTBAL=1 where UNID=(select UNID from tb_unitaccount where DWZH = #{DWZH}) and YINTERESTBal = 0 and PERACCSTATE = '正常'")
     int update1(Map map);
 
 }
