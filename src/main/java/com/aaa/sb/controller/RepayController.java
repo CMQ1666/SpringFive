@@ -30,12 +30,18 @@ public class RepayController {
     public String trans (){
         return  "/repay/repay";
     }
-
+    @ResponseBody
+    @RequestMapping("/toyuqi")
+    public Object yuqi(@RequestBody Map map){
+        repayService.yuqi(map);
+        System.out.println("90909090990"+map);
+        return  "/repay/yuqi";
+    }
     /* int archiveRepay=repayService.archiveRepay();*/
     @ResponseBody
     @RequestMapping("/list/{GRZH}")
     public Object getLoanUser(@PathVariable("GRZH") String GRZH){
-        System.out.println(GRZH);
+      //  System.out.println(GRZH);
         return repayService.getListByName(GRZH);
     }
     /**
@@ -66,7 +72,7 @@ public class RepayController {
     @RequestMapping("/repayMoney")
     public Object repayMoney(@RequestBody Map map){
         //repayService.insertRecord(map);
-       System.out.println("收到的参数==**********************************"+map);
+      // System.out.println("收到的参数==**********************************"+map);
             return repayService.archiveRepay(map);
     }
     @ResponseBody
@@ -87,5 +93,12 @@ public class RepayController {
         return repayService.insertRecord(map);
 
     }*/
+    @ResponseBody
+    @RequestMapping("/tiqian")
+    public  Object  tiqian(@RequestBody Map map){
+        //System.out.println("--==-=-=-=-=-=-========-="+map);
+        return repayService.tiqian(map);
+
+    }
 
 }

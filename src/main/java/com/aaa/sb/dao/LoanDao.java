@@ -15,7 +15,7 @@ import java.util.Map;
 public interface LoanDao {
     /**
      * 根据账号获取贷款申请客户列表
-     * @param client
+     * @param
      * @return
      */
     @Select(value ="select GRZH,a.PID,PNAME,PSEX,PHONE,IDCARD,IDNUMBER,PMARRIAGE,PROFESSION,EDUCATION,PEMAIL,PADDRESS,\n" +
@@ -49,12 +49,21 @@ public interface LoanDao {
      * @return
      */
 
-    @Insert("insert into tb_repay (REPAY_ID,GRZH,PNAME,LOAN_MONEY,LOAN_PERIODS,LOAN_RATE," +
-            "REPAY_BANK,REPAY_ACCOUNT,REPAYED_PERIODS,REPAYED_ALL_MONEY) values(SEQ_REPAY_ID.nextval,#{GRZH},#{PNAME},#{loanAmount},#{loanPeriods},#{loanRate}," +
-            "#{openBank},#{paymentAccount},0,0)")
+    @Insert("insert into tb_repay (REPAY_ID,GRZH,PNAME,LOAN_MONEY,LOAN_PERIODS,LOAN_RATE,REPAYED_DATE," +
+            "REPAY_BANK,REPAY_ACCOUNT,REPAYED_PERIODS,REPAYED_ALL_MONEY,RESIDUE_MONEY) values(SEQ_REPAY_ID.nextval,#{GRZH},#{PNAME},#{loanAmount},#{loanPeriods},#{loanRate}," +
+            "add_months(trunc(sysdate),1)," +
+            "#{openBank},#{paymentAccount},0,0,#{loanAmount})")
 
     int addRepay(Map map);
 
+    /**
+     * 对贷款人是否之前贷过款进行验证
+     * @param map
+     * @return
+     */
+    @Select("select count(*) from TB_LOANAPPVAL l left join TB_PACCOUNTUTIL p on " +
+            "p.PID=l.pid where l.grzh=#{value} and PERACCSTATE='正常'")
+       int unique(String value);
 
 
 

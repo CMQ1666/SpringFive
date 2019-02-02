@@ -33,5 +33,12 @@ public interface LoanService {
      */
     int addRepay(List<Map> map);
 
+    /**
+     * 对贷款人进行审核
+     * @param value
+     * @return
+     */
+    int unique(String value);
+
 
 }

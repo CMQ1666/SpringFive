@@ -48,4 +48,22 @@ public interface RepayService {
      * @return
      */
     int insertRecord(Map map);
+
+    /**
+     * 提前还款
+     * @param map
+     * @return
+     */
+    List<Map> tiqian(Map map);
+
+    /**
+     * 逾期还款
+     * @param map
+     * @return
+     */
+    int yuqi(Map map);
+
+
+
+
 }
