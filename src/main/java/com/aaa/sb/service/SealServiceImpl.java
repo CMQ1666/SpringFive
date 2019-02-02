@@ -38,7 +38,6 @@ public class SealServiceImpl implements SealService {
     @Override
     public Map unsealAudit(Map map, HttpSession session) {
         String name = session.getAttribute("name")+"";   //获取操作人员
-
         List<Map> unsealAudit = sealDao.unsealAudit(map);
         String pdstype = map.get("pdstype")+"";
         System.out.println("==========="+pdstype);
@@ -63,7 +62,7 @@ public class SealServiceImpl implements SealService {
                 maps.put("UNSEAL_ACCOUNT", tempMap.get("GRZH"));				//销户人个人账户
                 maps.put("REASON", map.get("resson"));				//启封 或 销户 原因
                 maps.put("OPERATOR",name);							//操作人
-                maps.put(" AUDIT_STATE",map.get("pdstype"));			//审核状态
+                maps.put(" AUDIT_STATE",pdstype);			//审核状态
                 maps.put("STATE",pState);
             }
             System.out.println(maps+"ereijtowejtiweoi");
@@ -83,28 +82,7 @@ public class SealServiceImpl implements SealService {
 
     @Override
     public Map operationQuery(Map map) {
-        List<Map> operationMap = sealDao.operationQuery(map);
-        Map maps = new HashMap();
-        if (operationMap.size()>0&&operationMap!=null){
-            String pState = "";  //个人状态
-            for (Map tempMap : operationMap) {
-                maps.put("DWZH", tempMap.get("DWZH"));	//单位账号
-                maps.put("PNAME", tempMap.get("PNAME")); //个人名称
-                maps.put("UNAME", tempMap.get("UNAME")); //单位名称
-                maps.put("GRZH", tempMap.get("GRZH")); //个人账号
-                if(tempMap.get("PERACCSTATE").equals(1)){  //判断状态  修改成汉字
-                    pState="正常";
-                }else if(tempMap.get("PERACCSTATE").equals(2)){
-                    pState="封存";
-                }else{
-                    pState="销户";
-                }
-                maps.put("PERACCSTATE",pState);
-            }
-            return maps;
-        }else {
-            return null;
-        }
+        return   sealDao.operationQuery(map);
     }
 
     @Override

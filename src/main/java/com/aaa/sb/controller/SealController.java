@@ -78,7 +78,6 @@ public class SealController {
     @ResponseBody
     @RequestMapping("/query")
     public Object operationQuery(@RequestBody Map map){//RequestBody
-        System.out.println("前台"+map);
         List<Map> verification = sealService.verification(map);  //查询到  封存 启封 销户 审核表信息
         List<Map> loansVerification = sealService.loansVerification(map);//校验贷款的人 不能封存和销户  查询贷款人员信息
         Map operationMap = sealService.operationQuery(map);  //查询到个人信息 用于封存 启封 销户   操作弹出层查询信息

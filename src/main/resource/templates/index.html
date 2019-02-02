@@ -6,9 +6,9 @@
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/elementui.css">
     <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="../js/elementui.js"></script>
     <style>
         .el-header, .el-footer {
             background-color: #B3C0D1;
@@ -21,7 +21,7 @@
             background-color: #D3DCE6;
             color: #333;
             text-align: center;
-            line-height: 200px;
+            line-height: 26px;
         }
 
         .el-main {
@@ -52,7 +52,9 @@
 <body>
 <div class="diva">
             <el-container>
-                <el-header style="height: 80px;">Header</el-header>
+                <el-header style="height: 80px;">
+
+                </el-header>
                 <el-container>
                     <el-aside width="200px" style="height: 840px;">
                         <el-tree
@@ -75,7 +77,6 @@
                                  <iframe :src="item.url" style="width:100%;height:750px;border: 0px;" scrolling="auto"></iframe>
                             </el-tab-pane>
                         </el-tabs>
-
                     </el-main>
                 </el-container>
             </el-container>
@@ -88,15 +89,15 @@
                treeData:[],
                editableTabsValue2: '2',
                editableTabs2: [ {
-                   title: '首页',
-                   name: '2',
-                   url: 'https://www.baidu.com'
+                   title: '',
+                   name: '',
+                   url: ''
                }],
                tabIndex: 2
            },
            created:function(){
                var _self =this
-               axios.post("/power/tree").then(function(response){
+               axios.post("/power/roleTree").then(function(response){
                  _self.treeData = response.data;
                })
            },

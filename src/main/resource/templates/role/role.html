@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>角色管理</title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
+    <!-- 引入组件库 -->
+    <script src="../js/elementui.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+
+<div id="tableView">
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <!--<el-form-item label="角色">
+                <el-input v-model="searchForm.ROLE" placeholder="role"></el-input>
+            </el-form-item>-->
+            <el-form-item label="角色">
+                <template>
+                    <el-select v-model="searchForm.ROLENAME" clearable placeholder="请选择">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.ROLEID"
+                                :label="item.ROLENAME"
+                                :value="item.ROLENAME">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-form-item>
+            <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+            <el-button type="success" icon="plus" @click="addClicks">新增</el-button>
+            <el-button type="success" icon="plus" @click="flushData">清空</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <!--列表-->
+    <el-row>
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                border
+                @selection-change="selectionChange($event)"
+                style="width: 100%">
+            <el-table-column
+                    type="selection"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="ROLEID"
+                    label="id"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="ROLENAME"
+                    label="角色"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    align="center">
+                <template scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑
+                    </el-button>
+                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
+                        删除
+                    </el-button>
+                    <el-button :plain="true" type="success" size="small" icon="add" @click="addClick(scope.row)">授权
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-row>
+
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+        <el-col :span="6">
+            <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
+        </el-col>
+        <el-col :span="18">
+            <el-pagination
+                    style="float: right"
+                    @size-change="pageSizeChange"
+                    @current-change="currentPageChange"
+                    :current-page="currentPage"
+                    :page-sizes="[1, 2, 3, 4, 5, 10]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+
+    <!--编辑界面-->
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+            <!-- <el-form-item label="ID" prop="ID"  disabled="true">
+                 <el-input v-model="editForm.ID" auto-complete="off" readonly="readonly"></el-input>
+             </el-form-item>-->
+            <el-form-item label="" prop="ROLENAME">
+                <el-input v-model="editForm.ROLENAME" auto-complete="off" placeholder="请输入角色名称"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+
+            <el-button @click.native="editFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </div>
+    </el-dialog>
+
+
+    <!--授权界面-->
+    <el-dialog title="授权" :visible.sync="shouquan" :close-on-click-modal="false">
+        <el-tree
+                :data="data2"
+                show-checkbox
+                default-expand-all
+                :default-checked-keys="keys"
+                node-key="id"
+                ref="tree"
+                highlight-current
+        >
+        </el-tree>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="shouquan = false">取消</el-button>
+            <el-button type="primary" @click.native="shouquanSub" :loading="editLoading">提交</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '角色列表'
+        }
+    });
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            keys:[],//授权弹出框默认选中
+            roleId: 1,//角色id
+            //菜单树
+            data2: [],
+            //部门下拉框框
+            options: [],
+            //角色下拉框
+            roles: [],
+            //列表数据
+            tableData: [],
+            //显示加载中样式
+            loading: false,
+            //搜索表单
+            searchForm: {
+                ROLENAME: ''
+            },
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage: 1,
+            //分页大小
+            pageSize: 10,
+            //总条数
+            total: 800,
+            //删除的弹出框
+            deleteVisible: false,
+            //编辑界面是否显示
+            editFormVisible: false,
+            shouquan: false,
+            editLoading: false,
+            goUrl: '',
+            editFormRules: {
+                ROLE: [
+                    {required: true, message: '请输入角色名称', trigger: 'blur'}
+                ]
+            },
+            //编辑界面数据
+            editForm: {
+                //ID:'',
+                ROLE: ''
+            },
+        },
+        //列表显示
+        created: function () {
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            axios.post('/role/roleList', {
+                'pageNo': self.currentPage,
+                'pageSize': self.pageSize
+            }).then(function (response) {
+                self.total = response.data.total;
+                self.tableData = response.data.pageData;
+            });
+            axios.post('/role/getRoleList').then(function (response) {
+                self.options = response.data;
+            });
+            axios.post('/power/tree').then(function (response) {
+                self.data2 = response.data;
+            })
+        },
+        methods: {
+            //清空表格数据
+            flushData: function () {
+                //搜索表单
+                searchForm = {
+                    ROLENAME: ''
+                }
+            },
+            //表格重新加载数据
+            loadingData: function () {
+                var _self = this;
+                _self.loading = true;
+                //传过去的参数
+                var searchForm = {
+                    'pageNo': _self.currentPage,
+                    'pageSize': _self.pageSize,
+                    'ROLENAME': _self.searchForm.ROLENAME
+                };
+                axios.post('/role/roleList', searchForm).then(function (response) {
+                    _self.total = response.data.total;
+                    _self.tableData = response.data.pageData;
+                })
+                console.log(_self.currentPage);
+                //查
+                setTimeout(function () {
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                }, 300);
+            },
+            //表格编辑事件
+            editClick: function (row) {
+                this.goUrl = "/role/updateRole";
+                this.editFormVisible = true;
+                this.editForm = Object.assign({}, row);
+            },
+            //表格添加事件
+            addClicks: function () {
+                //编辑界面数据
+                this.editForm = {
+                    //ID:'',
+                    ROLE: ''
+                },
+                    this.goUrl = "/role/insertRole";
+                this.editFormVisible = true;
+            },
+            //表格删除事件
+            deleteClick: function (row) {
+                var _self = this;
+                this.$confirm('确认删除' + row.ROLEID + '吗?', '提示', {
+                    type: 'warning'
+                }).then(function () {
+                    var url = "/role/deleteRole";
+                    axios.post(url, {ROLEID: row.ROLEID}).then(function (response) {
+                        if (response.data > 0) {
+                            _self.$message({
+                                message: row.ROLEID + '删除成功',
+                                type: 'success'
+                            });
+                            _self.loadingData();//重新加载数据
+                        }
+                    });
+                }).catch(function (e) {
+                    if (e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //表格查询事件
+            searchClick: function () {
+                this.loadingData();//重新加载数据
+            },
+            //表格勾选事件
+            selectionChange: function (val) {
+                this.multipleSelection = val;
+                console.info(val);
+            },
+            //删除所选，批量删除
+            removeSelection: function () {
+                var _self = this;
+                var multipleSelection = this.multipleSelection;
+                if (multipleSelection.length < 1) {
+                    _self.$message({
+                        message: '请至少选中一条记录',
+                        type: 'error'
+                    });
+                    return;
+                }
+                var ids = '';
+                for (var i = 0; i < multipleSelection.length; i++) {
+                    var row = multipleSelection[i];
+                    ids += row.ROLEID + ","
+                }
+                this.$confirm('确认删除' + ids + '吗?', '提示', {
+                    type: 'warning'
+                }).then(function () {
+                    var url = "/role/batchDel?ids="+ids.substring(0,ids.lastIndexOf(","));
+                    axios.post(url).then(function (response) {
+                        var temp = "";
+                        if (response.data > 0) {
+                            temp = "删除成功";
+                        } else {
+                            temp = "删除失败";
+                        }
+                        _self.$message({
+                            message: ids + temp,
+                            type: 'success'
+                        });
+                        _self.loadingData();//重新加载数据
+                    });
+
+                }).catch(function (e) {
+                    if (e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //分页大小修改事件
+            pageSizeChange: function (val) {
+                console.log('每页 ' + val + ' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange: function (val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //保存点击事件
+            editSubmit: function (editForm) {
+                this.$refs[editForm].validate((valid) => {
+                    if (valid) {
+                        var _self = this;
+                        _self.loading = true;
+                        var formData = this.editForm;
+                        var goUrl = this.goUrl;
+                        axios.post(goUrl, formData).then(function (response) {
+                            if (response.data > 0) {
+                                _self.editFormVisible = false;
+                                _self.loadingData();//重新加载数据
+                            }
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                })
+            },
+
+            //授权事件
+            addClick: function (row) {
+                this.keys=[];
+                var _self = this;
+                var id = Object.assign({}, row).ROLEID;
+                this.roleId = Object.assign({}, row).ROLEID;
+                axios.post('/power/backTree',{'roleId':id}).then(function (response) {
+                    alert(response.data)
+                    _self.keys = response.data
+                    _self.$refs.tree.setCheckedKeys(_self.keys);
+                })
+                //row.ID//角色id
+                this.shouquan = true;
+                _self.loadingData();//重新加载数据
+            },
+            //点击授权的保存
+            shouquanSub: function () {
+                let al = this.$refs.tree.getCheckedKeys();//树节点的id-----[2,4,7]
+                //alert(al);
+                var self = this;
+               ;//角色id
+                alert(this.roleId);
+                 axios.post('/role/insertPowerTree', {'powerId': al,'roleId': self.roleId}).then(function (response) {
+                    if (response.data == 1) {
+                        alert('授权成功！');
+                    } else {
+                        alert('授权失败！');
+                    }
+                })
+                this.shouquan = false;
+            }
+        }
+
+    })
+</script>
+
+</body>
+</html>

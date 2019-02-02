@@ -1,6 +1,9 @@
-package com.aaa.sb.dao;
+package com.aaa.sb.dao.power;
 
 import com.aaa.sb.entity.User;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * className:UserDao
@@ -23,4 +26,12 @@ public interface UserDao {
      * @return
      */
     public User findById(Integer id);
+
+    /**
+     * 通过用户名查询该用户所有信息
+     * @param name
+     * @return
+     */
+
+    List<Map> findByAll(String name);
 }
