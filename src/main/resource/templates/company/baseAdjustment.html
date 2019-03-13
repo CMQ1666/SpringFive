@@ -396,8 +396,8 @@
                 var self = this;
 //                var start1 =(this.currentPage-1)*this.pageSize;
 //                var end1 =this.currentPage*this.pageSize+1;
-                //alert(this.searchForm1.TB_PNAME);
-                // alert(this.searchForm1.uid);
+
+
                 var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'PNAME':this.searchForm1.PNAME};
                 axios.post('/base/page1',searchForm).then(function(response1){
                     _self.total1=response1.data.total1;
@@ -424,14 +424,14 @@
             },
             formClick:function(row) {
                 //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
-                //alert(row.GRZH);
+
                 var self = this;
                 var url = '/base/getPersonInfo/'+row.GRZH;
                 axios.post(url).then(function(response){
-                    alert(JSON.stringify(response.data));
+
                         self.searchForm2.UNID = response.data[0].UNID,
-                            alert(self.searchForm2.UNID+"aaaaa");
-                            alert(response.data[0].UNID);
+
+
                         self.searchForm2.UNAME = response.data[0].UNAME,
                         self.searchForm2.DWXZ = response.data[0].DWXZ,
                         self.searchForm2.GRZH = response.data[0].GRZH,
@@ -486,7 +486,6 @@
                 var UBITNROP=this.searchForm2.UBITNROP;
                 var BASENUMMBER=this.searchForm2.BASENUMMBER;
                 var INDINROP=this.searchForm2.INDINROP;
-                //alert(GRZH);
                 axios.post('/base/update',{'GRZH':GRZH,'DWXZ':DWXZ,'UBITNROP':UBITNROP,'BASENUMMBER':BASENUMMBER,'INDINROP':INDINROP}).then(function(response){
                         _self.editFormVisible1 = false;
                         _self.editFormVisible = false;

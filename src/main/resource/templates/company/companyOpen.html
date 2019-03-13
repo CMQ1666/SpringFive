@@ -190,7 +190,10 @@
         <el-row :gutter="20">
             <el-col :span="6">
                 <div class="grid-content bg-purple">
-                    <el-form-item label="开户银行账号" prop="UABANKNUMBER" :rules="[{ required: true, message: '开户银行账号不能为空',trigger: 'blur'}]">
+                    <el-form-item label="开户银行账号" prop="UABANKNUMBER" :rules="[
+                    { required: true, message: '开户银行账号不能为空',trigger: 'blur'},
+                    {pattern: /^([1-9]{1})(\d{14}|\d{18})$/, required: true, message: '请输入开户银行账号账号', trigger: 'blur' }
+                    ]">
                         <el-input v-model="form.UABANKNUMBER" style="width: 200px;"></el-input>
                     </el-form-item>
                 </div>
@@ -322,7 +325,7 @@
                     //alert("sss");
                     var url = "/company/uname/" + value;
                     axios.post(url).then(function (res) {
-                        alert(res.data);
+                       // alert(res.data);
                         if (res.data == 0) {
                             callback('')
                             //alert("1111");

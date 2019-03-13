@@ -40,7 +40,7 @@ public class SealServiceImpl implements SealService {
         String name = session.getAttribute("name")+"";   //获取操作人员
         List<Map> unsealAudit = sealDao.unsealAudit(map);
         String pdstype = map.get("pdstype")+"";
-        System.out.println("==========="+pdstype);
+        //System.out.println("==========="+pdstype);
         String pState=" ";
         if(pdstype.equals("封存")){          //把文字 转成 数字 存入审核表
             pState="2";
@@ -65,7 +65,7 @@ public class SealServiceImpl implements SealService {
                 maps.put(" AUDIT_STATE",pdstype);			//审核状态
                 maps.put("STATE",pState);
             }
-            System.out.println(maps+"ereijtowejtiweoi");
+            //System.out.println(maps+"ereijtowejtiweoi");
         }
         return maps;
     }

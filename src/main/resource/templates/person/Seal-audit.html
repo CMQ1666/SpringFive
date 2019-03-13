@@ -39,7 +39,6 @@
             <el-table-column prop="UNSEAL_NUMBER" label="身份证号" width="150" align="center"></el-table-column>
             <el-table-column prop="UNSEAL_ACCOUNT" label="启封人账户" width="130" align="center"></el-table-column>
             <el-table-column prop="REASON" label="启封原因" width="100" align="center"></el-table-column>
-            <el-table-column prop="OPERATOR" label="创建人" width="120" align="center"></el-table-column>
             <el-table-column prop="STATE" label="审批类型" align="center" width="80">
                 <template scope="scope">
                     {{ scope.row.STATE == 2 ?  '封存审核': '' }}

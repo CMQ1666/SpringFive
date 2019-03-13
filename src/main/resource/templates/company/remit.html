@@ -7,9 +7,9 @@
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="../css/elementui.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
-    <script src="../js/elementui.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
 <div id="app">
@@ -127,111 +127,178 @@
         </el-col>
     </el-row>
 
-    <!--编辑界面-->
-    <el-dialog title="单位名称" :visible.sync="editFormVisible" :close-on-click-modal="false">
-        <el-form :model="editForm" label-width="70px" :rules="editFormRules" ref="editForm">
-            <el-row :gutter="30">
-                <el-col :span="8">
-            <el-form-item label="单位账号" prop="DWZH">
-                <el-input v-model="editForm.DWZH" :disabled="true"></el-input>
-            </el-form-item>
-                </el-col>
-            <!-- <el-form-item label="性别">
-                 <el-radio-group v-model="editForm.sex">
-                     <el-radio class="radio" :label="1">男</el-radio>
-                     <el-radio class="radio" :label="0">女</el-radio>
-                 </el-radio-group>  EMPNO: 0,
-                 ENAME: '',
-                 JOB: '',
-                 SAL: 0,
-                 HIREDATE: ''
-             </el-form-item>-->
-                <!--<el-col :span="8">-->
-            <!--<el-form-item label="记账日期">-->
-                <!--<el-date-number  v-model="editForm.UBDCTEATEDATE" ></el-date-number>-->
-            <!--</el-form-item>-->
-                <!--</el-col>-->
-                <el-col :span="8">
-            <el-form-item label="单位名称">
-                <el-input v-model="editForm.UNAME" :disabled="true"></el-input>
-            </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                    <el-form-item label="暂存款余额">
-                        <el-input v-model="editForm.UATEBALANCE" :disabled="true"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false" style="width:1950px">
+        <!--<el-form :model="editForm" label-width="180px" lable-hight="240px" :rules="editFormRules" ref="editForm">-->
+        <el-row>
+            <el-form :inline="true" :model="searchForm1" class="demo-form-inline">
+                <el-form-item label="姓名">
+                    <el-input v-model="searchForm1.PNAME" placeholder="姓名"></el-input>
+                    <!--<el-input type="hidden" v-model="searchForm1.uid"></el-input>-->
+                </el-form-item>
 
-            <el-row :gutter="30">
-                <el-col :span="8">
-            <el-form-item label="汇缴月数">
-                <el-input-number  v-model="editForm.UAOWEMONTHS" :disabled="true"></el-input-number>
-            </el-form-item>
-                </el-col>
-                <el-col :span="8">
-            <el-form-item label="单位存缴比例">
-                <el-input-number  v-model="editForm.UDEPOSITRATIO" :disabled="true"></el-input-number>
-            </el-form-item>
-                </el-col>
-                <!--<el-col :span="8">-->
-            <!--<el-form-item label="账户状态">-->
-                <!--<el-input  v-model="editForm.UASTATE">-->
-                <!--</el-input>-->
-            <!--</el-form-item>-->
-                <!--</el-col>-->
-            </el-row>
+                <el-form-item>
+                    <el-button type="primary" icon="search" @click="chaClick">查询</el-button>
+                </el-form-item>
+            </el-form>
+        </el-row>
+        <el-row>
+            <el-table
+                    :data="tableData1"
+                    v-loading.body="loading"
+                    border
+                    @selection-change="selectionChange"
+                    style="width: 100%">
+                <el-table-column
+                        prop="GRZH"
+                        label="个人账号"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="PNAME"
+                        label="员工姓名"
+                        width="120">
+                </el-table-column>
 
-            <el-row :gutter="30">
-                <el-col :span="8">
-            <el-form-item label="个人存缴比例">
-                <el-input-number  v-model="editForm.UPERSONRATIO" :disabled="true"></el-input-number>
-            </el-form-item>
-                </el-col>
-                <el-col :span="8">
-            <el-form-item label="账户余额">
-                <el-input-number  v-model="editForm.UAREMAIN" :disabled="true"></el-input-number>
-            </el-form-item>
-                </el-col>
-                <el-col :span="8">
-            <el-form-item label="需缴存人数">
-                <el-input-number  v-model="editForm.UDEPOSITEDPNUM" :disabled="true"></el-input-number>
-            </el-form-item>
-                </el-col>
-            </el-row>
-
-            <el-row :gutter="30">
-                <el-col :span="8">
-            <el-form-item label="应缴金额">
-                <el-input-number  v-model="editForm.UAOWEMONERY" :disabled="true"></el-input-number>
-            </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-            <el-form-item label="操作人员">
-                <el-input v-model="editForm.YWBLR" :disabled="true"> </el-input>
-            </el-form-item>
-                </el-col>
-
-                    <el-col :span="8">
-            <el-form-item label="备注">
-                <el-input  v-model="editForm.UBDREMARK"></el-input>
-            </el-form-item>
-                </el-col>
-
-            </el-row>
-            <!--<el-row :gutter="30">-->
-               <!--<el-col :span="10">-->
-                   <!--<el-form-item label="记账日期">-->
-                       <!--<el-input-date  v-model="editForm.UBDCREATEDATE" ></el-input-date>-->
-                   <!--</el-form-item>-->
-               <!--</el-col >-->
-            <!--</el-row>-->
-
-        </el-form>
+                <el-table-column
+                        prop="BASENUMMBER"
+                        label="缴存基数"
+                        width="100">
+                </el-table-column>
+                <el-table-column
+                        prop="INDINROP"
+                        label="个人缴存比例(%)"
+                        width="100">
+                </el-table-column>
+                <el-table-column
+                        prop="UBITNROP"
+                        label="单位缴存比例(%)"
+                        width="100">
+                </el-table-column>
+                <el-table-column
+                        prop="UNITMONPAYSUM"
+                        label="单位每月缴存"
+                        width="100">
+                </el-table-column>
+                <el-table-column
+                        prop="PERMONPAYSUM"
+                        label="个人每月缴存"
+                        width="100">
+                </el-table-column>
+                <el-table-column
+                        label="操作">
+                    <template scope="scope">
+                        <el-button :plain="true" type="success" size="small" icon="edit" @click="formClick(scope.row)">汇缴办理</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-row>
+        <!--列表底部工具条和分页符-->
+        <el-row style="margin-top: 20px" type="flex" justify="end">
+            <el-col :span="18" >
+                <el-pagination
+                        style="float: right"
+                        @size-change="pageSizeChange"
+                        @current-change="currentPageChange"
+                        :current-page="currentPage"
+                        :page-sizes="[10, 20, 30, 50]"
+                        :page-size="pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="total1">
+                </el-pagination>
+            </el-col>
+        </el-row>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
-            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">保存</el-button>
+            <el-button @click.native="editFormVisible = false">确定</el-button>
+        </div>
+    </el-dialog>
+
+    <el-dialog title="汇缴办理" :visible.sync="editFormVisible1" :close-on-click-modal="false">
+        <el-form :inline="true" :model="searchForm2" class="demo-form-inline">
+            <el-row :gutter="20">
+                <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                        <el-form-item label="所属单位" prop="URATIO">
+                            <el-input v-model="searchForm2.UNAME" :disabled="true" ></el-input>
+                        </el-form-item>
+                    </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                        <el-form-item label="单位账号" prop="PRATIO">
+                            <el-input v-model="searchForm2.DWZH" :disabled="true" ></el-input>
+                        </el-form-item>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                        <el-form-item label="个人账号" prop="URATIO">
+                            <el-input v-model="searchForm2.GRZH" :disabled="true"></el-input>
+                        </el-form-item>
+                    </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                        <el-form-item label="员工姓名" prop="PRATIO">
+                            <el-input v-model="searchForm2.PNAME" :disabled="true"></el-input>
+                        </el-form-item>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                        <el-form-item label="缴存基数" prop="URATIO">
+                            <el-input v-model="searchForm2.BASENUMMBER"></el-input>
+                        </el-form-item>
+                    </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                        <el-form-item label="账户状态" prop="PRATIO" :disabled="true">
+                            <el-input v-model="searchForm2.PERACCSTATE"></el-input>
+                        </el-form-item>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                        <el-form-item label="单位缴存比例" prop="URATIO">
+                            <el-input v-model="searchForm2.UBITNROP" :disabled="true"></el-input>
+                        </el-form-item>
+                    </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                        <el-form-item label="个人缴存比例" prop="PRATIO">
+                            <el-input v-model="searchForm2.INDINROP" :disabled="true" ></el-input>
+                        </el-form-item>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                        <el-form-item label="单位月缴存额" prop="URATIO">
+                            <el-input v-model="searchForm2.UNITMONPAYSUM" :disabled="true" ></el-input>
+                        </el-form-item>
+                    </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                        <el-form-item label="个人月缴存额" prop="PRATIO">
+                            <el-input v-model="searchForm2.PERMONPAYSUM" :disabled="true" ></el-input>
+                        </el-form-item>
+                    </div>
+                </el-col>
+            </el-row>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="editFormVisible1 = false">取消</el-button>
+            <el-button type="primary" @click.native="editSubmit()" :loading="editLoading">确定</el-button>
         </div>
     </el-dialog>
 
@@ -249,12 +316,30 @@
         data: {
             //列表数据
             tableData: [],
+            tableData1:[],
             //显示加载中样式
             loading:false,
             //搜索表单
             searchForm: {
                 UNAME: ''
             },
+            searchForm1: {
+                PNAME: '',
+            },
+            searchForm2: {
+                UNID:'',
+                UNAME: '',
+                DWZH: '',
+                GRZH: '',
+                PNAME: '',
+                BASENUMMBER: '',
+                PERACCSTATE: '',
+                UBITNROP: '',
+                INDINROP: '',
+                UNITMONPAYSUM: '',
+                PERMONPAYSUM: ''
+            },
+            form:"",
             //多选值
             multipleSelection: [],
             //当前页
@@ -263,40 +348,27 @@
             pageSize:10,
             //总记录数
             total:800,
+            total1:800,
             //删除的弹出框
             deleteVisible:false,
             //编辑界面是否显示
             editFormVisible: false,
+            editFormVisible1: false,
             editLoading: false,
             goUrl:'',
             editFormRules: {
-                uname: [
+                name: [
                     { required: true, message: '请输入姓名', trigger: 'blur' }
                 ]
             },
             //编辑界面数据
-            editForm: {
-               /* DWZH:'',
-                UNAME:'',
-                UAOWEMONTHS:1,
-                UDEPOSITRATIO:'',
-                UASTATE:'',
-                UPERSONRATIO:'',
-                UAREMAIN:'',
-                UAOWEMONERY:'',
-                YWBLR:'',
-                UBDREMARK:'',
-                //UBITNROP:'',
-                //UNITMONPAYSUM:'',
-                UBDCREATEDATE:'',
-                UBDPOPULATION:'',
-                UBDDETAILTYPE:'',
-                //UBDPAYMENTDATE:'',
-                UBDPAYWAY:'',
-                ZCK:'',
-                UBDSETTLESTATES:'',
-                UBDCREATER:''*/
-            },
+//            editForm: {
+//                EMPNO: 0,
+//                ENAME: '',
+//                JOB: '',
+//                SAL: 0,
+//                HIREDATE: ''
+//            },
         },
         created:function(){
             //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
@@ -335,15 +407,64 @@
                     _self.loading = false;
                 },300);
             },
+            loadingData1:function() {
+                var _self = this;
+                _self.loading = true;
+                var self = this;
+//                var start1 =(this.currentPage-1)*this.pageSize;
+//                var end1 =this.currentPage*this.pageSize+1;
+                //alert(this.searchForm1.TB_PNAME);
+                // alert(this.searchForm1.uid);
+                var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'PNAME':this.searchForm1.PNAME};
+                axios.post('/remit/page1',searchForm).then(function(response1){
+                    _self.total1=response1.data.total1;
+                    _self.tableData1 = response1.data.pageData1;
+                })
+                console.log(_self.currentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+            },
             searchClick:function() {
                 var self = this;
                 self.loadingData();
             },
             editClick:function(row) {
-                this.goUrl="/remit/page";
-                //alert(row.uapayenddate);
+                //this.searchForm1.UNID=row.DWZH;
+                //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+                var self = this;
+//                var start1 =(this.currentPage-1)*this.pageSize;
+//                var end1 =this.currentPage*this.pageSize+1;
+                axios.post('/remit/page1',{'pageNo':this.currentPage,'pageSize':this.pageSize,DWZH:row.DWZH}).then(function(response1){
+                    self.total1=response1.data.total1;
+                    self.tableData1 = response1.data.pageData1;
+                })
                 this.editFormVisible = true;
-                this.editForm = Object.assign({}, row);
+            },
+            formClick:function(row) {
+                //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+                //alert(row.GRZH);
+                var self = this;
+                var url = '/remit/getPersonInfo/'+row.GRZH;
+                axios.post(url).then(function(response){
+                    //alert(JSON.stringify(response.data));
+                    self.searchForm2.UNID = response.data[0].UNID,
+                        //alert(self.searchForm2.UNID+"aaaaa");
+                    //alert(response.data[0].UNID);
+                    self.searchForm2.UNAME = response.data[0].UNAME,
+                        self.searchForm2.DWZH = response.data[0].DWZH,
+                        self.searchForm2.GRZH = response.data[0].GRZH,
+                        self.searchForm2.PNAME = response.data[0].PNAME,
+                        self.searchForm2.BASENUMMBER = response.data[0].BASENUMMBER,
+                        self.searchForm2.PERACCSTATE = response.data[0].PERACCSTATE,
+                        self.searchForm2.UBITNROP = response.data[0].UBITNROP,
+                        self.searchForm2.INDINROP = response.data[0].INDINROP,
+                        self.searchForm2.UNITMONPAYSUM = response.data[0].UNITMONPAYSUM,
+                        self.searchForm2.PERMONPAYSUM = response.data[0].PERMONPAYSUM,
+                        self.searchForm2.UAOWEMONERY=response.data[0].UNITMONPAYSUM+response.data[0].PERMONPAYSUM
+                })
+                this.editFormVisible1 = true;
             },
             pageSizeChange:function(val) {
                 console.log('每页 ' + val +' 条');
@@ -363,31 +484,20 @@
                 var _self = this;
                 _self.loading = true;
                 //var formData =this.searchForm2;
-                var DWZH = this.editForm.DWZH;
-                var UDEPOSITEDPNUM = this.editForm.UDEPOSITEDPNUM;
-                var UATEBALANCE=this.editForm.UATEBALANCE;
-                var YWBLR=this.editForm.YWBLR;
-                var UAOWEMONTHS=this.editForm.UAOWEMONTHS;
-                var UAREMAIN=this.editForm.UAREMAIN;
-                var UAOWEMONERY=this.editForm.UAOWEMONERY
-                if(UAREMAIN>UAOWEMONERY) {
-                    axios.post('/remit/add', {
-                        'UAOWEMONERY': UAOWEMONERY,
-                        'DWZH': DWZH,
-                        'UDEPOSITEDPNUM': UDEPOSITEDPNUM,
-                        'UATEBALANCE': UATEBALANCE,
-                        'YWBLR': YWBLR,
-                        'UAOWEMONTHS': UAOWEMONTHS,
-                        'UAREMAIN': UAREMAIN
-                    }).then(function (response) {
-                        _self.editFormVisible1 = false;
-                        _self.editFormVisible = false;
-                        _self.loadingData();
-                    })
-                }else{
-                    this.$message.error('余额不足请充值。。。');
+                var GRZH = this.searchForm2.GRZH;
+                var DWZH = this.searchForm2.DWZH;
+                var UBITNROP=this.searchForm2.UBITNROP;
+                var BASENUMMBER=this.searchForm2.BASENUMMBER;
+                var INDINROP=this.searchForm2.INDINROP;
+                var UAOWEMONERY=this.searchForm2.UAOWEMONERY;
+
+                //alert(GRZH);
+                axios.post('/remit/add',{'GRZH':GRZH,'DWZH':DWZH,'UBITNROP':UBITNROP,'BASENUMMBER':BASENUMMBER,'INDINROP':INDINROP,'UAOWEMONERY':UAOWEMONERY}).then(function(response){
+                    _self.editFormVisible1 = false;
+                    _self.editFormVisible = false;
                     _self.loadingData();
-                }
+                })
+
             }
         }
 

@@ -197,7 +197,7 @@
         </div>
         <el-form-item>
             <el-button style="margin-top: 12px;" @click="prev" v-if="active==1">单个开户</el-button>
-            <el-button style="margin-top: 12px;" @click="next" v-if="active==0">批量开户</el-button>
+            <!--<el-button style="margin-top: 12px;" @click="next" v-if="active==0">批量开户</el-button>-->
             <el-button type="primary" @click.native="addClick('form')" v-if="active==0||active==1">保存</el-button>
         </el-form-item>
     </el-form>
@@ -288,7 +288,7 @@
                         // alert(222);
                         // self.total=response.data.total;
                         if (response.data != "") {
-                            alert(JSON.stringify(response.data));
+                            //alert(JSON.stringify(response.data));
                             //alert("1111111111111111");
                             _self.form = Object.assign({}, '');
                             _self.$message({
@@ -307,9 +307,9 @@
                 },
                 blurSearchFor: function () {
                     var _self = this;
-                    alert(_self.form.DWZH);
+                    //alert(_self.form.DWZH);
                     axios.post('/personal/getList', {DWZH: _self.form.DWZH}).then(function (response) {
-                        alert("111");
+                        //alert("111");
                         //_self.editForm = Object.assign({}, response.data[0]);
                         //alert(JSON.stringify(response.data[0]));
                         //  alert(DWZH);
