@@ -114,6 +114,7 @@ public class RepayServiceImpl implements RepayService{
      */
     @Override
     public int archiveRepay(Map map) {
+        System.out.println("/*/*/*/*//*/*"+map);
         repayDao.insertRecord(map);
         String time = map.get("REPAYED_DATE")+"";//获取放贷日期
         SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
@@ -166,17 +167,18 @@ public class RepayServiceImpl implements RepayService{
 
     @Override
     public List<Map> tiqian(Map map) {
+        System.out.println("/*/*-/*-/*-/*-/*-/*-"+map);
         Double ss  = Double.valueOf(map.get("RESIDUE_ALL_MONEY")+"");//
         Double all= Double.valueOf(map.get("All_MONEY")+"");//
         Double grzh = Double.valueOf(map.get("GRZH")+"");//个人账户
        // Double lx = Double.valueOf(map.get("RESIDUE_INTERESTS")+"");//剩余利息
         Double repymoney = Double.valueOf(map.get("RESIDUE_MONEY")+"");//剩余本金
-
         Double repayedall=Double.valueOf(map.get("REPAYED_ALL_MONEY")+"");//已还全部金额
         Double repymoney1 = Double.valueOf(map.get("LOAN_MONEY")+"");//贷款金额
         Integer djq = Integer.valueOf(map.get("REPAYED_PERIODS")+"");//第几期
         double loanrate =Double.valueOf(map.get("LOAN_RATE")+"");//年利率
         Integer repnperiod3 = Integer.valueOf(map.get("LOAN_PERIODS")+"");//;贷款期数
+        map.put("REPAY_MONTH_INTERRSTS",ss-repymoney);
         map.put("RESIDUE_PERIODS",0);
         map.put("REPAY_MONEY",repymoney);
         map.put("RESIDUE_MONEY",0);
@@ -184,7 +186,7 @@ public class RepayServiceImpl implements RepayService{
         map.put("RESIDUE_ALL_MONEY",0);
         map.put("REPAY_MONTH",ss);
         map.put("REPAYED_MONEY",repymoney1);//提前还款后已还的本金
-        map.put("REPAYED_PERIODS",repnperiod3);
+        map.put("REPAYED_PERIODS",djq);
         map.put("REPAYED_ALL_MONEY",repayedall+ss);
         repayDao.insertRecord(map);
         repayDao.archiveRepay1(map);
