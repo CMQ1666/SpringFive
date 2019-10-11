@@ -232,7 +232,7 @@
             },
             //点击封存按钮
             editClick:function(row) {
-                alert(row.GRZH);
+               // alert(row.GRZH);
                 var _self = this;
                 var url = "/seal/query";
                 axios.post(url,{grzh:row.GRZH}).then(function (response) {
