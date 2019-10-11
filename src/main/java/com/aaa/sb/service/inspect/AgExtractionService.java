@@ -15,4 +15,17 @@ public interface AgExtractionService {
      * @return
      */
     List<Map> getList(Map map);
+
+    /**
+     * 通过审核
+     * @param map
+     * @return
+     */
+    int pass(Map map);
+    /**
+     * 驳回审核
+     * @param map
+     * @return
+     */
+    int twoPass(Map map);
 }

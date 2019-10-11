@@ -21,4 +21,14 @@ public class AgExtractionServiceImpl implements AgExtractionService{
     public List<Map> getList(Map map) {
         return agExtractionDao.getList(map);
     }
+
+    @Override
+    public int pass(Map map) {
+        return agExtractionDao.pass(map);
+    }
+
+    @Override
+    public int twoPass(Map map) {
+        return agExtractionDao.twoPass(map);
+    }
 }

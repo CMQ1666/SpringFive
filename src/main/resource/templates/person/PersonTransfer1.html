@@ -224,6 +224,7 @@
                     _self.options = response.data;
                     //alert(JSON.stringify(response.data.pageData));
                 });
+
                 console.log(_self.currentPage);
                 setTimeout(function(){
                     console.info("加载数据成功");
@@ -324,7 +325,10 @@
                             alert("请勿重复操作 !");
                         }else {
                             axios.post(url1,{pid:_self.editForm.PID,selName:_self.editForm.SELNAME,uname:_self.editForm.UNAME,zy:_self.editForm.RESSON}).then(function (response) {
-                                _self.loadingData();//重新加载数据
+                              //  alert(11111);
+                             //   alert(location.href);
+                               // _self.loadingData();//重新加载数据
+                                location.href=location.href;
                             });
                             _self.loadingData();//重新加载数据
                         }
@@ -338,6 +342,7 @@
                             PID:''
                         };
                     });
+                  //  _self.location.reload();
                     _self.loadingData();//重新加载数据
                 }else {
                     alert("请填写完整信息");

@@ -30,15 +30,15 @@
     <!--列表-->
     <el-row>
         <el-table :data="tableData" v-loading.body="loading" border style="width: 100%">
-            <el-table-column prop="GRZH" label="个人账号" width="75"></el-table-column>
-            <el-table-column prop="PNAME" label="员工姓名" width="27"></el-table-column>
-            <el-table-column prop="UNAME" label="所在单位" width="130"></el-table-column>
-            <el-table-column prop="UNITMONPAYSUM" label="单位缴纳" width="50"></el-table-column>
-            <el-table-column prop="PERMONPAYSUM" label="个人缴纳" width="70"></el-table-column>
-            <el-table-column prop="YDRAWAMT" label="总共缴纳" width="120"></el-table-column>
-            <el-table-column prop="OPENDATE" label="业务日期" width="150"></el-table-column>
-            <el-table-column prop="PAOP" label="创建人" width="120"></el-table-column>
-            <el-table-column prop="OPENDATE" label="创建日期" width="150"></el-table-column>
+            <el-table-column prop="GRZH" label="个人账号" align="center"></el-table-column>
+            <el-table-column prop="PNAME" label="员工姓名" align="center"></el-table-column>
+            <el-table-column prop="UNAME" label="所在单位" align="center"></el-table-column>
+            <el-table-column prop="UNITMONPAYSUM" label="单位缴纳" align="center"></el-table-column>
+            <el-table-column prop="PERMONPAYSUM" label="个人缴纳" align="center"></el-table-column>
+            <el-table-column prop="YDRAWAMT" label="总共缴纳" align="center"></el-table-column>
+            <el-table-column prop="OPENDATE" label="业务日期" align="center"></el-table-column>
+            <el-table-column prop="PAOP" label="创建人" align="center"></el-table-column>
+            <el-table-column prop="OPENDATE" label="创建日期" align="center"></el-table-column>
         </el-table>
     </el-row>
     <!--列表底部工具条和分页符-->

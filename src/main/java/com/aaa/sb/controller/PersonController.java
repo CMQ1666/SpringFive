@@ -161,8 +161,9 @@ public class PersonController {
         }
     }
 
+    @ResponseBody
     @RequestMapping("/submits")
-    public String submits1(@RequestBody Map map,HttpSession session) {
+    public Object submits1(@RequestBody Map map,HttpSession session) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String name = session.getAttribute("name")+"";  //获取 当前操作人员
         String  pid = map.get("pid")+"";  //获取id
@@ -192,7 +193,7 @@ public class PersonController {
                 personService.addShift(tempMap);
             }
         }
-        return "redirect:/person/skip1";
+        return "1";
     }
 
     @ResponseBody
